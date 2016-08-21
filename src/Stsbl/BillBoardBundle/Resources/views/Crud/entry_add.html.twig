@@ -1,0 +1,15 @@
+{# src/Stsbl/BillBoardBundle/Reosurces/views/Crud/entry_add.thtml.twig #}
+{% extends 'IServCrudBundle:Crud:add.html.twig' %}
+
+{% block content %}
+    {% if fields is empty %}
+        <div class="alert alert-warning">
+            {{ _("There are no bill-board categories configured yet. Please contact your administrator.") }}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            Test
+        </div>
+        {{ parent() }}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cp -rv src/* /usr/share/iserv/src/
+cp -rv share/* /usr/share/iserv/	     
