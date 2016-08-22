@@ -46,6 +46,15 @@ class EntryCrud extends AbstractCrud
         $this->templates['crud_add'] = 'StsblBillBoardBundle:Crud:entry_add.html.twig';
         $this->templates['crud_index'] = 'StsblBillBoardBundle:Crud:entry_index.html.twig';
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    protected function buildRoutes() {
+        parent::buildRoutes();
+        
+        $this->routes[self::ACTION_ADD]['_controller'] = 'StsblBillBoardBundle:Entry:add';
+    }
 
     /**
      * {@inheritdoc}

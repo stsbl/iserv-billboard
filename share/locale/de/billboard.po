@@ -39,3 +39,9 @@ msgstr "Zuletzt aktualisiert"
 
 msgid "There are no bill-board categories configured yet. Please contact your administrator."
 msgstr "Es sind noch keine Kategorien für das schwarze Brett eingerichtet. Bitte kontaktieren sie Ihren Administrator."
+
+msgid "Rules for posting on the Bill-Board:"
+msgstr "Regeln für das Veröffentlichen auf dem schwarzen Brett:"
+
+msgid "Rules for posting on the Bill-Board:"
+msgstr "Regeln für das Veröffentlichen auf dem schwarzen Brett:"
