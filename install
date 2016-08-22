@@ -1,4 +1,31 @@
 #!/bin/sh
 
-cp -rv src/* /usr/share/iserv/src/
-cp -rv share/* /usr/share/iserv/	     
+export LC_ALL=C
+
+echo "Scanning and linking new files..."
+find /usr/share/iserv/src/Stsbl/BillBoardBundle/ -type d | sed "s|^/usr/share/iserv/||" | while read i
+do
+  if [ ! -e "$i" ]
+  then
+    mkdir -pv "$i"
+  fi
+done
+
+find /usr/share/iserv/src/Stsbl/BillBoardBundle/ -type f | sed "s|^/usr/share/iserv/||" | while read i
+do
+  if [ ! -e "$i" ]
+  then
+    ln -v /usr/share/iserv/"$i" "$i"
+  fi
+done
+
+echo "Cleaning up..."
+rm -rfv /usr/share/iserv/src/Stsbl/BillBoardBundle
+
+echo "Creating base directory..."
+mkdir -pv /usr/share/iserv/src/Stsbl/BillBoardBundle
+
+echo "Creating directory structure..."
+find src/ -type d -exec mkdir -pv /usr/share/iserv/{} \;
+echo "Hard-linking files..."
+find src/ -type f -exec ln -v {} /usr/share/iserv/{} \;
