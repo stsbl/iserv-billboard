@@ -42,6 +42,7 @@ class MenuListener implements MainMenuListenerInterface {
      */
     public function onBuildAdminMenu(MenuEvent $event)
     {
+        // check if user is privileged
         if ($event->getAuthorizationChecker()->isGranted(Privilege::BILLBOARD_MANAGE))
         {
             $menu = $event->getMenu();
