@@ -66,7 +66,7 @@ class EntryCrud extends AbstractCrud
             ->addIdentifier('title', null, array('label' => _('Title')))
             ->add('category', null, array('label' => _('Category')))
             ->add('author', UserType::class, array('label' => _('Author')))
-            ->add('time', 'datetime', array('label' => _('Date')))
+            ->add('time', 'datetime', array('label' => _('Added')))
             ->add('updatedAt', 'datetime', array('label' => _('Last refresh')))
         ;
     }
@@ -118,7 +118,7 @@ class EntryCrud extends AbstractCrud
             ->addListFilter((new Filter\ListPropertyFilter(_('Category'), 'category', 'StsblBillBoardBundle:Category'))->allowNone())
             ->addListFilter(new Filter\ListSearchFilter('search', ['title', 'description']));
         
-        $filterGroup = new Filter\FilterGroup('billboard', _('All entries'), true);
+        $filterGroup = new Filter\FilterGroup('billboard', _('All entries'), false);
 
         $authorFilter = new Filter\ListExpressionFilter(_('Entries I created'), 'parent.author = :user');
         $authorFilter
