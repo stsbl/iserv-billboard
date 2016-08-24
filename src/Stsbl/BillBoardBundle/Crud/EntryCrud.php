@@ -2,18 +2,19 @@
 // src/Stsbl/BillBoardBundle/Crud/EntryCrud.php;
 namespace Stsbl\BillBoardBundle\Crud;
 
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Security\Core\User\UserInterface;
+use IServ\CrudBundle\Crud\AbstractCrud;
+use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CoreBundle\Form\Type\BooleanType;
 use IServ\CoreBundle\Form\Type\UserType;
-use IServ\CrudBundle\Crud\AbstractCrud;
 use IServ\CrudBundle\Mapper\FormMapper;
 use IServ\CrudBundle\Mapper\ListMapper;
 use IServ\CrudBundle\Mapper\ShowMapper;
 use IServ\CrudBundle\Table\ListHandler;
 use IServ\CrudBundle\Table\Filter;
-use IServ\CrudBundle\Entity\CrudInterface;
+use IServ\CrudBundle\Table\Specification\FilterExpression;
 use Stsbl\BillBoardBundle\Security\Privilege;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Bill-Board entry list
@@ -107,14 +108,6 @@ class EntryCrud extends AbstractCrud
             )
         ;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prePersist(CrudInterface $entry)
-    {
-        $entry->setAuthor($this->getUser());
-    }
     
     /**
      * {@inheritdoc}
@@ -131,9 +124,24 @@ class EntryCrud extends AbstractCrud
         $authorFilter
             ->setName('created_entries')
             ->setParameters(array('user' => $this->getUser()));
+        
+        $hiddenFilter = new Filter\ListExpressionFilter(_('My hidden entries'), 'parent.author = :user and parent.visible = false');
+        $hiddenFilter
+            ->setName('my_hidden_entries')
+            ->setParameters(array('user' => $this->getUser()));
+        
         $filterGroup->addListFilter($authorFilter);
+        $filterGroup->addListFilter($hiddenFilter);
         
         $listHandler->addListFilterGroup($filterGroup);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prePersist(CrudInterface $entry)
+    {
+        $entry->setAuthor($this->getUser());
     }
 
     /**
@@ -159,6 +167,16 @@ class EntryCrud extends AbstractCrud
         }
         
         return $links;
+    }
+    
+    public function getFilterSpecification() {
+        $qb = $this->getObjectManager()->createQueryBuilder($this->class);
+        $qb->select('p')
+            ->from('StsblBillBoardBundle:Entry', 'p')
+            ->where('p = parent')
+            ->andWhere('p.visible = true');
+        
+        return new FilterExpression($qb->expr()->exists($qb));
     }
 
     /**
