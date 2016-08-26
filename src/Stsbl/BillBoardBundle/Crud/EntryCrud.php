@@ -11,7 +11,6 @@ use IServ\CrudBundle\Mapper\ListMapper;
 use IServ\CrudBundle\Mapper\ShowMapper;
 use IServ\CrudBundle\Table\ListHandler;
 use IServ\CrudBundle\Table\Filter;
-use IServ\CrudBundle\Table\Specification\FilterExpression;
 use Stsbl\BillBoardBundle\Security\Privilege;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -24,6 +23,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class EntryCrud extends AbstractCrud
 {
+
     /**
      * {@inheritdoc}
      */
@@ -114,13 +114,21 @@ class EntryCrud extends AbstractCrud
      */
     public function configureListFilter(ListHandler $listHandler)
     {
+        $qb = $this->getObjectManager()->createQueryBuilder($this->class);
+        $qb->select('p')
+            ->from('StsblBillBoardBundle:Entry', 'p')
+            ->where('p = parent')
+            ->andWhere('p.visible = true');
+        
         $listHandler
             ->addListFilter((new Filter\ListPropertyFilter(_('Category'), 'category', 'StsblBillBoardBundle:Category'))->allowNone())
             ->addListFilter(new Filter\ListSearchFilter('search', ['title', 'description']));
         
-        $filterGroup = new Filter\FilterGroup('billboard', _('All entries'), false);
-
-        $authorFilter = new Filter\ListExpressionFilter(_('Entries I created'), 'parent.author = :user');
+        $allFilter = new Filter\ListExpressionFilter(_('All entries'), $qb->expr()->exists($qb));
+        $allFilter    
+            ->setName('all_entries');
+        
+        $authorFilter = new Filter\ListExpressionFilter(_('Entries I created'), 'parent.author = :user and parent.visible = true');
         $authorFilter
             ->setName('created_entries')
             ->setParameters(array('user' => $this->getUser()));
@@ -129,11 +137,22 @@ class EntryCrud extends AbstractCrud
         $hiddenFilter
             ->setName('my_hidden_entries')
             ->setParameters(array('user' => $this->getUser()));
+
+        $listHandler
+            ->addListFilter($allFilter)
+            ->addListFilter($authorFilter)
+            ->addListFilter($hiddenFilter)
+            ->setDefaultFilter('all_entries');
         
-        $filterGroup->addListFilter($authorFilter);
-        $filterGroup->addListFilter($hiddenFilter);
-        
-        $listHandler->addListFilterGroup($filterGroup);
+        if ($this->isGranted(Privilege::BILLBOARD_MODERATE) ||
+            $this->isGranted(Privilege::BILLBOARD_MANAGE)) {
+            $hiddenAllFilter = new Filter\ListExpressionFilter(_('Hidden entries of other users'), 'parent.author != :user and parent.visible = false');
+            $hiddenAllFilter
+                ->setName('hidden_entries_other_users')
+                ->setParameters(array('user' => $this->getUser()));
+            
+            $listHandler->addListFilter($hiddenAllFilter);
+        }
     }
 
     /**
@@ -167,16 +186,6 @@ class EntryCrud extends AbstractCrud
         }
         
         return $links;
-    }
-    
-    public function getFilterSpecification() {
-        $qb = $this->getObjectManager()->createQueryBuilder($this->class);
-        $qb->select('p')
-            ->from('StsblBillBoardBundle:Entry', 'p')
-            ->where('p = parent')
-            ->andWhere('p.visible = true');
-        
-        return new FilterExpression($qb->expr()->exists($qb));
     }
 
     /**
