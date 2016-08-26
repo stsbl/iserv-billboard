@@ -5,15 +5,20 @@ services:
         tags:
           - { name: kernel.event_listener, event: iserv_portal.menu_main, method: onBuildMainMenu } # Tells IServ about the main menu method
           - { name: kernel.event_listener, event: iserv_portal.menu_admin, method: onBuildAdminMenu } # Tells IServ about the admin menu method
+    stsbl.billboard.logging_service:
+        class: Stsbl\BillBoardBundle\Service\LoggingService
+        arguments: ["@iserv.logger", "Bill-Board"]
     stsbl.crud.billboard.category:
         class: Stsbl\BillBoardBundle\Crud\CategoryCrud # Our CRUD class
         arguments: [Stsbl\BillBoardBundle\Entity\Category]  # Sets the controlled entity class
         tags:
             - { name: iserv.crud } # Tells IServ about our CRUD
         calls:
-           - [ setLogger, ["@iserv.logger"]]
+           - [ setLoggingService, ["@stsbl.billboard.logging_service"]]
     stsbl.crud.billboard.entry:
         class: Stsbl\BillBoardBundle\Crud\EntryCrud # Our CRUD class
         arguments: [Stsbl\BillBoardBundle\Entity\Entry]  # Sets the controlled entity class
         tags:
             - { name: iserv.crud } # Tells IServ about our CRUD
+        calls:
+            - [ setLoggingService, ["@stsbl.billboard.logging_service"]]

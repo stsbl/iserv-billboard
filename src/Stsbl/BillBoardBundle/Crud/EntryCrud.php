@@ -12,6 +12,7 @@ use IServ\CrudBundle\Mapper\ShowMapper;
 use IServ\CrudBundle\Table\ListHandler;
 use IServ\CrudBundle\Table\Filter;
 use Stsbl\BillBoardBundle\Security\Privilege;
+use Stsbl\BillBoardBundle\Service\LoggingService;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -23,7 +24,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class EntryCrud extends AbstractCrud
 {
-
+    /**
+     * Contains instance of LoggingService for writing logs
+     * 
+     * @var LoggingService
+     */
+    private $loggingService;
+    
     /**
      * {@inheritdoc}
      */
@@ -55,6 +62,16 @@ class EntryCrud extends AbstractCrud
         parent::buildRoutes();
         
         $this->routes[self::ACTION_ADD]['_controller'] = 'StsblBillBoardBundle:Entry:add';
+    }
+
+    /**
+     * Injects the Logger into the class to write logs about category creations, updates and deletions
+     * 
+     * @param LoggingService $loggingService
+     */
+    public function setLoggingService(LoggingService $loggingService)
+    {
+        $this->loggingService = $loggingService;
     }
 
     /**
@@ -144,8 +161,7 @@ class EntryCrud extends AbstractCrud
             ->addListFilter($hiddenFilter)
             ->setDefaultFilter('all_entries');
         
-        if ($this->isGranted(Privilege::BILLBOARD_MODERATE) ||
-            $this->isGranted(Privilege::BILLBOARD_MANAGE)) {
+        if ($this->isModerator()) {
             $hiddenAllFilter = new Filter\ListExpressionFilter(_('Hidden entries of other users'), 'parent.author != :user and parent.visible = false');
             $hiddenAllFilter
                 ->setName('hidden_entries_other_users')
@@ -205,8 +221,7 @@ class EntryCrud extends AbstractCrud
             return true;
         }
         
-        if ($this->isGranted(Privilege::BILLBOARD_MODERATE)
-            || $this->isGranted(Privilege::BILLBOARD_MANAGE)) {
+        if ($this->isModerator()) {
             return true;
         }
     }
@@ -220,8 +235,8 @@ class EntryCrud extends AbstractCrud
         }
         
         if ($this->isGranted(Privilege::BILLBOARD_CREATE)
-        || $this->isGranted(Privilege::BILLBOARD_MODERATE)
-        || $this->isGranted(Privilege::BILLBOARD_MANAGE)) {
+        || $this->isModerator()) {
+            // allow users with creation nand moderation privilege to add entries
             return true;
         }
     }
@@ -249,8 +264,39 @@ class EntryCrud extends AbstractCrud
         if ($object->getVisible() === true) {
             return true;
         }
+        
+        if ($this->isModerator()) {
+            // allow users with moderation and admin privilege to show hidden objects
+            return true;
+        }
     }
     
+    /**
+     * {@inheritdoc}
+     */
+    public function postRemove(CrudInterface $entry) {
+        if ($this->isModerator()
+        && $this->getUser() !== $entry->getAuthor()) {
+            $this->loggingService->writeLog('Moderatives Löschen des Eintrages "'.$entry->getTitle().'" von '.$entry->getAuthor()->getName());
+        }
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function postUpdate(CrudInterface $entry, array $previousData = null) {
+        if ($this->isModerator()
+        && $this->getUser() !== $entry->getAuthor()) {
+            if ($entry->getTitle() !== $previousData['title']) {
+                // write rename log, if old and new title does not match
+                $this->loggingService->writeLog('Moderatives Bearbeiten des Eintrages "'.$previousData['title'].'" von '.$entry->getAuthor()->getName().' und Umbenennen des Eintrages in "'.$entry->getTitle().'"');
+            } else {
+                $this->loggingService->writeLog('Moderatives Bearbeiten des Eintrages "'.$entry->getTitle().'" von '.$entry->getAuthor()->getName());
+            }
+        }       
+    }
+
+
     /**
      * Returns true if there is at least one category
      *
@@ -259,5 +305,16 @@ class EntryCrud extends AbstractCrud
     private function hasCategories()
     {
         return $this->getObjectManager()->getRepository('StsblBillBoardBundle:Category')->exists();
+    }
+    
+    /**
+     * Returns true if the current user has moderation privleges
+     * 
+     * @return bool
+     */
+    private function isModerator()
+    {
+        return $this->isGranted(Privilege::BILLBOARD_MODERATE)
+        || $this->isGranted(Privilege::BILLBOARD_MANAGE);
     }
 }

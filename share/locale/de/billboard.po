@@ -34,6 +34,12 @@ msgstr "Alle Einträge"
 msgid "Entries I created"
 msgstr "Einträge, die ich erstellt habe"
 
+msgid "My hidden entries"
+msgstr "Meine versteckten Einträge"
+
+msgid "Hidden entries of other users"
+msgstr "Versteckte Einträge anderer Benutzer"
+
 msgid "Last refresh"
 msgstr "Zuletzt aktualisiert"
 
