@@ -54,3 +54,15 @@ msgstr "Regeln"
 
 msgid "Rules for posting on the Bill-Board:"
 msgstr "Regeln für das Veröffentlichen auf dem schwarzen Brett:"
+
+msgid "Entry is now hidden: %s"
+msgstr "Eintrag ist jetzt ausgeblendet: %s"
+
+msgid "Failed to hide entry: %s"
+msgstr "Ausblenden des Eintrages fehlgeschlagen: %s"
+
+msgid "Entry is now visible: %s"
+msgstr "Eintrag ist jetzt eingeblendet: %s"
+
+msgid "Failed to make entry visible: %s"
+msgstr "Einblenden des Eintrages fehlgeschlagen: %s"

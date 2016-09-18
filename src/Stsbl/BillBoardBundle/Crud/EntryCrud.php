@@ -11,6 +11,8 @@ use IServ\CrudBundle\Mapper\ListMapper;
 use IServ\CrudBundle\Mapper\ShowMapper;
 use IServ\CrudBundle\Table\ListHandler;
 use IServ\CrudBundle\Table\Filter;
+use Stsbl\BillBoardBundle\Crud\Batch\HideAction;
+use Stsbl\BillBoardBundle\Crud\Batch\ShowAction;
 use Stsbl\BillBoardBundle\Security\Privilege;
 use Stsbl\BillBoardBundle\Service\LoggingService;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -159,40 +161,67 @@ class EntryCrud extends AbstractCrud
         $qb->select('p')
             ->from('StsblBillBoardBundle:Entry', 'p')
             ->where('p = parent')
-            ->andWhere('p.visible = true');
+            ->andWhere('p.visible = true')
+        ;
         
         $listHandler
             ->addListFilter((new Filter\ListPropertyFilter(_('Category'), 'category', 'StsblBillBoardBundle:Category'))->allowNone())
-            ->addListFilter(new Filter\ListSearchFilter('search', ['title', 'description']));
+            ->addListFilter(new Filter\ListSearchFilter('search', ['title', 'description']))
+        ;
         
         $allFilter = new Filter\ListExpressionFilter(_('All entries'), $qb->expr()->exists($qb));
         $allFilter    
-            ->setName('all_entries');
+            ->setName('all_entries')
+            ->setListMapperUpdater(function() use ($listHandler) {
+                $listHandler->disableBatchAction('show'); })
+        ;
         
         $authorFilter = new Filter\ListExpressionFilter(_('Entries I created'), 'parent.author = :user and parent.visible = true');
         $authorFilter
             ->setName('created_entries')
-            ->setParameters(array('user' => $this->getUser()));
+            ->setParameters(array('user' => $this->getUser()))
+            ->setListMapperUpdater(function() use ($listHandler) {
+                $listHandler->disableBatchAction('show'); })
+        ;
         
         $hiddenFilter = new Filter\ListExpressionFilter(_('My hidden entries'), 'parent.author = :user and parent.visible = false');
         $hiddenFilter
             ->setName('my_hidden_entries')
-            ->setParameters(array('user' => $this->getUser()));
+            ->setParameters(array('user' => $this->getUser()))
+            ->setListMapperUpdater(function() use ($listHandler) {
+                $listHandler->disableBatchAction('hide'); })
+        ;
 
         $listHandler
             ->addListFilter($allFilter)
             ->addListFilter($authorFilter)
             ->addListFilter($hiddenFilter)
-            ->setDefaultFilter('all_entries');
+            ->setDefaultFilter('all_entries')
+        ;
         
         if ($this->isModerator()) {
             $hiddenAllFilter = new Filter\ListExpressionFilter(_('Hidden entries of other users'), 'parent.author != :user and parent.visible = false');
             $hiddenAllFilter
                 ->setName('hidden_entries_other_users')
-                ->setParameters(array('user' => $this->getUser()));
+                ->setParameters(array('user' => $this->getUser()))
+                ->setListMapperUpdater(function() use ($listHandler) {
+                    $listHandler->disableBatchAction('hide'); })
+            ;
             
             $listHandler->addListFilter($hiddenAllFilter);
         }
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function loadBatchActions()
+    {
+        $res = parent::loadBatchActions();
+        $res->add(new ShowAction($this));
+        $res->add(new HideAction($this));
+        
+        return $res;
     }
 
     /**
@@ -339,7 +368,7 @@ class EntryCrud extends AbstractCrud
      * 
      * @return bool
      */
-    private function isModerator()
+    public function isModerator()
     {
         return $this->isGranted(Privilege::BILLBOARD_MODERATE)
         || $this->isGranted(Privilege::BILLBOARD_MANAGE);
