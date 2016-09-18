@@ -16,7 +16,7 @@ use Stsbl\BillBoardBundle\Service\LoggingService;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license GNU General Public License <http://gnu.org/licenses/gpl-3.0>
  */
-class CategoryCrud extends AbstractAdmin {
+class CategoryAdmin extends AbstractAdmin {
     /**
      * Contains instance of LoggingService for writing logs
      * 
