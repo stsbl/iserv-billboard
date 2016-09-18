@@ -43,8 +43,14 @@ msgstr "Versteckte Einträge anderer Benutzer"
 msgid "Last refresh"
 msgstr "Zuletzt aktualisiert"
 
+msgid "Initial Upload"
+msgstr "Zuerst hochgeladen"
+
 msgid "There are no bill-board categories configured yet. Please contact your administrator."
 msgstr "Es sind noch keine Kategorien für das schwarze Brett eingerichtet. Bitte kontaktieren sie Ihren Administrator."
+
+msgid "Rules"
+msgstr "Regeln"
 
 msgid "Rules for posting on the Bill-Board:"
 msgstr "Regeln für das Veröffentlichen auf dem schwarzen Brett:"

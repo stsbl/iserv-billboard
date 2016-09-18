@@ -62,6 +62,23 @@ class EntryCrud extends AbstractCrud
         parent::buildRoutes();
         
         $this->routes[self::ACTION_ADD]['_controller'] = 'StsblBillBoardBundle:Entry:add';
+        
+        $id = $this->getId();
+        $action = 'fileimage';
+
+        // @Route("/fileimage/{entity}/{id}/{property}/{width}/{height}", name="fileimage")
+
+        // TODO?: Solve image collection stuff.
+        $this->routes['fileimage_images'] = array(
+            'pattern' => sprintf('/%s%s/%s/{entity_id}/{id}/{width}/{height}', $this->routesPrefix, $id, 'images'),
+            'name' => sprintf('%s%s_%s', $this->routesNamePrefix, $id, $action . '_images'),
+            'entity' => 'EntryImage',
+            'property' => 'image',
+            'width' => null,
+            'height' => null,
+            '_controller' => sprintf('IServCoreBundle:FileImage:%s', $action),
+            '_iserv_crud' => $id,
+        );
     }
 
     /**
@@ -85,6 +102,12 @@ class EntryCrud extends AbstractCrud
             ->add('author', UserType::class, array('label' => _('Author')))
             ->add('time', 'datetime', array('label' => _('Added')))
             ->add('updatedAt', 'datetime', array('label' => _('Last refresh')))
+            ->add('images', null, array(
+                'label' => _('Images'),
+                'required' => false,
+                'template' => 'IServCrudBundle:List:field_imagecollection.html.twig',
+                'responsive' => 'desktop',
+            ))
         ;
     }
 
@@ -101,6 +124,7 @@ class EntryCrud extends AbstractCrud
             ->add('updatedAt', 'datetime', array('label' => _('Last refresh')))
             ->add('visible', 'boolean', array('label' => _('Visible')))
             ->add('description', null, array('label' => _('Description')))
+            ->add('images', null, array('label' => _('Images'), 'required' => false, 'template' => 'IServCrudBundle:Show:field_imagecollection.html.twig'));
         ;
     }
 
@@ -190,14 +214,17 @@ class EntryCrud extends AbstractCrud
             return parent::getRoutePattern($action, 'entry', $entityBased);
         }
     }
-
+    
     /**
      * {@inheritdoc}
      */
     public function getIndexActions() {
         $links = parent::getIndexActions();
         
-        if ($this->isGranted(Privilege::BILLBOARD_MANAGE)) {
+        $links['images'] = array($this->getRouter()->generate('crud_entryimage_index'), _('Images'), 'picture');
+        
+        // only add category, if user has managemant privilege and an administrator password
+        if ($this->isGranted(Privilege::BILLBOARD_MANAGE) && $this->isGranted('ROLE_ADMIN')) {
             $links['categories'] = array($this->getRouter()->generate('admin_billboard_category_index'), _('Categories'), 'tags');
         }
         
@@ -308,7 +335,7 @@ class EntryCrud extends AbstractCrud
     }
     
     /**
-     * Returns true if the current user has moderation privleges
+     * Returns true if the current user has moderation privileges
      * 
      * @return bool
      */

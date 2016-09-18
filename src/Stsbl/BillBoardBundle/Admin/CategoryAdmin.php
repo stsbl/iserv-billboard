@@ -1,6 +1,6 @@
 <?php
 // src/Stsbl/BillBoardBundle/Crud/CategoryListCrud.php
-namespace Stsbl\BillBoardBundle\Crud;
+namespace Stsbl\BillBoardBundle\Admin;
 
 use IServ\AdminBundle\Admin\AbstractAdmin;
 use IServ\CrudBundle\Entity\CrudInterface;

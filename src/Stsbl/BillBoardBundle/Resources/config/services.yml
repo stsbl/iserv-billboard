@@ -8,7 +8,7 @@ services:
     stsbl.billboard.logging_service:
         class: Stsbl\BillBoardBundle\Service\LoggingService
         arguments: ["@iserv.logger", "Bill-Board"]
-    stsbl.crud.billboard.category:
+    stsbl.admin.billboard.category:
         class: Stsbl\BillBoardBundle\Admin\CategoryAdmin # Our CRUD class
         arguments: [Stsbl\BillBoardBundle\Entity\Category]  # Sets the controlled entity class
         tags:
@@ -22,3 +22,8 @@ services:
             - { name: iserv.crud } # Tells IServ about our CRUD
         calls:
             - [ setLoggingService, ["@stsbl.billboard.logging_service"]]
+    stsbl.crud.billboard.entryimage:
+        class: Stsbl\BillBoardBundle\Crud\EntryImageCrud # Our CRUD class
+        arguments: [Stsbl\BillBoardBundle\Entity\EntryImage] # Sets the controlled entity class
+        tags:
+            - { name: iserv.crud } # Tells IServ about our CRUD

@@ -1,23 +1,23 @@
 <?php
-// src/Stsbl/BillBoardBundle/Entity/Entry.php
+// src/Stsbl/BillBoardBundle/Entity/Image.php
 namespace Stsbl\BillBoardBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use IServ\CrudBundle\Entity\CrudInterface;
+use IServ\CoreBundle\Entity\FileImage;
 use IServ\CoreBundle\Entity\User;
-use Symfony\Component\Validator\Constraints as Assert;
+use Stsbl\BillBoardBundle\Entity\Entry;
 
 /**
- * BillBoardBundle:Entry
+ * BillBoardBundle:EntryImage
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license GNU General Public License <http://gnu.org/licenses/gpl-3.0>
  * @ORM\Entity
- * @ORM\Table(name="billboard")
+ * @ORM\Table(name="billboard_images")
  * @ORM\HasLifecycleCallbacks
  */
-class Entry implements CrudInterface
+class EntryImage implements CrudInterface
 {
     /**
      * @ORM\Column(type="integer")
@@ -29,20 +29,26 @@ class Entry implements CrudInterface
     private $id;
     
     /**
-     * @ORM\Column(name="title",type="text",length=255)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="file_image",  nullable=true)
      * 
-     * @var string
+     * @var FileImage
      */
-    private $title;
+    private $image;
     
     /**
-     * @ORM\Column(name="description",type="text")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="description",type="text",nullable=true)
      * 
      * @var string
      */
     private $description;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\IServ\CoreBundle\Entity\User", fetch="EAGER")
+     * @ORM\JoinColumn(name="author", referencedColumnName="act")
+     *
+     * @var User
+     */
+    private $author;
     
     /**
      * @ORM\Column(name="time",type="datetime",nullable=false)
@@ -59,45 +65,13 @@ class Entry implements CrudInterface
     private $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Stsbl\BillBoardBundle\Entity\Category", fetch="EAGER")
-     * @ORM\JoinColumn(name="category", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Entry", inversedBy="images")
+     * @ORM\JoinColumn(name="entry", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      *
-     * @Assert\NotNull()
-     *
-     * @var Category
+     * @var Entry
      */
-    private $category;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="\IServ\CoreBundle\Entity\User", fetch="EAGER")
-     * @ORM\JoinColumn(name="author", referencedColumnName="act")
-     *
-     * @var User
-     */
-    private $author;
-    
-    /**
-     * @ORM\Column(name="visible",type="boolean")
-     * 
-     * @var boolean
-     */ 
-    private $visible;
-    
-        /**
-     * @ORM\OneToMany(targetEntity="EntryImage", mappedBy="entry")
-     *
-     * @var ArrayCollection
-     */
-    private $images;
+    private $entry;
 
-    /**
-     * The constructor
-     */
-    public function __construct()
-    {
-        $this->images = new ArrayCollection();
-    }
-    
     /**
      * Lifecycle callback to set the creation date
      *
@@ -134,9 +108,9 @@ class Entry implements CrudInterface
      */
     public function __toString()
     {
-        return (string)$this->title;
+        return $this->getImage()->getFileName() ? (string)$this->getImage()->getFileName() : '';
     }
-    
+
     /**
      * Get id
      * 
@@ -148,13 +122,13 @@ class Entry implements CrudInterface
     }
     
     /**
-     * Get title
+     * Get image
      * 
-     * @return string
+     * @return FileImage
      */
-    public function getTitle()
+    public function getImage()
     {
-        return $this->title;
+        return $this->image;
     }
     
     /**
@@ -165,6 +139,16 @@ class Entry implements CrudInterface
     public function getDescription()
     {
         return $this->description;
+    }
+    
+    /**
+     * Get author
+     * 
+     * @return User
+     */
+    public function getAuthor()
+    {
+        return $this->author;
     }
     
     /**
@@ -188,55 +172,25 @@ class Entry implements CrudInterface
     }
     
     /**
-     * Get category
-     * 
-     * @return Category
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-    
-    /**
-     * Get author
-     * 
-     * @return User
-     */
-    public function getAuthor()
-    {
-        return $this->author;
-    }
-    
-    /**
-     * Get visible
-     * 
-     * @return boolean
-     */
-    public function getVisible()
-    {
-        return $this->visible;
-    }
-    
-    /**
-     * Get images
-     * 
-     * @return ArrayCollection
-     */
-    public function getImages()
-    {
-        return $this->images;
-    }
-    
-    /**
-     * Set title
-     * 
-     * @param string $title
+     * Get entry
      * 
      * @return Entry
      */
-    public function setTitle($title)
+    public function getEntry()
     {
-        $this->title = $title;
+        return $this->entry;
+    }
+    
+    /**
+     * Set image
+     * 
+     * @param FileImage $image
+     * 
+     * @return Image
+     */
+    public function setImage(FileImage $image)
+    {
+        $this->image = $image;
         
         return $this;
     }
@@ -246,7 +200,7 @@ class Entry implements CrudInterface
      * 
      * @param string $description
      * 
-     * @return Entry
+     * @return Image
      */
     public function setDescription($description)
     {
@@ -256,11 +210,25 @@ class Entry implements CrudInterface
     }
     
     /**
+     * Set author
+     * 
+     * @param User $author
+     * 
+     * @return Image
+     */
+    public function setAuthor(User $author)
+    {
+        $this->author = $author;
+        
+        return $this;
+    }
+
+    /**
      * Set time
      * 
      * @param \DateTime $time
      * 
-     * @return Entry
+     * @return Image
      */
     public function setTime(\DateTime $time = null)
     {
@@ -274,7 +242,7 @@ class Entry implements CrudInterface
      * 
      * @param \DateTime $updatedAt
      * 
-     * @return Entry
+     * @return Image
      */
     public function setUpdatedAt(\DateTime $updatedAt = null)
     {
@@ -284,61 +252,19 @@ class Entry implements CrudInterface
     }
     
     /**
-     * Set category
+     * Set entry
      * 
-     * @param Category $category
+     * @param Entry $entry
      * 
-     * @return Entry
+     * @return Image
      */
-    public function setCategory(Category $category = null)
+    public function setEntry(Entry $entry)
     {
-        $this->category = $category;
+        $this->entry = $entry;
         
         return $this;
     }
-    
-    /**
-     * Set author
-     * 
-     * @param User $author
-     * 
-     * @return Entry
-     */
-    public function setAuthor(User $author = null)
-    {
-        $this->author = $author;
-        
-        return $this;
-    }
-    
-    /**
-     * Set visible
-     * 
-     * @param boolean $visible
-     * 
-     * @return Entry
-     */
-    public function setVisible($visible)
-    {
-        $this->visible = $visible;
-        
-        return $this;
-    }
-    
-    /**
-     * Set images
-     * 
-     * @param ArrayCollection $images
-     * 
-     * @return Entry
-     */
-    public function setImages(ArrayCollection $images)
-    {
-        $this->images = $images;
-        
-        return $this;
-    }
-    
+
     /**
      * Checks if the author is valid. i.e. he isn't deleted
      * 
