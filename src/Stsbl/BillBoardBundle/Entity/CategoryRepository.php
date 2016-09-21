@@ -9,7 +9,6 @@ use IServ\CrudBundle\Doctrine\ORM\EntitySpecificationRepository;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license http://gnu.org/licenses/gpl-3.0 GNU Lesser General Public License
  */
-
 class CategoryRepository extends EntitySpecificationRepository
 {
     /**
