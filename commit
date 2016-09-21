@@ -6,7 +6,7 @@ export LC_ALL=C
 
 echo "Coyping files back..."
 cp -rv "/usr/share/iserv/src/Stsbl/BillBoardBundle/"* src/Stsbl/BillBoardBundle/
-cp -v "/usr/share/iserv/db/billboard.sql" share/db/
-cp -v "/usr/share/iserv/priv/billboard" share/priv/
+cp -v "/usr/share/iserv/db/billboard.sql" db/
+cp -v "/usr/share/iserv/priv/billboard" priv/
 cp -v "/usr/share/iserv/locale/de/billboard.po" share/locale/de/
-cp -v "/usr/share/iserv/iconf/etc/iserv/chk.d/40apache/60billboard" share/iconf/etc/iserv/chk.d/40apache/
+cp -v "/usr/share/iserv/iconf/etc/iserv/chk.d/40apache/60billboard" iservchk/40apache/
