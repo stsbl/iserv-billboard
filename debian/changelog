@@ -1,3 +1,10 @@
+stsbl-iserv-billboard (16.09.22-2) experimental; urgency=medium
+
+  * Fixed privilege file to has the same description as in the
+    translation file.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Thu, 22 Sep 2016 20:04:20 +0200
+
 stsbl-iserv-billboard (16.09.22-1) experimental; urgency=medium
 
   * Fixed package name. 
