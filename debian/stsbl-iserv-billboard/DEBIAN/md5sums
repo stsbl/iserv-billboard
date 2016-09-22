@@ -1,9 +1,9 @@
-f11b038c9a7278aa3b1c7848edeff9c1  usr/share/doc/stsbl-iserv-billboard/changelog.Debian.gz
+0bd4d6e428193fc869fe6b6668b0fcf5  usr/share/doc/stsbl-iserv-billboard/changelog.Debian.gz
 8cc1d7e7d37826aea325615d5f2bbd2b  usr/share/doc/stsbl-iserv-billboard/copyright
 31d162c02e1f1c06298bc5606484491a  usr/share/iserv/db/billboard.sql
 08c869a0b0af083ccc0386acd9bccb23  usr/share/iserv/iconf/etc/iserv/chk.d/40apache/60billboard
 04c8b566f38dcc9f183de19ab13760fd  usr/share/iserv/locale/de/billboard.po
-f814cfafe4c9de1e6c0ca99fdf0adec8  usr/share/iserv/priv/billboard
+669fa0bbb67889cb34df6b28cdfb4ba2  usr/share/iserv/priv/billboard
 d487e9c8220c93a513800cad4eea8070  usr/share/iserv/src/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php
 5daab3e27895fc9e97f1b75dbdf8dfb4  usr/share/iserv/src/Stsbl/BillBoardBundle/Controller/AdminController.php
 b6407361812691064f24fe444a3299a0  usr/share/iserv/src/Stsbl/BillBoardBundle/Controller/EntryController.php

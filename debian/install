@@ -12,4 +12,4 @@ priv/*          usr/share/iserv/priv
 share/*         usr/share/iserv
 src/*           usr/share/iserv/src
 #install/*       srv/deploy/install
-
+debian/changelog DEBIAN
