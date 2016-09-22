@@ -1,3 +1,9 @@
+stsbl-iserv-billboard (16.09.22-1) experimental; urgency=medium
+
+  * Fixed package name. 
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Thu, 22 Sep 2016 07:55:59 +0200
+
 stsbl-iserv-billboard (16.09.22-0) experimental; urgency=medium
 
   * Initial release.
