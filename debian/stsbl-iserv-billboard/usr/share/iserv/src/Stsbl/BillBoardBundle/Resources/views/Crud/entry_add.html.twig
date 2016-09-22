@@ -1,0 +1,18 @@
+{# src/Stsbl/BillBoardBundle/Reosurces/views/Crud/entry_add.thtml.twig #}
+{% extends 'IServCrudBundle:Crud:add.html.twig' %}
+
+{% block content %}
+    {% if fields is empty %}
+        <div class="alert alert-warning">
+            {{ _("There are no bill-board categories configured yet. Please contact your administrator.") }}
+        </div>
+    {% else %}
+        {% if rules is not empty %}
+            <div class="alert alert-info">
+                <p><strong> {{ _("Rules for posting on the Bill-Board:") }}</strong></p>
+                <p>{{ rules | nl2br }}</p>
+            </div>
+        {% endif %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
