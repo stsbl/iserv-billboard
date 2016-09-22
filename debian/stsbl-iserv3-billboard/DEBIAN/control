@@ -1,0 +1,23 @@
+Package: stsbl-iserv3-billboard
+Source: stsbl-iserv-billboard
+Version: 16.09.22-0
+Architecture: all
+Maintainer: Stadtteilschule Blankenese <repository@stsbl.de>
+Installed-Size: 108
+Depends: iserv-portal, stsbl-iserv3-maintenance
+Section: misc
+Priority: extra
+Homepage: https://repository.stsbl.de/doc/mods/stsbl-iserv-billboard.html
+Description: Schwarzes Brett-Modul füt IServ
+ Das Modul "Schwarzes Brett" stellt eine digitale Biete-Pinnwand zur Verfügung.
+ .
+ Ausgewählte Gruppen können Einträge mit optionalen Bildern zu dieser Pinnwand
+ hinzufügen.
+ .
+ Das Modul befindet sich derzeit in Entwicklung und wird in naher Zukunft um
+ weitere Funktionen ergänzt.
+ .
+ https://repository.stsbl.de/images/repository/mods/stsbl-iserv-billboard.png
+ .
+ https://repository.stsbl.de/images/repository/mods/stsbl-iserv-billboard-2.png
+Tag: suite::iserv:portal, role::plugin
