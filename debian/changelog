@@ -1,5 +1,5 @@
-stsbl-iserv3-billboard (16.08.22) unstable; urgency=medium
+stsbl-iserv-billboard (16.09.22-0) experimental; urgency=medium
 
-  * Initial Release.
+  * Initial release.
 
- -- Stadtteilschule Blankenese <repository@stsbl.de>  Mon, 22 Aug 2016 05:50:44 +0200
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Thu, 22 Sep 2016 06:08:34 +0200
