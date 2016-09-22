@@ -1,15 +1,22 @@
-Source: stsbl-iserv3-billboard
-Section: unknown
-Priority: optional
+Source: stsbl-iserv-billboard
+Section: misc
+Priority: extra
 Maintainer: Stadtteilschule Blankenese <repository@stsbl.de>
 Build-Depends: debhelper (>=9)
 Standards-Version: 3.9.6
-Homepage: <insert the upstream URL, if relevant>
-#Vcs-Git: git://anonscm.debian.org/collab-maint/stsbl-iserv3-billboard.git
-#Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/stsbl-iserv3-billboard.git
+Homepage: https://repository.stsbl.de/doc/mods/stsbl-iserv-billboard.html
 
 Package: stsbl-iserv3-billboard
 Architecture: all
-Depends: ${misc:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Depends: iserv-portal, stsbl-iserv3-maintenance
+Description: Schwarzes Brett-Modul füt IServ
+ Das Modul "Schwarzes Brett" stellt eine digitale Biete-Pinnwand zur Verfügung.
+ .
+ Ausgewählte Gruppen können Einträge mit optionalen Bildern zu dieser Pinnwand
+ hinzufügen.
+ .
+ Das Modul befindet sich derzeit in Entwicklung und wird in naher Zukunft um 
+ weitere Funktionen ergänzt.
+ .
+ https://repository.stsbl.de/images/repository/mods/stsbl-iserv-billboard.png
+Tag: suite::iserv:portal, role::plugin
