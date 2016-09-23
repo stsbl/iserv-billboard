@@ -48,7 +48,7 @@ class EntryImageCrud extends AbstractCrud {
             ->add('description', null, array('label' => _('Description')))
             ->add('entry', null, array('label' => _('Entry')))
             ->add('time', 'datetime', array('label' => _('Initial Upload')))
-            ->add('updatedAt', 'datetime', array('label' => _('Last refresh')))
+            ->add('updatedAt', 'datetime', array('label' => _('Last refresh'), 'responsive' => 'desktop'))
         ;
                 
     }

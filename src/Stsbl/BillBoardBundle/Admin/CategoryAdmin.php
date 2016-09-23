@@ -71,7 +71,7 @@ class CategoryAdmin extends AbstractAdmin {
     {
         $listMapper
             ->addIdentifier('title', null, array('label' => _('Title')))
-            ->add('description', null, array('label' => _('Description')))
+            ->add('description', null, array('label' => _('Description'), 'responsive' => 'desktop'))
         ;
     }
 
