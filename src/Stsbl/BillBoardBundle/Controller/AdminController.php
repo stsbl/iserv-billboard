@@ -101,7 +101,7 @@ class AdminController extends PageController {
         $builder
             ->setAction($this->generateUrl('admin_billboard_update_rules'))
             ->add('rules', TextareaType::class, array(
-                'label' => _('Rules'),
+                'label' => false,
                 'data' => self::getCurrentRules(),
                 'attr' => array(
                     'rows' => 10,

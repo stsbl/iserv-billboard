@@ -1,0 +1,14 @@
+{# src/Stsbl/BillBoardBundle/Reosurces/views/List/field_comments.html.twig #}
+{% extends admin.getTemplate('list_field_base') %}
+
+{% block field %}
+    {% if value is iterable %}
+        {{ value|length }}
+    {% else %}
+        {% if value is null %}
+            -
+        {% else %}
+            value
+        {% endif %}
+    {% endif %}
+{% endblock %}

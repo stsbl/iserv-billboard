@@ -1,0 +1,39 @@
+{# src/Stsbl/BillBoardBundle/Reosurces/views/Crud/entry_add.thtml.twig #}
+{% extends 'IServCrudBundle:Crud:show.html.twig' %}
+{% block content %}
+    {{ parent() }}
+    {% block entry_comments %}
+        <h2>{{ _('Comments') }}</h2>
+        {% if item.comments is empty %}
+            <div class="alert alert-info">{{ _('Currently no comments.') }}</div>
+        {% else %}
+            {% for comment in item.comments %}
+                <div id="billboard-comment-{{ comment.id }}" class="panel panel-default ng-scope">
+                    <div class="panel-heading">
+                        <strong>{{ comment.title }}</strong> {{ ' ' ~ _("by") ~ ' ' }} {{ icon('user') }}  {{ __("%s at %s", comment.authorDisplay, comment.time|ldatetime) }} <br />
+                    </div>
+                    <div class="panel-body">
+                        {{ comment.content }}
+                    </div>
+                    {% if is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE') %}
+                        <div class="panel-footer">
+                            <a class="btn btn-default" href="{{ path('billboard_comment_delete_confirm', {'commentid': comment.id}) }}">{{ icon('remove-circle') }}Löschen</a>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endblock %} 
+    {% block entry_add_comment %}
+        {% if is_granted('PRIV_BILLBOARD_CREATE') or is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE') %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ _('Add a comment') }}</h3>
+                </div>
+                <div class="panel-body">
+                    {{ form(comment_form, {'style': null}) }}
+                </div>
+            </div>
+        {% endif %}
+    {% endblock  %}
+{% endblock %}

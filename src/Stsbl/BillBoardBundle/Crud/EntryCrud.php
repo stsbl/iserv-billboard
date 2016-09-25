@@ -55,6 +55,7 @@ class EntryCrud extends AbstractCrud
         $this->routesPrefix = 'billboard/';
         $this->templates['crud_add'] = 'StsblBillBoardBundle:Crud:entry_add.html.twig';
         $this->templates['crud_index'] = 'StsblBillBoardBundle:Crud:entry_index.html.twig';
+        $this->templates['crud_show'] = 'StsblBillBoardBundle:Crud:entry_show.html.twig';
     }
     
     /**
@@ -64,6 +65,8 @@ class EntryCrud extends AbstractCrud
         parent::buildRoutes();
         
         $this->routes[self::ACTION_ADD]['_controller'] = 'StsblBillBoardBundle:Entry:add';
+        $this->routes[self::ACTION_INDEX]['_controller'] = 'StsblBillBoardBundle:Entry:index';
+        $this->routes[self::ACTION_SHOW]['_controller'] = 'StsblBillBoardBundle:Entry:show';
         
         $id = $this->getId();
         $action = 'fileimage';
@@ -107,9 +110,16 @@ class EntryCrud extends AbstractCrud
             ->add('images', null, array(
                 'label' => _('Images'),
                 'required' => false,
-                'template' => 'IServCrudBundle:List:field_imagecollection.html.twig',
+                'template' => 'IServCrudBundle:List:field_imagecollection.html.twig'
+                )
+            )
+            ->add('comments', null, array(
+                'label' => _('Comments'),
                 'responsive' => 'desktop',
-            ))
+                'required' => false, 
+                'template' => 'StsblBillBoardBundle:List:field_comments.html.twig'
+                )
+            )
         ;
     }
 
@@ -357,7 +367,7 @@ class EntryCrud extends AbstractCrud
     public function postRemove(CrudInterface $entry) {
         if ($this->isModerator()
         && $this->getUser() !== $entry->getAuthor()) {
-            $this->loggingService->writeLog('Moderatives Löschen des Eintrages "'.$entry->getTitle().'" von '.$entry->getAuthor()->getName());
+            $this->loggingService->writeLog(sprintf('Moderatives Löschen des Eintrages "%s" von %s', $entry->getTitle(), $entry->getAuthorDislay()));
         }
     }
     
@@ -369,9 +379,9 @@ class EntryCrud extends AbstractCrud
         && $this->getUser() !== $entry->getAuthor()) {
             if ($entry->getTitle() !== $previousData['title']) {
                 // write rename log, if old and new title does not match
-                $this->loggingService->writeLog('Moderatives Bearbeiten des Eintrages "'.$previousData['title'].'" von '.$entry->getAuthor()->getName().' und Umbenennen des Eintrages in "'.$entry->getTitle().'"');
+                $this->loggingService->writeLog(sprintf('Moderatives Bearbeiten des Eintrages "%s" von %s und Umbenennen des Eintrages in "%s"', $previousData['title'], $entry->getAuthorDisplay(), $entry->getTitle()));
             } else {
-                $this->loggingService->writeLog('Moderatives Bearbeiten des Eintrages "'.$entry->getTitle().'" von '.$entry->getAuthor()->getName());
+                $this->loggingService->writeLog('Moderatives Bearbeiten des Eintrages "%s" von %s', $entry->getTitle(), $entry->getAuthorDisplay());
             }
         }       
     }

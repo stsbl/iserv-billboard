@@ -61,7 +61,6 @@ class Entry implements CrudInterface
     /**
      * @ORM\ManyToOne(targetEntity="\Stsbl\BillBoardBundle\Entity\Category", fetch="EAGER")
      * @ORM\JoinColumn(name="category", referencedColumnName="id")
-     *
      * @Assert\NotNull()
      *
      * @var Category
@@ -83,12 +82,19 @@ class Entry implements CrudInterface
      */ 
     private $visible;
     
-        /**
+    /**
      * @ORM\OneToMany(targetEntity="EntryImage", mappedBy="entry")
      *
      * @var ArrayCollection
      */
     private $images;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="EntryComment", mappedBy="entry")
+     * 
+     * @var ArrayCollection
+     */
+    private $comments;
 
     /**
      * The constructor
@@ -228,6 +234,16 @@ class Entry implements CrudInterface
     }
     
     /**
+     * Get comments
+     * 
+     * @return ArrayCollection
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+    
+    /**
      * Set title
      * 
      * @param string $title
@@ -339,6 +355,21 @@ class Entry implements CrudInterface
         return $this;
     }
     
+    /**
+     * Set comments
+     * 
+     * @param ArrayCollection $comments
+     * 
+     * @return Entry
+     */
+    public function setComments(ArrayCollection $comments)
+    {
+        $this->comments = $comments;
+        
+        return $this;
+    }
+
+
     /**
      * Checks if the author is valid. i.e. he isn't deleted
      * 

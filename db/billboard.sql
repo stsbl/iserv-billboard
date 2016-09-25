@@ -41,12 +41,16 @@ CREATE TABLE billboard_images (
 
 CREATE TABLE billboard_comments (
     id          SERIAL      PRIMARY KEY,
-    title       VARCHAR(255),
+    title       VARCHAR(255) NOT NULL,
     content     TEXT NOT NULL,
     author      VARCHAR(255) REFERENCES users(act)
                              ON DELETE SET NULL
                              ON UPDATE CASCADE,
-    time        TIMESTAMPTZ(0) NOT NULL
+                      
+    time        TIMESTAMPTZ(0) NOT NULL,
+    entry       INT     REFERENCES billboard(id)
+                        ON DELETE CASCADE
+                        ON UPDATE CASCADE
 );
 
 GRANT USAGE, SELECT ON "billboard_id_seq", "billboard_category_id_seq", "billboard_images_id_seq", "billboard_comments_id_seq" TO "symfony";

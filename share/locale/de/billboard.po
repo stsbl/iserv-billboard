@@ -81,3 +81,27 @@ msgstr "Wenn sie den Eintrag ausblenden, ist er nur für sie selber und Personen
 
 msgid "Give a short description of your item."
 msgstr "Bitte beschreiben sie ihren Gegenstand kurz."
+
+msgid "Delete comment"
+msgstr "Kommentar löschen"
+
+msgid "Do you really want to delete the comment \"%s\" by %s?"
+msgstr "Möchten sie den Kommentar \"%s\" von %s wirklich löschen?"
+
+msgid "Comment \"%s\" successful deleted."
+msgstr "Kommentar \"%s\" erfolgreich gelöscht."
+
+msgid "Currently no comments."
+msgstr "Derzeit keine Kommentare."
+
+msgid "Add a comment"
+msgstr "Einen Kommentar hinzufügen"
+
+msgid "Comment text"
+msgstr "Kommentartext"
+
+msgid "Comment to entry \"%s\" successful added."
+msgstr "Kommentrar zu Eintrag \"%s\" erfolgreich hinzugefügt."
+
+msgid "Entry not found."
+msgstr "Eintrag nicht gefunden."
