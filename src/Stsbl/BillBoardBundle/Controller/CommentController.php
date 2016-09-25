@@ -6,6 +6,7 @@ use IServ\CoreBundle\Controller\PageController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Handles adding comments
@@ -27,14 +28,18 @@ class CommentController extends PageController {
     public function addAction(Request $request, $entryid)
     {
         // Check privilege
-        if (!$this->isGranted('PRIV_BILLBOARD_CREATE')
-            || !$this->isGranted('PRIV_BILLBOARd_MODERATE')
-            || !$this->isGranted('PRIV_BILLBOARD_MANAGE')) {
-            $this->createAccessDeniedException('You don\'t have the permission to add a comment.');
+        if (!$this->isAllowedToAdd()) {
+            throw new AccessDeniedHttpException('You don\'t have the permission to add a comment.');
+        }
+        
+        $manager = $this->getDoctrine()->getManager();
+        $entryrepo = $manager->getRepository('StsblBillBoardBundle:Entry');
+        $entry = $entryrepo->find($entryid);
+        if (!$entry->getVisible() && $this->getUser() !== $entry->getAuthor() && !$this->isAllowedToDelete()) {
+            throw new AccessDeniedHttpException('You don\'t have the permission to add a comment to this entry.');
         }
         
         $form = $this->getCommentForm($entryid);
-        $manager = $this->getDoctrine()->getManager();
         
         $form->handleRequest($request);
         if(!$form->isValid()) {
@@ -46,8 +51,7 @@ class CommentController extends PageController {
         }
         
         $data = $form->getData();
-        $entryrepo = $manager->getRepository('StsblBillBoardBundle:Entry');
-        $entry = $entryrepo->find($entryid);
+
         if (null === $entry) {
             $this->get('iserv.flash')->error(_('Entry not found.'));
             
@@ -73,7 +77,7 @@ class CommentController extends PageController {
     {
         // Check privilege
         if (!$this->isAllowedToDelete()) {
-            $this->createAccessDeniedException('You don\'t have the permission to delete comments.');
+            throw new AccessDeniedHttpException('You don\'t have the permission to delete comments.');
         }
         $form = $this->getConfirmationForm($commentid);
         $manager = $this->getDoctrine()->getManager();
@@ -114,7 +118,7 @@ class CommentController extends PageController {
     {
         // Check privilege
         if (!$this->isAllowedToDelete()) {
-            $this->createAccessDeniedException('You don\'t have the permission to delete comments.');
+            throw new AccessDeniedHttpException('You don\'t have the permission to delete comments.');
         }
         
         $comment = $this->getComment($commentid);
@@ -135,7 +139,19 @@ class CommentController extends PageController {
      */
     private function isAllowedToDelete()
     {
-        return $this->isGranted('PRIV_BILLBOARd_MODERATE')
+        return $this->isGranted('PRIV_BILLBOARD_MODERATE')
+            || $this->isGranted('PRIV_BILLBOARD_MANAGE');
+    }
+    
+    /**
+     * Checks if the user is allowed to add comments
+     * 
+     * @return bool
+     */
+    private function isAllowedToAdd()
+    {
+        return $this->isGranted('PRIV_BILLBOARD_CREATE')
+            || $this->isGranted('PRIV_BILLBOARD_MODERATE')
             || $this->isGranted('PRIV_BILLBOARD_MANAGE');
     }
 }

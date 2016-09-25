@@ -4,8 +4,10 @@ namespace Stsbl\BillBoardBundle\Crud\Batch;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use IServ\CrudBundle\Crud\Batch\AbstractBatchAction;
+use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CrudBundle\Entity\FlashMessageBag;
 use Stsbl\BillBoardBundle\Entity\Entry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Bill-Board hide entry batch
@@ -25,25 +27,20 @@ class HideAction extends AbstractBatchAction {
             $qb = $this->crud->getObjectManager()->createQueryBuilder();
             $user = $this->crud->getUser();
             try {
-                $qb
-                    ->update('StsblBillBoardBundle:Entry', 'e')
-                    ->set('e.visible', 'false')
-                    ->where('e.id = :id')
-                ;
-                if (!$this->crud->isModerator()) {
+                if ($this->isAllowedToExecute($entry, $user)) {
                     $qb
-                        ->andWhere('e.author = :user')
-                        ->setParameter('e.author', $user)
+                        ->update('StsblBillBoardBundle:Entry', 'e')
+                        ->set('e.visible', 'false')
+                        ->where('e.id = :id')
+                        ->setParameter('id', $entry->getId())
+                        ->getQuery()
+                        ->execute()
                     ;
+                    
+                    $bag->addMessage('success', __("Entry is now hidden: %s", (string) $entry));
+                } else {
+                    $bag->addMessage('error', __("You don't have the permission to change that entry: %s", (string) $entry));
                 }
-                
-                $qb
-                    ->setParameter('id', $entry->getId())
-                    ->getQuery()
-                    ->execute()
-                ;
-                
-                $bag->addMessage('success', __("Entry is now hidden: %s", (string) $entry));
             } catch (Exception $e) {
                 $bag->addMessage('error', __("Failed to hide entry: %s", (string) $entry));
             }
@@ -82,6 +79,20 @@ class HideAction extends AbstractBatchAction {
     public function requiresConfirmation()
     {
         return false;
+    }
+    
+    /**
+     * @param CrudInterface $entry
+     * @param UserInterface $user
+     */
+    public function isAllowedToExecute(CrudInterface $entry, UserInterface $user) {
+        if (!$this->crud->isModerator()) {
+            if ($this->crud->getUser() !== $entry->getAuthor()) {
+                return false;
+            }
+        }
+        
+        return true;
     }
 }
 
