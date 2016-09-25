@@ -72,7 +72,7 @@ class EntryCrud extends AbstractCrud
 
         // TODO?: Solve image collection stuff.
         $this->routes['fileimage_images'] = array(
-            'pattern' => sprintf('/%s%s/%s/{entity_id}/{id}/{width}/{height}', $this->routesPrefix, $id, 'images'),
+            'pattern' => sprintf('/%s%s/%s/{entity_id}/{id}/%s/{width}/{height}', $this->routesPrefix, 'entryimage', 'show', 'image'),
             'name' => sprintf('%s%s_%s', $this->routesNamePrefix, $id, $action . '_images'),
             'entity' => 'EntryImage',
             'property' => 'image',
@@ -140,13 +140,37 @@ class EntryCrud extends AbstractCrud
         }
         
         $formMapper
-            ->add('title', null, array('label' => _('Title')))
-            ->add('category', null, array('label' => _('Category')))
-            ->add('visible', BooleanType::class, array('label' => _('Visible')))
+            ->add('title', null, 
+                array(
+                    'label' => _('Title'),
+                    'attr' => array(
+                        'help_text' => _('Name the item that you want to offer in one word, for example »electric guitar«.')
+                    ) 
+                )
+            )
+            ->add('category', null,
+                array(
+                    'label' => _('Category'),
+                    'attr' => array(
+                        'help_text' => _('Select the matching category for your item.')
+                    )
+                )
+            )
+            ->add('visible', BooleanType::class,
+                array(
+                    'label' => _('Visible'),
+                    'attr' => array(
+                        'help_text' => _('If you hide the entry, it is only visible by yourself and people who has the privilege to moderate the bill-board.')
+                    )
+                )
+            )
             ->add('description', TextareaType::class,
                 array(
                     'label' => _('Description'), 
-                    'attr' => array('rows' => 10)
+                    'attr' => array(
+                        'rows' => 10,
+                        'help_text' => _('Give a short description of your item.')
+                    )
                 )
             )
         ;

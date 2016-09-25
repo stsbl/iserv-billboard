@@ -86,7 +86,7 @@ class AdminController extends PageController {
      */
     public static function getDefaultRules()
     {
-        return _('Default rules');
+        return _('The bill-board is only intended for small things. Please dont\'t offer things which have a worth of more than 100 euro.');
     }
     
     /**
@@ -104,7 +104,8 @@ class AdminController extends PageController {
                 'label' => _('Rules'),
                 'data' => self::getCurrentRules(),
                 'attr' => array(
-                    'rows' => 10
+                    'rows' => 10,
+                    'help_text' => _('Here you can enter rules, which are shown at the form for adding an entry to the bill-board.')
                 ),
                 'required' => false
             ))

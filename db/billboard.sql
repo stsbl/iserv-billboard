@@ -39,5 +39,15 @@ CREATE TABLE billboard_images (
                         ON UPDATE CASCADE
 );
 
-GRANT USAGE, SELECT ON "billboard_id_seq", "billboard_category_id_seq", "billboard_images_id_seq" TO "symfony";
-GRANT SELECT, INSERT, UPDATE, DELETE, TRUNCATE ON "billboard", "billboard_category", "billboard_images" TO "symfony";
+CREATE TABLE billboard_comments (
+    id          SERIAL      PRIMARY KEY,
+    title       VARCHAR(255),
+    content     TEXT NOT NULL,
+    author      VARCHAR(255) REFERENCES users(act)
+                             ON DELETE SET NULL
+                             ON UPDATE CASCADE,
+    time        TIMESTAMPTZ(0) NOT NULL
+);
+
+GRANT USAGE, SELECT ON "billboard_id_seq", "billboard_category_id_seq", "billboard_images_id_seq", "billboard_comments_id_seq" TO "symfony";
+GRANT SELECT, INSERT, UPDATE, DELETE, TRUNCATE ON "billboard", "billboard_category", "billboard_images", "billboard_comments" TO "symfony";
