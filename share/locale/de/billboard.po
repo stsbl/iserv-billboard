@@ -105,3 +105,6 @@ msgstr "Kommentrar zu Eintrag \"%s\" erfolgreich hinzugefügt."
 
 msgid "Entry not found."
 msgstr "Eintrag nicht gefunden."
+
+msgid "by"
+msgstr "von"
