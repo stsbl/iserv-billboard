@@ -3,7 +3,7 @@
 {% block content %}
     {{ parent() }}
     {% block entry_comments %}
-        <h2>{{ _('Comments') }}</h2>
+        <h2>{{ _p('billboard', 'Comments') }}</h2>
         {% if item.comments is empty %}
             <div class="alert alert-info">{{ _('Currently no comments.') }}</div>
         {% else %}

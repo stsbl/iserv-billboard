@@ -111,3 +111,7 @@ msgstr "von"
 
 msgid "You don't have the permission to change that entry: %s"
 msgstr "Sie haben sie nicht die Berechtigung, diesen Eintrag zu verändern: %s"
+
+msgid "Comments"
+msgctxt "billboard"
+msgstr "Kommentare"
