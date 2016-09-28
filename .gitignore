@@ -2,3 +2,4 @@ debian/stsbl-iserv-billboard/*
 debian/stsbl-iserv-billboard.debhelper.log
 debian/stsbl-iserv-billboard.substvars
 debian/debhelper-build-stamp
+debian/files
