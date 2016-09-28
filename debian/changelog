@@ -1,3 +1,13 @@
+stsbl-iserv-billboard (16.09.28-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Make all CRUDs responsive.
+  * Added commment system.
+  * Updated translations.
+  * Security fix in CRUD Batch Actions.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Wed, 28 Sep 2016 20:12:14 +0200
+
 stsbl-iserv-billboard (16.09.22-2) experimental; urgency=medium
 
   * Fixed privilege file to has the same description as in the
