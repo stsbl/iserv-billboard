@@ -54,4 +54,4 @@ CREATE TABLE billboard_comments (
 );
 
 GRANT USAGE, SELECT ON "billboard_id_seq", "billboard_category_id_seq", "billboard_images_id_seq", "billboard_comments_id_seq" TO "symfony";
-GRANT SELECT, INSERT, UPDATE, DELETE, TRUNCATE ON "billboard", "billboard_category", "billboard_images", "billboard_comments" TO "symfony";
+GRANT SELECT, INSERT, UPDATE, DELETE ON "billboard", "billboard_category", "billboard_images", "billboard_comments" TO "symfony";
