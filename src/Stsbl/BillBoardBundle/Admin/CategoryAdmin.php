@@ -106,7 +106,7 @@ class CategoryAdmin extends AbstractAdmin {
             return sprintf('%s', $this->routesPrefix);
         }
         else {
-            return parent::getRoutePattern($action, $id, $entityBased);
+            return sprintf('/%s/%s%s', $this->routesPrefix, $action, $entityBased ? '/{id}' : '');
         }
     }
 
