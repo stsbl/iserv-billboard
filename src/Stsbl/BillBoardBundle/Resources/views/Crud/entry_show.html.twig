@@ -17,7 +17,7 @@
                     </div>
                     {% if is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE') %}
                         <div class="panel-footer">
-                            <a class="btn btn-default" href="{{ path('billboard_comment_delete_confirm', {'id': comment.id}) }}">{{ icon('remove-circle') }}Löschen</a>
+                            <a class="btn btn-default" href="{{ path('billboard_comment_delete_confirm', {'id': comment.id}) }}">{{ icon('remove-circle') }}{{ _('Delete') }}</a>
                         </div>
                     {% endif %}
                 </div>
