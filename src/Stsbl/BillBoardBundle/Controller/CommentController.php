@@ -69,17 +69,17 @@ class CommentController extends PageController {
      * Deletes a comment
      * 
      * @param Request $request
-     * @param int $commentid
-     * @Route("/billboard/comment/delete/{commentid}", name="billboard_comment_delete")
+     * @param int $id
+     * @Route("/billboard/comment/delete/{id}", name="billboard_comment_delete")
      * @Method("POST")
      */
-    public function deleteAction(Request $request, $commentid)
+    public function deleteAction(Request $request, $id)
     {
         // Check privilege
         if (!$this->isAllowedToDelete()) {
             throw new AccessDeniedHttpException('You don\'t have the permission to delete comments.');
         }
-        $form = $this->getConfirmationForm($commentid);
+        $form = $this->getConfirmationForm($id);
         $manager = $this->getDoctrine()->getManager();
         
         $form->handleRequest($request);
@@ -92,7 +92,7 @@ class CommentController extends PageController {
         }
         
         $button = $form->getClickedButton()->getName();
-        $comment = $this->getComment($commentid);
+        $comment = $this->getComment($id);
         $entryid = $comment->getEntry()->getId();
         $title = $comment->getTitle();
         $author = $comment->getAuthorDisplay();
@@ -111,24 +111,24 @@ class CommentController extends PageController {
      * Confirms the deletion of a comment
      * 
      * @param Request $request
-     * @param int $commentid
-     * @Route("/billboard/comment/delete/{commentid}/confirm", name="billboard_comment_delete_confirm")
+     * @param int $id
+     * @Route("/billboard/comment/delete/{id}/confirm", name="billboard_comment_delete_confirm")
      */
-    public function confirmAction(Request $request, $commentid)
+    public function confirmAction(Request $request, $id)
     {
         // Check privilege
         if (!$this->isAllowedToDelete()) {
             throw new AccessDeniedHttpException('You don\'t have the permission to delete comments.');
         }
         
-        $comment = $this->getComment($commentid);
+        $comment = $this->getComment($id);
         
         // track path
         $this->addBreadcrumb(_('Bill-Board'), $this->generateUrl('crud_billboard_index'));
         $this->addBreadcrumb((string)$comment->getEntry(), $this->generateUrl('crud_billboard_show', array('id' => $comment->getEntry()->getId())));
         $this->addBreadcrumb(_('Delete comment'));
         
-        $form = $this->getConfirmationForm($commentid)->createView();
+        $form = $this->getConfirmationForm($id)->createView();
         return $this->render('StsblBillBoardBundle:Comment:delete_confirm.html.twig', array('delete_confirm_form' => $form, 'comment' => $comment));
     }
     

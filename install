@@ -27,7 +27,7 @@ echo "Copying privs..."
 cp -rv priv/* /usr/share/iserv/priv/
 
 echo "Copying db..."
-cp -rv db/* /usr/share/iserv/priv/
+cp -rv db/* /usr/share/iserv/db/
 
 echo "Copying iservchk scripts..."
 cp -rv iservchk/* /usr/share/iserv/iconf/etc/iserv/chk.d/
