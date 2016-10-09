@@ -40,7 +40,6 @@ class CategoryAdmin extends AbstractAdmin {
         $this->title = _('Categories');
         $this->itemTitle = _('Category');
         $this->id = 'billboard_category';
-        $this->routesNamePrefix = 'admin_';
         $this->routesPrefix = 'admin/billboard/categories/';
     }
 
@@ -102,11 +101,21 @@ class CategoryAdmin extends AbstractAdmin {
      */
     protected function getRoutePattern($action, $id, $entityBased = true)
     {
+        // Overwrite broken route generation of Crud (WHY? =()
         if ('index' === $action) {
             return sprintf('%s', $this->routesPrefix);
-        }
-        else {
-            return sprintf('/%s/%s%s', $this->routesPrefix, $action, $entityBased ? '/{id}' : '');
+        } else if ('add' === $action) {
+            return sprintf('%s%s', $this->routesPrefix, $action);
+        } else if ('batch' === $action) {
+            return sprintf('%s%s', $this->routesPrefix, $action);
+        } else if ('batch/confirm' === $action) {
+            return sprintf('%s%s/%s', $this->routesPrefix, 'batch', 'confirm');
+        } else if ('show' === $action) {
+            return sprintf('%s%s/%s', $this->routesPrefix, $action, '{id}');
+        } else if ('edit' === $action) {
+            return sprintf('%s%s/%s', $this->routesPrefix, $action, '{id}');
+        } else if ('delete' === $action) {
+           return sprintf('%s%s/%s', $this->routesPrefix, $action, '{id}');
         }
     }
 

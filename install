@@ -21,3 +21,13 @@ echo "Coyping files..."
 find src/ -type f -exec cp -v "{}" "/usr/share/iserv/{}" \;
 cd share/
 find -type f -exec cp -v "{}" "/usr/share/iserv/{}" \;
+cd ../
+
+echo "Copying privs..."
+cp -rv priv/* /usr/share/iserv/priv/
+
+echo "Copying db..."
+cp -rv db/* /usr/share/iserv/priv/
+
+echo "Copying iservchk scripts..."
+cp -rv iservchk/* /usr/share/iserv/iconf/etc/iserv/chk.d/
