@@ -92,7 +92,7 @@ trait CommentFormTrait {
 
         $builder = $this->createFormBuilder();
         $builder
-            ->setAction($this->generateUrl('billboard_comment_delete', ['commentid' => $id]))
+            ->setAction($this->generateUrl('billboard_comment_delete', ['id' => $id]))
             ->add('actions', FormActionsType::class)
         ;
         
