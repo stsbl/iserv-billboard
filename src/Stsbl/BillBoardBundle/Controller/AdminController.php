@@ -109,7 +109,11 @@ class AdminController extends PageController {
                 ),
                 'required' => false
             ))
-            ->add('submit', SubmitType::class, array('label' => _('Save'), 'buttonClass' => 'btn-success', 'icon' => 'ok'))
+            ->add('submit', SubmitType::class, array(
+                'label' => _('Save'),
+                'buttonClass' => 'btn-success',
+                'icon' => 'ok'
+            ))
         ;
         
         return $builder->getForm();

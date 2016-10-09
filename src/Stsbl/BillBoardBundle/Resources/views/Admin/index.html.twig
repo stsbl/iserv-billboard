@@ -10,9 +10,7 @@
         <h3 class="panel-title">{{ _('Rules') }}</h3>
     </div>
     <div class="panel-body">
-        {{ form_start(rules_form) }}
-        {{ form_widget(rules_form) }}
-        {{ form_end(rules_form) }}
+        {{ form(rules_form, {'style': null}) }}
     </div>
 </div>
 
