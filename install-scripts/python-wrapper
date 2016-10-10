@@ -1,0 +1,15 @@
+#!/bin/bash -e
+
+if [ "$3" != "" ]
+then
+ dir=$1
+else
+ dir=$(python -c "import os.path; print os.path.relpath('$1', './')")
+fi
+
+if [ "$4" != "" ]
+then
+  dir="$4""$dir"
+fi
+
+cp -v /usr/share/iserv/$dir $2".collect"/$(python -c "import os.path; print os.path.relpath('$3$1', './')")

@@ -1,0 +1,25 @@
+#!/bin/bash -e
+
+export LC_ALL=C
+
+for i in iconf src priv share config 
+do
+  mkdir -pv "$i.collect/$i"
+  if [ "$i" = "share" ]
+  then
+    find $i/ -mindepth 1 -type d -exec mkdir -pv "$i.collect"/{} \;
+    find $i/ -mindepth 1 -type f -exec bash -c "file={}; install-scripts/python-wrapper \${file/share\///} $i 'share/'" \;
+  elif [ "$i" = "config" ]
+  then
+    find $i/ -mindepth 1 -type d -exec mkdir -pv "$i.collect"/{} \;
+    find $i/ -mindepth 1 -type f -exec install-scripts/python-wrapper {} $i '' 'iservcfg/config/' \;
+  else
+    find $i/ -mindepth 1 -type d -exec mkdir -pv "$i.collect/"{} \;
+    find $i/ -mindepth 1 -type f -exec install-scripts/python-wrapper {} $i \;
+  fi
+
+  rm -rfv $i/
+  mv -v $i".collect"/$i/ $i/
+
+  rm -rfv ./$i".collect"/
+done

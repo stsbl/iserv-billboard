@@ -1,0 +1,7 @@
+!#/bin/bash
+
+cp -rv config/* /usr/share/iserv/iservcfg/config/
+cp -rv iconf/* /usr/share/iserv/iconf/
+cp -rv priv/* /usr/share/iserv/priv/
+cp -rv share/* /usr/share/iserv/
+cp -rv src/* /usr/share/iserv/src/
