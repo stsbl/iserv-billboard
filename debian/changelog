@@ -1,3 +1,24 @@
+stsbl-iserv-billboard (16.10.09-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Updated .gitignore. Removed debian/files from repository.
+  * Removed variable files from repository.
+  * Updated copyright file.
+  * Remove right TRUNCATE from database table.
+  * Enhancements for new IServ 3 Design.
+  * Added page_title block in delete_confirm.html.twig.
+  * Changed source format from native to quilt.
+  * Fixed route generation in Category Admin.
+  * Updated installation script to fit new directory structure.
+  * Use simply $id instead of $commentid in CommentController.
+  * Fixed references to old id variable name.
+  * Fixed non-using of translation system of hard-coded 'Loeschen' in entry_show.html.twig.
+  * Layout adjuments in Admin:index.html.twig.
+
+  [ Felix Jacobi ]
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Sun, 09 Oct 2016 12:58:27 +0200
+
 stsbl-iserv-billboard (16.09.28-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
