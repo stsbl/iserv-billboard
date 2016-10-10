@@ -22,8 +22,7 @@ class MenuListener implements MainMenuListenerInterface {
             || $event->getAuthorizationChecker()->isGranted(Privilege::BILLBOARD_CREATE)
             || $event->getAuthorizationChecker()->isGranted(Privilege::BILLBOARD_MODERATE)
             || $event->getAuthorizationChecker()->isGranted(Privilege::BILLBOARD_MANAGE)
-        )
-        {            
+        ) {            
             $menu = $event->getMenu(self::COMMUNICATION);
             $item = $menu->addChild('billboard', array(
                 'route' => 'crud_billboard_index',

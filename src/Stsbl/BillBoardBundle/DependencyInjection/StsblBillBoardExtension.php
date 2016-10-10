@@ -1,5 +1,5 @@
 <?php
-// src/Stsbl/BillBoardBundle/DependencyInjection/StsblBillBoardExtension
+// src/Stsbl/BillBoardBundle/DependencyInjection/StsblBillBoardExtension.php
 namespace Stsbl\BillBoardBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
