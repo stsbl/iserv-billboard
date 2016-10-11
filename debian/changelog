@@ -1,3 +1,16 @@
+stsbl-iserv-billboard (16.10.11-0) experimental; urgency=low
+
+  [ Felix Jacobi ]
+  * Replaced install scripts with improved ones.
+  * Added directories which are required by IServ Package Structure.
+  * Script improvements.
+    - Certain Syntax fixes.
+    - Added correct author and license header everywhere.
+
+  [ Felix Jacobi ]
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Tue, 11 Oct 2016 17:08:18 +0200
+
 stsbl-iserv-billboard (16.10.09-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
