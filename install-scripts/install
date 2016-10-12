@@ -1,7 +1,11 @@
-!#/bin/bash
+#!/bin/bash
 
 cp -rv config/* /usr/share/iserv/iservcfg/config/
 cp -rv iconf/* /usr/share/iserv/iconf/
+cp -rv iservchk/* /usr/share/iserv/iconf/etc/iserv/chk.d/
 cp -rv priv/* /usr/share/iserv/priv/
 cp -rv share/* /usr/share/iserv/
 cp -rv src/* /usr/share/iserv/src/
+cp -rv lib/* /usr/lib/iserv/
+cp -rv bin/* /usr/bin/
+cp -rv sbin/* /usrv/sbin/
