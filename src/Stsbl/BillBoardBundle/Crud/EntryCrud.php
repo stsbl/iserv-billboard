@@ -367,7 +367,7 @@ class EntryCrud extends AbstractCrud
     public function postRemove(CrudInterface $entry) {
         if ($this->isModerator()
         && $this->getUser() !== $entry->getAuthor()) {
-            $this->loggingService->writeLog(sprintf('Moderatives Löschen des Eintrages "%s" von %s', $entry->getTitle(), $entry->getAuthorDislay()));
+            $this->loggingService->writeLog(sprintf('Moderatives Löschen des Eintrages "%s" von %s', $entry->getTitle(), $entry->getAuthorDisplay()));
         }
     }
     
