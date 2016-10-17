@@ -1,3 +1,15 @@
+stsbl-iserv-billboard (16.10.17-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Updated install file.
+  * Imported new install scripts.
+  * Fixed typo.
+    Thanks to Olaf Schatt for the bug report.
+
+  [ Stadtteilschule Blankenese ]
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Mon, 17 Oct 2016 17:21:15 +0200
+
 stsbl-iserv-billboard (16.10.11-0) experimental; urgency=low
 
   [ Felix Jacobi ]
