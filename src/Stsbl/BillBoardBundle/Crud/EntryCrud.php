@@ -6,7 +6,6 @@ use IServ\CrudBundle\Crud\AbstractCrud;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CoreBundle\Form\Type\BooleanType;
 use IServ\CoreBundle\Form\Type\UserType;
-use IServ\CoreBundle\Traits\LoggerTrait;
 use IServ\CrudBundle\Mapper\FormMapper;
 use IServ\CrudBundle\Mapper\ListMapper;
 use IServ\CrudBundle\Mapper\ShowMapper;
@@ -15,6 +14,7 @@ use IServ\CrudBundle\Table\Filter;
 use Stsbl\BillBoardBundle\Crud\Batch\HideAction;
 use Stsbl\BillBoardBundle\Crud\Batch\ShowAction;
 use Stsbl\BillBoardBundle\Security\Privilege;
+use Stsbl\BillBoardBundle\Service\LoggingService;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -26,7 +26,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class EntryCrud extends AbstractCrud
 {
-    use LoggerTrait;
+    /**
+     * Contains instance of LoggingService for writing logs
+     * 
+     * @var LoggingService
+     */
+    private $loggingService;
     
     /**
      * {@inheritdoc}
@@ -82,13 +87,13 @@ class EntryCrud extends AbstractCrud
     }
 
     /**
-     * {@inheritdoc}
+     * Injects the Logger into the class to write logs about category creations, updates and deletions
+     * 
+     * @param LoggingService $loggingService
      */
-    public function __construct($class, $title = null, $itemTitle = null) {
-        // set module context for logging
-        $this->logModule = 'Bill-Board';
-        
-        return parent::__construct($class, $title, $itemTitle);
+    public function setLoggingService(LoggingService $loggingService)
+    {
+        $this->loggingService = $loggingService;
     }
 
     /**
@@ -362,7 +367,7 @@ class EntryCrud extends AbstractCrud
     public function postRemove(CrudInterface $entry) {
         if ($this->isModerator()
         && $this->getUser() !== $entry->getAuthor()) {
-            $this->log(sprintf('Moderatives Löschen des Eintrages "%s" von %s', $entry->getTitle(), $entry->getAuthorDisplay()));
+            $this->loggingService->writeLog(sprintf('Moderatives Löschen des Eintrages "%s" von %s', $entry->getTitle(), $entry->getAuthorDisplay()));
         }
     }
     
@@ -374,9 +379,9 @@ class EntryCrud extends AbstractCrud
         && $this->getUser() !== $entry->getAuthor()) {
             if ($entry->getTitle() !== $previousData['title']) {
                 // write rename log, if old and new title does not match
-                $this->log(sprintf('Moderatives Bearbeiten des Eintrages "%s" von %s und Umbenennen des Eintrages in "%s"', $previousData['title'], $entry->getAuthorDisplay(), $entry->getTitle()));
+                $this->loggingService->writeLog(sprintf('Moderatives Bearbeiten des Eintrages "%s" von %s und Umbenennen des Eintrages in "%s"', $previousData['title'], $entry->getAuthorDisplay(), $entry->getTitle()));
             } else {
-                $this->log('Moderatives Bearbeiten des Eintrages "%s" von %s', $entry->getTitle(), $entry->getAuthorDisplay());
+                $this->loggingService->writeLog('Moderatives Bearbeiten des Eintrages "%s" von %s', $entry->getTitle(), $entry->getAuthorDisplay());
             }
         }       
     }
