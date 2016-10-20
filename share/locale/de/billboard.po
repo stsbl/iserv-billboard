@@ -116,8 +116,8 @@ msgid "Comments"
 msgctxt "billboard"
 msgstr "Kommentare"
 
-msgid "Allow comments on entries on the Bill-Board"
-msgstr "Kommentare für Einträge auf dem schwarzen Brett erlauben"
+msgid "Allow comments"
+msgstr "Kommentare erlauben"
 
 msgid "If you disable commenting, no one can add new comments. But existing comments will still displayed."
 msgstr "Wenn sie kommentieren deaktivieren, kann keiner neue Kommentare hinzufügen. Bestehende Kommentar werden weiterhin angezeigt."
