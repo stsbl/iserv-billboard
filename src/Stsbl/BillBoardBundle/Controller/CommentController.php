@@ -6,7 +6,6 @@ use IServ\CoreBundle\Controller\PageController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Handles adding comments
@@ -29,7 +28,7 @@ class CommentController extends PageController {
     {
         // Check privilege
         if (!$this->isAllowedToAdd()) {
-            throw new AccessDeniedHttpException('You don\'t have the permission to add a comment.');
+            throw $this->createAccessDeniedException('You don\'t have the permission to add a comment.');
         }
         
         if (!$this->get('iserv.config')->get('BillBoardEnableComments')) {
@@ -40,7 +39,7 @@ class CommentController extends PageController {
         $entryrepo = $manager->getRepository('StsblBillBoardBundle:Entry');
         $entry = $entryrepo->find($entryid);
         if (!$entry->getVisible() && $this->getUser() !== $entry->getAuthor() && !$this->isAllowedToDelete()) {
-            throw new AccessDeniedHttpException('You don\'t have the permission to add a comment to this entry.');
+            throw $this->createAccessDeniedException('You don\'t have the permission to add a comment to this entry.');
         }
         
         $form = $this->getCommentForm($entryid);
@@ -81,7 +80,7 @@ class CommentController extends PageController {
     {
         // Check privilege
         if (!$this->isAllowedToDelete()) {
-            throw new AccessDeniedHttpException('You don\'t have the permission to delete comments.');
+            throw $this->createAccessDeniedException('You don\'t have the permission to delete comments.');
         }
         $form = $this->getConfirmationForm($id);
         $manager = $this->getDoctrine()->getManager();
@@ -122,7 +121,7 @@ class CommentController extends PageController {
     {
         // Check privilege
         if (!$this->isAllowedToDelete()) {
-            throw new AccessDeniedHttpException('You don\'t have the permission to delete comments.');
+            throw $this->createAccessDeniedException('You don\'t have the permission to delete comments.');
         }
         
         $comment = $this->getComment($id);
