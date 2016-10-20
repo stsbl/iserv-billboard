@@ -32,6 +32,10 @@ class CommentController extends PageController {
             throw new AccessDeniedHttpException('You don\'t have the permission to add a comment.');
         }
         
+        if (!$this->get('iserv.config')->get('BillBoardEnableComments')) {
+            throw $this->createAccessDeniedException('The adding of new comments was disabled by your administrator.');
+        }
+        
         $manager = $this->getDoctrine()->getManager();
         $entryrepo = $manager->getRepository('StsblBillBoardBundle:Entry');
         $entry = $entryrepo->find($entryid);
