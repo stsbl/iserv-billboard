@@ -3,12 +3,15 @@
 namespace Stsbl\BillBoardBundle\Controller;
 
 use IServ\CoreBundle\Controller\PageController;
+use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Stsbl\BillBoardBundle\Security\Privilege;
+use Stsbl\BillBoardBundle\Traits\LoggerInitalizationTrait;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
-use Stsbl\BillBoardBundle\Security\Privilege;
+use Symfony\Component\Security\Core\Exception\RuntimeException;
 
 /**
  * Controller for Bill-Board administrative page
@@ -18,6 +21,8 @@ use Stsbl\BillBoardBundle\Security\Privilege;
  * @Route("/admin/billboard")
  */
 class AdminController extends PageController {
+    use LoggerTrait, LoggerInitalizationTrait;
+    
     const CONFIGDIR = '/var/lib/stsbl/billboard/cfg/';
     const FILE_RULES = 'rules.cfg';
     
@@ -136,6 +141,15 @@ class AdminController extends PageController {
         } catch (\RuntimeException $e) {
             $this->get('iserv.flash')->error(_('This should never happen.'));
         }
+        
+        if ($filename == self::FILE_RULES) {
+            $logText = 'Regeln aktualisiert';
+        } else {
+            throw new RuntimeException('Unknown filename '.$filename.'.');
+        }
+        
+        $this->initalizeLogger();
+        $this->log($logText);
 
         return $this->redirect($this->generateUrl('admin_billboard'));
     }

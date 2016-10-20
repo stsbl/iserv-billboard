@@ -6,16 +6,17 @@ use IServ\CoreBundle\Controller\PageController;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Stsbl\BillBoardBundle\Traits\LoggerInitalizationTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Handles adding comments
+ * Handles adding and deleting comments
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license GNU General Public License <http://gnu.org/licenses/gpl-3.0>
  */
 class CommentController extends PageController {
-    use CommentFormTrait, LoggerTrait;
+    use CommentFormTrait, LoggerTrait, LoggerInitalizationTrait;
     
     /**
      * Adds a comment
@@ -159,16 +160,5 @@ class CommentController extends PageController {
         return $this->isGranted('PRIV_BILLBOARD_CREATE')
             || $this->isGranted('PRIV_BILLBOARD_MODERATE')
             || $this->isGranted('PRIV_BILLBOARD_MANAGE');
-    }
-    
-    /**
-     * Initalizes the logger
-     */
-    private function initalizeLogger() {  
-        // set module context for logging
-        $this->logModule = 'Bill-Board';
-        
-        $logger = $this->get('iserv.logger');
-        $this->setLogger($logger);
     }
 }
