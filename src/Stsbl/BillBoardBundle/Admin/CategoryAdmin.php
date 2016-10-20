@@ -3,6 +3,7 @@
 namespace Stsbl\BillBoardBundle\Admin;
 
 use IServ\AdminBundle\Admin\AbstractAdmin;
+use IServ\CoreBundle\Traits\LoggerTrait;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CrudBundle\Mapper\FormMapper;
 use IServ\CrudBundle\Mapper\ListMapper;
@@ -17,12 +18,7 @@ use Stsbl\BillBoardBundle\Service\LoggingService;
  * @license GNU General Public License <http://gnu.org/licenses/gpl-3.0>
  */
 class CategoryAdmin extends AbstractAdmin {
-    /**
-     * Contains instance of LoggingService for writing logs
-     * 
-     * @var LoggingService
-     */
-    private $loggingService;
+    use LoggerTrait;
     
     /**
      * {@inheritdoc}
@@ -54,13 +50,13 @@ class CategoryAdmin extends AbstractAdmin {
     }
     
     /**
-     * Injects the Logger into the class to write logs about category creations, updates and deletions
-     * 
-     * @param LoggingService $loggingService
+     * {@inheritdoc}
      */
-    public function setLoggingService(LoggingService $loggingService)
-    {
-        $this->loggingService = $loggingService;
+    public function __construct($class, $title = null, $itemTitle = null) {
+        // set module context for logging
+        $this->logModule = 'Bill-Board';
+        
+        return parent::__construct($class, $title, $itemTitle);
     }
 
     /**
@@ -124,7 +120,7 @@ class CategoryAdmin extends AbstractAdmin {
      */
     public function postPersist(CrudInterface $category)
     {
-        $this->loggingService->writeLog('Kategorie "'.$category->getTitle().'" hinzugefügt');
+        $this->log('Kategorie "'.$category->getTitle().'" hinzugefügt');
     }
 
     /**
@@ -134,9 +130,9 @@ class CategoryAdmin extends AbstractAdmin {
     {
         if ($category->getTitle() !== $previousData['title']) {
             // if old and new name does not match, write a rename log
-            $this->loggingService->writeLog('Kategorie "'.$previousData['title'].'" umbenannt nach "'.$category->getTitle().'"');
+            $this->log('Kategorie "'.$previousData['title'].'" umbenannt nach "'.$category->getTitle().'"');
         } else {
-            $this->loggingService->writeLog('Kategorie "'.$category->getTitle().'" verändert');
+            $this->log('Kategorie "'.$category->getTitle().'" verändert');
         }
     }
 
@@ -145,6 +141,6 @@ class CategoryAdmin extends AbstractAdmin {
      */    
     public function postRemove(CrudInterface $category)
     {
-        $this->loggingService->writeLog('Kategorie "'.$category->getTitle().'" gelöscht');
+        $this->log('Kategorie "'.$category->getTitle().'" gelöscht');
     }  
 }

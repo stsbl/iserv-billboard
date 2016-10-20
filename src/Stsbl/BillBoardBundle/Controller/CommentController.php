@@ -3,6 +3,7 @@
 namespace Stsbl\BillBoardBundle\Controller;
 
 use IServ\CoreBundle\Controller\PageController;
+use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
  * @license GNU General Public License <http://gnu.org/licenses/gpl-3.0>
  */
 class CommentController extends PageController {
-    use CommentFormTrait;
+    use CommentFormTrait, LoggerTrait;
     
     /**
      * Adds a comment
@@ -104,7 +105,9 @@ class CommentController extends PageController {
             $manager->remove($comment);
             $manager->flush();
             
-            $this->get('stsbl.billboard.logging_service')->writeLog(sprintf('Moderatives Löschen des Kommentars "%s" von %s', $title, $author));
+            // dirty workaround: Can not run as constructor, it breaks Symfony.
+            $this->initalizeLogger();
+            $this->log(sprintf('Moderatives Löschen des Kommentars "%s" von %s', $title, $author));
             $this->get('iserv.flash')->success(__('Comment "%s" successful deleted.', $title));
         }
         return $this->redirect($this->generateUrl('crud_billboard_show', array('id' => $entryid)));
@@ -156,5 +159,16 @@ class CommentController extends PageController {
         return $this->isGranted('PRIV_BILLBOARD_CREATE')
             || $this->isGranted('PRIV_BILLBOARD_MODERATE')
             || $this->isGranted('PRIV_BILLBOARD_MANAGE');
+    }
+    
+    /**
+     * Initalizes the logger
+     */
+    private function initalizeLogger() {  
+        // set module context for logging
+        $this->logModule = 'Bill-Board';
+        
+        $logger = $this->get('iserv.logger');
+        $this->setLogger($logger);
     }
 }
