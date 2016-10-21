@@ -4,6 +4,9 @@ namespace Stsbl\BillBoardBundle\Security;
 
 /**
  * Privilege container for bill-board
+ *
+ * @author Felix Jacobi <felix.jacobi@stsbl.de>
+ * @license GNU General Public License <http://gnu.org/licenses/gpl-3.0>
  */
 final class Privilege
 {
