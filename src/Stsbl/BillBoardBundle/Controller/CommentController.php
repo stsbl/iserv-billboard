@@ -3,19 +3,20 @@
 namespace Stsbl\BillBoardBundle\Controller;
 
 use IServ\CoreBundle\Controller\PageController;
+use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Stsbl\BillBoardBundle\Traits\LoggerInitalizationTrait;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
- * Handles adding comments
+ * Handles adding and deleting comments
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license GNU General Public License <http://gnu.org/licenses/gpl-3.0>
  */
 class CommentController extends PageController {
-    use CommentFormTrait;
+    use CommentFormTrait, LoggerTrait, LoggerInitalizationTrait;
     
     /**
      * Adds a comment
@@ -29,14 +30,18 @@ class CommentController extends PageController {
     {
         // Check privilege
         if (!$this->isAllowedToAdd()) {
-            throw new AccessDeniedHttpException('You don\'t have the permission to add a comment.');
+            throw $this->createAccessDeniedException('You don\'t have the permission to add a comment.');
+        }
+        
+        if (!$this->get('iserv.config')->get('BillBoardEnableComments')) {
+            throw $this->createAccessDeniedException('The adding of new comments was disabled by your administrator.');
         }
         
         $manager = $this->getDoctrine()->getManager();
         $entryrepo = $manager->getRepository('StsblBillBoardBundle:Entry');
         $entry = $entryrepo->find($entryid);
         if (!$entry->getVisible() && $this->getUser() !== $entry->getAuthor() && !$this->isAllowedToDelete()) {
-            throw new AccessDeniedHttpException('You don\'t have the permission to add a comment to this entry.');
+            throw $this->createAccessDeniedException('You don\'t have the permission to add a comment to this entry.');
         }
         
         $form = $this->getCommentForm($entryid);
@@ -77,7 +82,7 @@ class CommentController extends PageController {
     {
         // Check privilege
         if (!$this->isAllowedToDelete()) {
-            throw new AccessDeniedHttpException('You don\'t have the permission to delete comments.');
+            throw $this->createAccessDeniedException('You don\'t have the permission to delete comments.');
         }
         $form = $this->getConfirmationForm($id);
         $manager = $this->getDoctrine()->getManager();
@@ -101,7 +106,9 @@ class CommentController extends PageController {
             $manager->remove($comment);
             $manager->flush();
             
-            $this->get('stsbl.billboard.logging_service')->writeLog(sprintf('Moderatives Löschen des Kommentars "%s" von %s', $title, $author));
+            // dirty workaround: Can not run as constructor, it breaks Symfony.
+            $this->initalizeLogger();
+            $this->log(sprintf('Moderatives Löschen des Kommentars "%s" von %s', $title, $author));
             $this->get('iserv.flash')->success(__('Comment "%s" successful deleted.', $title));
         }
         return $this->redirect($this->generateUrl('crud_billboard_show', array('id' => $entryid)));
@@ -118,7 +125,7 @@ class CommentController extends PageController {
     {
         // Check privilege
         if (!$this->isAllowedToDelete()) {
-            throw new AccessDeniedHttpException('You don\'t have the permission to delete comments.');
+            throw $this->createAccessDeniedException('You don\'t have the permission to delete comments.');
         }
         
         $comment = $this->getComment($id);
@@ -129,7 +136,7 @@ class CommentController extends PageController {
         $this->addBreadcrumb(_('Delete comment'));
         
         $form = $this->getConfirmationForm($id)->createView();
-        return $this->render('StsblBillBoardBundle:Comment:delete_confirm.html.twig', array('delete_confirm_form' => $form, 'comment' => $comment));
+        return $this->render('StsblBillBoardBundle:Comment:delete_confirm.html.twig', array('delete_confirm_form' => $form, 'comment' => $comment, 'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard'));
     }
     
     /**

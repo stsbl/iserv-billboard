@@ -37,6 +37,7 @@ class EntryImageCrud extends AbstractCrud {
        $this->itemTitle = _('Image');
        // $this->id = 'billboard_images';
        $this->routesPrefix = 'billboard/images/';
+       $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard';
     }
     
     /**

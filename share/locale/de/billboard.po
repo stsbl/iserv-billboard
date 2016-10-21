@@ -115,3 +115,15 @@ msgstr "Sie haben sie nicht die Berechtigung, diesen Eintrag zu verändern: %s"
 msgid "Comments"
 msgctxt "billboard"
 msgstr "Kommentare"
+
+msgid "Allow comments"
+msgstr "Kommentare erlauben"
+
+msgid "If you disable commenting, no one can add new comments. But existing comments will still displayed."
+msgstr "Wenn sie kommentieren deaktivieren, kann keiner neue Kommentare hinzufügen. Bestehende Kommentar werden weiterhin angezeigt."
+
+msgid "Module: Bill-Board"
+msgstr "Modul: Schwarzes Brett"
+
+msgid "The adding of new comments was disabled by your administrator."
+msgstr "Das Hinzufügen neuer Kommentare wurde durch Ihren Administrator deaktiviert."

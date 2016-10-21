@@ -31,7 +31,11 @@
                     <h3 class="panel-title">{{ _('Add a comment') }}</h3>
                 </div>
                 <div class="panel-body">
-                    {{ form(comment_form, {'style': null}) }}
+                    {% if comments_enabled %}
+                        {{ form(comment_form, {'style': null}) }}
+                    {% else %}
+                        <div class="alert alert-warning"> {{ _('The adding of new comments was disabled by your administrator.') }} </div>
+                    {% endif %}
                 </div>
             </div>
         {% endif %}

@@ -1,0 +1,6 @@
+BillBoardEnableComments:
+name        Allow comments
+description If you disable commenting, no one can add new comments. But existing comments will still displayed.
+type        bool
+group	    Module: Bill-Board
+default	    true

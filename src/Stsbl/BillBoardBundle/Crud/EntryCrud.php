@@ -6,6 +6,7 @@ use IServ\CrudBundle\Crud\AbstractCrud;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CoreBundle\Form\Type\BooleanType;
 use IServ\CoreBundle\Form\Type\UserType;
+use IServ\CoreBundle\Traits\LoggerTrait;
 use IServ\CrudBundle\Mapper\FormMapper;
 use IServ\CrudBundle\Mapper\ListMapper;
 use IServ\CrudBundle\Mapper\ShowMapper;
@@ -14,7 +15,6 @@ use IServ\CrudBundle\Table\Filter;
 use Stsbl\BillBoardBundle\Crud\Batch\HideAction;
 use Stsbl\BillBoardBundle\Crud\Batch\ShowAction;
 use Stsbl\BillBoardBundle\Security\Privilege;
-use Stsbl\BillBoardBundle\Service\LoggingService;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -26,12 +26,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class EntryCrud extends AbstractCrud
 {
-    /**
-     * Contains instance of LoggingService for writing logs
-     * 
-     * @var LoggingService
-     */
-    private $loggingService;
+    use LoggerTrait;
     
     /**
      * {@inheritdoc}
@@ -53,6 +48,7 @@ class EntryCrud extends AbstractCrud
         $this->itemTitle = _('Entry');
         $this->id = 'billboard';
         $this->routesPrefix = 'billboard/';
+        $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard';
         $this->templates['crud_add'] = 'StsblBillBoardBundle:Crud:entry_add.html.twig';
         $this->templates['crud_index'] = 'StsblBillBoardBundle:Crud:entry_index.html.twig';
         $this->templates['crud_show'] = 'StsblBillBoardBundle:Crud:entry_show.html.twig';
@@ -87,13 +83,13 @@ class EntryCrud extends AbstractCrud
     }
 
     /**
-     * Injects the Logger into the class to write logs about category creations, updates and deletions
-     * 
-     * @param LoggingService $loggingService
+     * {@inheritdoc}
      */
-    public function setLoggingService(LoggingService $loggingService)
-    {
-        $this->loggingService = $loggingService;
+    public function __construct($class, $title = null, $itemTitle = null) {
+        // set module context for logging
+        $this->logModule = 'Bill-Board';
+        
+        return parent::__construct($class, $title, $itemTitle);
     }
 
     /**
@@ -367,7 +363,7 @@ class EntryCrud extends AbstractCrud
     public function postRemove(CrudInterface $entry) {
         if ($this->isModerator()
         && $this->getUser() !== $entry->getAuthor()) {
-            $this->loggingService->writeLog(sprintf('Moderatives Löschen des Eintrages "%s" von %s', $entry->getTitle(), $entry->getAuthorDisplay()));
+            $this->log(sprintf('Moderatives Löschen des Eintrages "%s" von %s', $entry->getTitle(), $entry->getAuthorDisplay()));
         }
     }
     
@@ -379,9 +375,9 @@ class EntryCrud extends AbstractCrud
         && $this->getUser() !== $entry->getAuthor()) {
             if ($entry->getTitle() !== $previousData['title']) {
                 // write rename log, if old and new title does not match
-                $this->loggingService->writeLog(sprintf('Moderatives Bearbeiten des Eintrages "%s" von %s und Umbenennen des Eintrages in "%s"', $previousData['title'], $entry->getAuthorDisplay(), $entry->getTitle()));
+                $this->log(sprintf('Moderatives Bearbeiten des Eintrages "%s" von %s und Umbenennen des Eintrages in "%s"', $previousData['title'], $entry->getAuthorDisplay(), $entry->getTitle()));
             } else {
-                $this->loggingService->writeLog('Moderatives Bearbeiten des Eintrages "%s" von %s', $entry->getTitle(), $entry->getAuthorDisplay());
+                $this->log('Moderatives Bearbeiten des Eintrages "%s" von %s', $entry->getTitle(), $entry->getAuthorDisplay());
             }
         }       
     }

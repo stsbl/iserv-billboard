@@ -43,6 +43,7 @@ class EntryController extends CrudController {
         
         if(is_array($ret)) {
             $ret['comment_form'] = $this->getCommentForm($id)->createView();
+            $ret['comments_enabled'] = $this->get('iserv.config')->get('BillBoardEnableComments');
         }
         
         return $ret;
