@@ -1,3 +1,23 @@
+stsbl-iserv-billboard (16.10.21-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Coding standard improvements.
+  * Added option to disable comments in iservcfg.
+  * Use createAccessDeniedException instead of throwing an exception.
+  * Make use of the LoggerTrait from the CoreBundle.
+  * Make use of LoggerTrait from CoreBundle.
+  * Removed old LoggingService.
+  * Added LoggerInitalizationTrait.
+  * Make use of LoggerInitalizationTrait.
+  * Updated l10n and translations.
+  * Added help links.
+
+  [ Stadtteilschule Blankenese ]
+
+  iserv: Das Hinzufügen von Kommentaren kann nun in der System-Konfiguration abgeschaltet werden.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Fri, 21 Oct 2016 03:21:04 +0200
+
 stsbl-iserv-billboard (16.10.17-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
