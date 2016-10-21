@@ -48,6 +48,7 @@ class EntryCrud extends AbstractCrud
         $this->itemTitle = _('Entry');
         $this->id = 'billboard';
         $this->routesPrefix = 'billboard/';
+        $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard';
         $this->templates['crud_add'] = 'StsblBillBoardBundle:Crud:entry_add.html.twig';
         $this->templates['crud_index'] = 'StsblBillBoardBundle:Crud:entry_index.html.twig';
         $this->templates['crud_show'] = 'StsblBillBoardBundle:Crud:entry_show.html.twig';

@@ -40,7 +40,7 @@ class AdminController extends PageController {
         $this->addBreadcrumb(_('Bill-Board'));
         
         return array(
-            'rules_form' => $this->getRulesForm()->createView()      
+            'rules_form' => $this->getRulesForm()->createView()
         );
     }
     

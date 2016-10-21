@@ -136,7 +136,7 @@ class CommentController extends PageController {
         $this->addBreadcrumb(_('Delete comment'));
         
         $form = $this->getConfirmationForm($id)->createView();
-        return $this->render('StsblBillBoardBundle:Comment:delete_confirm.html.twig', array('delete_confirm_form' => $form, 'comment' => $comment));
+        return $this->render('StsblBillBoardBundle:Comment:delete_confirm.html.twig', array('delete_confirm_form' => $form, 'comment' => $comment, 'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard'));
     }
     
     /**

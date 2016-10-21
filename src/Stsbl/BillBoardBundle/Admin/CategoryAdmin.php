@@ -37,6 +37,7 @@ class CategoryAdmin extends AbstractAdmin {
         $this->itemTitle = _('Category');
         $this->id = 'billboard_category';
         $this->routesPrefix = 'admin/billboard/categories/';
+        // $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard';
     }
 
     /**
