@@ -2,6 +2,7 @@
 // src/Stsbl/BillBoardBundle/EventListener/MenuListener.php
 namespace Stsbl\BillBoardBundle\EventListener;
 
+use IServ\AdminBundle\EventListener\AdminMenuListenerInterface;
 use IServ\CoreBundle\Event\MenuEvent;
 use IServ\CoreBundle\EventListener\MainMenuListenerInterface;
 use Stsbl\BillBoardBundle\Security\Privilege;
@@ -11,7 +12,7 @@ use Stsbl\BillBoardBundle\Security\Privilege;
  * @license http://gnu.org/licenses/gpl-3.0 GNU General Public License 
  */
 
-class MenuListener implements MainMenuListenerInterface {
+class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterface {
     /**
      * @param \IServ\CoreBundle\Event\MenuEvent $event
      */
