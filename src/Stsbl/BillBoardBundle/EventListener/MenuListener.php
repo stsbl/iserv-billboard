@@ -9,7 +9,7 @@ use Stsbl\BillBoardBundle\Security\Privilege;
 
 /**
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
- * @license http://gnu.org/licenses/gpl-3.0 GNU General Public License 
+ * @license GNU General Public License <http://gnu.org/licenses/gpl-3.0>
  */
 
 class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterface {
