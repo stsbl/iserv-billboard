@@ -102,6 +102,7 @@ class Entry implements CrudInterface
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
     
     /**
