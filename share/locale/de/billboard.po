@@ -115,8 +115,8 @@ msgstr "Sie haben sie nicht die Berechtigung, diesen Eintrag zu verändern: %s"
 msgid "Allow comments"
 msgstr "Kommentare erlauben"
 
-msgid "If you disable commenting, no one can add new comments. But existing comments will still displayed."
-msgstr "Wenn sie kommentieren deaktivieren, kann keiner neue Kommentare hinzufügen. Bestehende Kommentar werden weiterhin angezeigt."
+msgid "Control whether comments on entries are allowed or not. If you disable commenting, no one can add new comments. Existing comments will still displayed."
+msgstr "Steuern sie, ob das Kommentieren von Einträgen erlaubt ist oder nicht. Wenn sie das Kommentieren deaktivieren, kann keiner neue Kommentare hinzufügen. Bestehende Kommentare werden weiterhin angezeigt."
 
 msgid "Module: Bill-Board"
 msgstr "Modul: Schwarzes Brett"
