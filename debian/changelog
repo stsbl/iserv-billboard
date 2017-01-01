@@ -1,3 +1,13 @@
+stsbl-iserv-billboard (17.01.01-1) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Fixed i10n.
+  * Improved descrption of BillboardEnableComments in iservcfg.
+
+  [ Stadtteilschule Blankenese ]
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Sun, 01 Jan 2017 10:35:45 +0100
+
 stsbl-iserv-billboard (17.01.01-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
