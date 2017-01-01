@@ -1,3 +1,18 @@
+stsbl-iserv-billboard (17.01.01-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Moved messages with msgctxt to the bottom of the translation file to prevent broken messages.
+  * Entity\Entry: Added initial filling of comments in constructor.
+  * Fixed typos in template headers.
+  * Updated copyright and headers.
+    Note: License has changed from GPL3.0+ to MIT.
+  * Updated debian copyright.
+  * Fixed copyright file.
+
+  [ Stadtteilschule Blankenese ]
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Sun, 01 Jan 2017 10:19:49 +0100
+
 stsbl-iserv-billboard (16.10.22-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
