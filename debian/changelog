@@ -1,3 +1,20 @@
+stsbl-iserv-billboard (17.01.05-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Clean up route logic stuff. 
+  * Move billboard management section outside of the admin firewall.
+  * Removed old use statement.
+  * Syntax fixes.
+  * Improved comment field template. 
+  * CommentController.php: Fixed old route names.
+  * CommentController.php: Make use of privilege container.
+
+  [ Stadtteilschule Blankenese ]
+
+  iserv: Das Schwarze Brett kann nun auch von Benutzern verwaltet werden (Sonderrecht "Schwarzes Brett verwalten"), die kein Admin-Passwort haben.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Thu, 05 Jan 2017 18:57:38 +0100
+
 stsbl-iserv-billboard (17.01.01-1) experimental; urgency=medium
 
   [ Felix Jacobi ]
