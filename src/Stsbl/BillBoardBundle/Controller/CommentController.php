@@ -118,7 +118,7 @@ class CommentController extends PageController
                 $this->get('iserv.flash')->error($error->getMessage());
             }
             
-            return $this->redirect($this->generateUrl('crud_billboard_index'));
+            return $this->redirect($this->generateUrl('billboard_index'));
         }
         
         $button = $form->getClickedButton()->getName();
@@ -156,12 +156,12 @@ class CommentController extends PageController
         $comment = $this->getComment($id);
         
         // track path
-        $this->addBreadcrumb(_('Bill-Board'), $this->generateUrl('crud_billboard_index'));
-        $this->addBreadcrumb((string)$comment->getEntry(), $this->generateUrl('crud_billboard_show', array('id' => $comment->getEntry()->getId())));
+        $this->addBreadcrumb(_('Bill-Board'), $this->generateUrl('billboard_index'));
+        $this->addBreadcrumb((string)$comment->getEntry(), $this->generateUrl('billboard_show', array('id' => $comment->getEntry()->getId())));
         $this->addBreadcrumb(_('Delete comment'));
         
         $form = $this->getConfirmationForm($id)->createView();
-        return $this->render('StsblBillBoardBundle:Comment:delete_confirm.html.twig', array('delete_confirm_form' => $form, 'comment' => $comment, 'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard'));
+        return $this->render('StsblBillBoardBundle:Comment:delete_confirm.html.twig', ['delete_confirm_form' => $form, 'comment' => $comment, 'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard']);
     }
     
     /**

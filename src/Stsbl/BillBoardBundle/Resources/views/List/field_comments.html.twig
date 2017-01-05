@@ -4,11 +4,9 @@
 {% block field %}
     {% if value is iterable %}
         {{ value|length }}
+    {% elseif value is null %}
+        -
     {% else %}
-        {% if value is null %}
-            -
-        {% else %}
-            value
-        {% endif %}
+        value
     {% endif %}
 {% endblock %}
