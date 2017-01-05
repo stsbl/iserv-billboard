@@ -78,7 +78,7 @@ class CommentController extends PageController
                 $this->get('iserv.flash')->error($error->getMessage());
             }
             
-            return $this->redirect($this->generateUrl('crud_billboard_show', array('id' => $entryid)));
+            return $this->redirect($this->generateUrl('billboard_show', array('id' => $entryid)));
         }
         
         $data = $form->getData();
@@ -86,14 +86,14 @@ class CommentController extends PageController
         if (null === $entry) {
             $this->get('iserv.flash')->error(_('Entry not found.'));
             
-            return $this->redirect($this->generateUrl('crud_billboard_index'));
+            return $this->redirect($this->generateUrl('billboard_index'));
         }
         
         $manager->persist($data);
         $manager->flush();
         $this->get('iserv.flash')->success(__('Comment to entry "%s" successful added.', (string)$entry));
         
-        return $this->redirect($this->generateUrl('crud_billboard_show', array('id' => $entryid)));
+        return $this->redirect($this->generateUrl('billboard_show', array('id' => $entryid)));
     }
     
     /**
@@ -137,7 +137,7 @@ class CommentController extends PageController
             $this->log(sprintf('Moderatives Löschen des Kommentars "%s" von %s', $title, $author));
             $this->get('iserv.flash')->success(__('Comment "%s" successful deleted.', $title));
         }
-        return $this->redirect($this->generateUrl('crud_billboard_show', array('id' => $entryid)));
+        return $this->redirect($this->generateUrl('billboard_show', array('id' => $entryid)));
     }
     
     /**
