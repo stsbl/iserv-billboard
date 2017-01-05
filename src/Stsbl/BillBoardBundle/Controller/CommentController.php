@@ -6,6 +6,7 @@ use IServ\CoreBundle\Controller\PageController;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Stsbl\BillBoardBundle\Security\Privilege;
 use Stsbl\BillBoardBundle\Traits\LoggerInitalizationTrait;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -171,8 +172,8 @@ class CommentController extends PageController
      */
     private function isAllowedToDelete()
     {
-        return $this->isGranted('PRIV_BILLBOARD_MODERATE')
-            || $this->isGranted('PRIV_BILLBOARD_MANAGE');
+        return $this->isGranted(Privilege::BILLBOARD_MODERATE)
+            || $this->isGranted(Privilege::BILLBOARD_MANAGE);
     }
     
     /**
@@ -182,8 +183,8 @@ class CommentController extends PageController
      */
     private function isAllowedToAdd()
     {
-        return $this->isGranted('PRIV_BILLBOARD_CREATE')
-            || $this->isGranted('PRIV_BILLBOARD_MODERATE')
-            || $this->isGranted('PRIV_BILLBOARD_MANAGE');
+        return $this->isGranted(Privilege::BILLBOARD_CREATE)
+            || $this->isGranted(Privilege::BILLBOARD_MODERATE)
+            || $this->isGranted(Privilege::BILLBOARD_MANAGE);
     }
 }
