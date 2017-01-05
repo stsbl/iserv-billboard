@@ -8,7 +8,6 @@ use IServ\CrudBundle\Mapper\FormMapper;
 use IServ\CrudBundle\Mapper\ListMapper;
 use IServ\CrudBundle\Mapper\ShowMapper;
 use Stsbl\BillBoardBundle\Security\Privilege;
-use Stsbl\BillBoardBundle\Service\LoggingService;
 
 /*
  * The MIT License
