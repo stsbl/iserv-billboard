@@ -41,7 +41,8 @@ use Stsbl\BillBoardBundle\Security\Privilege;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://mit.otg/licenses/MIT>
  */
-class EntryImageCrud extends AbstractCrud {
+class EntryImageCrud extends AbstractCrud 
+{
     /**
      * {@inheritdoc}
      */

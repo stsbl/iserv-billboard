@@ -42,7 +42,8 @@ use Symfony\Component\Security\Core\Exception\RuntimeException;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://mit.otg/licenses/MIT>
  */
-trait CommentFormTrait {   
+trait CommentFormTrait 
+{   
     /**
      * Get comment form for entry with id $id.
      * 

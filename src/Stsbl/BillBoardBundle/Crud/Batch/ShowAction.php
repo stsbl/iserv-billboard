@@ -39,7 +39,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://mit.otg/licenses/MIT>
  */
-class ShowAction extends AbstractBatchAction {
+class ShowAction extends AbstractBatchAction
+{
     /**
      * {@inheritdoc}
      */

@@ -36,7 +36,8 @@ use Stsbl\BillBoardBundle\Security\Privilege;
  * @license MIT license <https://mit.otg/licenses/MIT>
  */
 
-class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterface {
+class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterface 
+{
     /**
      * @param \IServ\CoreBundle\Event\MenuEvent $event
      */

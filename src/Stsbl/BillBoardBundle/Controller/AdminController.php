@@ -44,7 +44,8 @@ use Symfony\Component\Security\Core\Exception\RuntimeException;
  * @license MIT license <https://mit.otg/licenses/MIT>
  * @Route("/billboard/manage")
  */
-class AdminController extends PageController {
+class AdminController extends PageController 
+{
     use LoggerTrait, LoggerInitalizationTrait;
     
     const CONFIGDIR = '/var/lib/stsbl/billboard/cfg/';

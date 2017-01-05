@@ -34,7 +34,8 @@ use Symfony\Component\HttpFoundation\Request;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://mit.otg/licenses/MIT>
  */
-class EntryController extends CrudController {
+class EntryController extends CrudController
+{
     use CommentFormTrait;
     
     /**
