@@ -42,7 +42,7 @@ use Symfony\Component\Security\Core\Exception\RuntimeException;
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://mit.otg/licenses/MIT>
- * @Route("/admin/billboard")
+ * @Route("/billboard/manage")
  */
 class AdminController extends PageController {
     use LoggerTrait, LoggerInitalizationTrait;
@@ -51,9 +51,9 @@ class AdminController extends PageController {
     const FILE_RULES = 'rules.cfg';
     
     /**
-     * Route for the default admin page
+     * Rules configuration page
      * 
-     * @Route("", name="admin_billboard")
+     * @Route("", name="manage_billboard")
      * @Template()
      */
     public function indexAction(Request $request)
@@ -61,17 +61,34 @@ class AdminController extends PageController {
         $this->isAdmin();
         
         // track path
-        $this->addBreadcrumb(_('Bill-Board'));
+        // change breadcrumb depending on if user is logged in admin section or not
+        if(!$this->isAuthenticatedAdmin()) {
+            $this->addBreadcrumb(_('Bill-Board'), $this->generateUrl('billboard_index'));
+            $this->addBreadcrumb(_('Manage'));
+        } else {
+            $this->addBreadcrumb(_('Bill-Board'));
+        }
         
-        return array(
-            'rules_form' => $this->getRulesForm()->createView()
-        );
+        // changing extended template depending on you know already ;)
+        if ($this->isAuthenticatedAdmin()) {
+            $bundle = 'IServAdminBundle';
+            $isAdmin = true;
+        } else {
+            $bundle = 'IServCoreBundle';
+            $isAdmin = false;
+        }
+        
+        return ['rules_form' => $this->getRulesForm()->createView(), 
+            'bundle' => $bundle, 
+            'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard', 
+            'is_admin' => $isAdmin
+        ];
     }
     
     /**
      * Write new rules text to file
      * 
-     * @Route("/update/rules", name="admin_billboard_update_rules")
+     * @Route("/update/rules", name="manage_billboard_update_rules")
      */
     public function updateRulesAction(Request $request)
     {
@@ -83,7 +100,7 @@ class AdminController extends PageController {
         if (!$form->isValid()) {
             $this->get('iserv.flash')->error(_('Invalid rules text'));
             
-            return $this->redirect($this->generateUrl('admin_billboard'));
+            return $this->redirect($this->generateUrl('manage_billboard'));
         }
         
         $data = $form->getData();
@@ -128,7 +145,7 @@ class AdminController extends PageController {
         $builder = $this->createFormBuilder();
         
         $builder
-            ->setAction($this->generateUrl('admin_billboard_update_rules'))
+            ->setAction($this->generateUrl('manage_billboard_update_rules'))
             ->add('rules', TextareaType::class, array(
                 'label' => false,
                 'data' => self::getCurrentRules(),
@@ -175,7 +192,7 @@ class AdminController extends PageController {
         $this->initalizeLogger();
         $this->log($logText);
 
-        return $this->redirect($this->generateUrl('admin_billboard'));
+        return $this->redirect($this->generateUrl('manage_billboard'));
     }
     
     /**
@@ -185,5 +202,15 @@ class AdminController extends PageController {
     {
         // check privilege
         $this->denyAccessUnlessGranted(Privilege::BILLBOARD_MANAGE, null, 'You need the `BILLBOARD_MANAGE` privilege to access this page.');
+    }
+    
+    /**
+     * Checks if user is authentificated admin
+     * 
+     * @return boolean
+     */
+    private function isAuthenticatedAdmin()
+    {
+        return $this->isGranted('IS_AUTHENTICATED_ADMIN');
     }
 }

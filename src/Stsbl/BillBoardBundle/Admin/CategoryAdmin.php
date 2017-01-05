@@ -2,7 +2,6 @@
 // src/Stsbl/BillBoardBundle/Crud/CategoryListCrud.php
 namespace Stsbl\BillBoardBundle\Admin;
 
-use IServ\AdminBundle\Admin\AbstractAdmin;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CrudBundle\Mapper\FormMapper;
@@ -41,7 +40,7 @@ use Stsbl\BillBoardBundle\Service\LoggingService;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://mit.otg/licenses/MIT>
  */
-class CategoryAdmin extends AbstractAdmin {
+class CategoryAdmin extends AbstractBillBoardAdmin {
     use LoggerTrait;
     
     /**
@@ -60,8 +59,9 @@ class CategoryAdmin extends AbstractAdmin {
         $this->title = _('Categories');
         $this->itemTitle = _('Category');
         $this->id = 'billboard_category';
-        $this->routesPrefix = 'admin/billboard/categories/';
-        // $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard';
+        $this->routesPrefix = 'billboard/manage/categories';
+        $this->routesNamePrefix = 'manage_';
+        $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard';
     }
 
     /**
@@ -70,7 +70,7 @@ class CategoryAdmin extends AbstractAdmin {
     public function prepareBreadcrumbs()
     {
         return array(
-            _('Bill-Board') => $this->router->generate('crud_billboard_index')
+            _('Bill-Board') => $this->router->generate('billboard_index')
         );
     }
     
@@ -128,15 +128,15 @@ class CategoryAdmin extends AbstractAdmin {
         } else if ('add' === $action) {
             return sprintf('%s%s', $this->routesPrefix, $action);
         } else if ('batch' === $action) {
-            return sprintf('%s%s', $this->routesPrefix, $action);
+            return sprintf('%s/%s', $this->routesPrefix, $action);
         } else if ('batch/confirm' === $action) {
-            return sprintf('%s%s/%s', $this->routesPrefix, 'batch', 'confirm');
+            return sprintf('%s/%s/%s', $this->routesPrefix, 'batch', 'confirm');
         } else if ('show' === $action) {
-            return sprintf('%s%s/%s', $this->routesPrefix, $action, '{id}');
+            return sprintf('%s/%s/%s', $this->routesPrefix, $action, '{id}');
         } else if ('edit' === $action) {
-            return sprintf('%s%s/%s', $this->routesPrefix, $action, '{id}');
+            return sprintf('%s/%s/%s', $this->routesPrefix, $action, '{id}');
         } else if ('delete' === $action) {
-           return sprintf('%s%s/%s', $this->routesPrefix, $action, '{id}');
+           return sprintf('%s/%s/%s', $this->routesPrefix, $action, '{id}');
         }
     }
 

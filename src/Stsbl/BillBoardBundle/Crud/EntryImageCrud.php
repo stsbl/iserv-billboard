@@ -140,7 +140,7 @@ class EntryImageCrud extends AbstractCrud {
     public function prepareBreadcrumbs()
     {
         return array(
-            _('Bill-Board') => $this->router->generate('crud_billboard_index')
+            _('Bill-Board') => $this->router->generate('billboard_index')
         );
     }
 }

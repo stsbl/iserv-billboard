@@ -50,7 +50,7 @@ class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterf
         ) {            
             $menu = $event->getMenu(self::COMMUNICATION);
             $item = $menu->addChild('billboard', array(
-                'route' => 'crud_billboard_index',
+                'route' => 'billboard_index',
                 'label' => _('Bill-Board'),
                 'extras' => array(
                   'icon' => 'billboard-empty',
@@ -74,14 +74,14 @@ class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterf
             $block->setExtra('orderNumber', 30);
 
             $item = $block->addChild('billboard_admin', array(
-                'route' => 'admin_billboard',
+                'route' => 'manage_billboard',
                 'label' => _('Bill-Board'),
             ));
             $item->setExtra('icon', 'billboard-empty');
             $item->setExtra('icon_style', 'fugue');
             
             $item = $block->addChild('billboard_category', array(
-                'route' => 'admin_billboard_category_index',
+                'route' => 'manage_billboard_category_index',
                 'label' => _('Categories'),
             ));
             $item->setExtra('icon', 'category');

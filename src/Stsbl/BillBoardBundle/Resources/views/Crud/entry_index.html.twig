@@ -3,9 +3,9 @@
 {% import 'IServCrudBundle::macros.html.twig' as m %}
 
 {% block content %}
-    {% if is_granted('PRIV_BILLBOARD_MANAGE') and is_granted('ROLE_ADMIN') %}
+    {% if is_granted('PRIV_BILLBOARD_MANAGE') %}
         <div class="btn-toolbar pull-right">
-            {{ m.linkButton(path('admin_billboard'), _('Manage'), 'cog', 'btn-link') }}
+            {{ m.linkButton(path('manage_billboard'), _('Manage'), 'cog', 'btn-link') }}
         </div>
     {% endif %}
     {{ parent() }}

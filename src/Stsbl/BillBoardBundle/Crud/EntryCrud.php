@@ -72,6 +72,8 @@ class EntryCrud extends AbstractCrud
         $this->itemTitle = _('Entry');
         $this->id = 'billboard';
         $this->routesPrefix = 'billboard/';
+        // no prefix to remove the crud_ prefix
+        $this->routesNamePrefix = '';
         $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard';
         $this->templates['crud_add'] = 'StsblBillBoardBundle:Crud:entry_add.html.twig';
         $this->templates['crud_index'] = 'StsblBillBoardBundle:Crud:entry_index.html.twig';
@@ -307,8 +309,8 @@ class EntryCrud extends AbstractCrud
         $links['images'] = array($this->getRouter()->generate('crud_entryimage_index'), _('Images'), 'picture');
         
         // only add category, if user has managemant privilege and an administrator password
-        if ($this->isGranted(Privilege::BILLBOARD_MANAGE) && $this->isGranted('ROLE_ADMIN')) {
-            $links['categories'] = array($this->getRouter()->generate('admin_billboard_category_index'), _('Categories'), 'tags');
+        if ($this->isGranted(Privilege::BILLBOARD_MANAGE)) {
+            $links['categories'] = array($this->getRouter()->generate('manage_billboard_category_index'), _('Categories'), 'tags');
         }
         
         return $links;

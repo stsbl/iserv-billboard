@@ -1,10 +1,17 @@
-{# src/Stsbl/BillBoardBundle/Resources/views/Admin/index.html.twig #}
-{% extends "IServAdminBundle::page.html.twig" %}
+{# src/Stsbl/BillBoardBundle/Resources/views/Admin/index_content.html.twig #}
+{% extends bundle ~ "::page.html.twig" %}
 
-{% block page_title %}{{ _("Bill-Board") }} - {{ _("Administration") }}{% endblock %}
+{% block page_title %}
+    {% if not is_admin %}
+        {{ _("Manage") }} -
+    {% endif %}
+    {{ _("Bill-Board") }} 
+    {% if is_admin %}
+        - {{ _("Administration") }}
+    {% endif %}
+{% endblock %}
 
 {% block content %}
-
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">{{ _('Rules') }}</h3>
@@ -13,5 +20,4 @@
         {{ form(rules_form, {'style': null}) }}
     </div>
 </div>
-
 {% endblock %}
