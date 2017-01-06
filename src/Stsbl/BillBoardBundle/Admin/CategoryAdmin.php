@@ -69,9 +69,11 @@ class CategoryAdmin extends AbstractBillBoardAdmin
      */
     public function prepareBreadcrumbs()
     {
-        return array(
-            _('Bill-Board') => $this->router->generate('billboard_index')
-        );
+        if ($this->isAdmin()) {
+            return [_('Bill-Board') => $this->router->generate('manage_billboard')];
+        } else {
+            return [_('Bill-Board') => $this->router->generate('billboard_index')];
+        } 
     }
     
     /**
