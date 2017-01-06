@@ -71,7 +71,7 @@ class EntryCrud extends AbstractCrud
         $this->title = _('Bill-Board');
         $this->itemTitle = _('Entry');
         $this->id = 'billboard';
-        $this->routesPrefix = 'billboard/';
+        $this->routesPrefix = 'billboard';
         // no prefix to remove the crud_ prefix
         $this->routesNamePrefix = '';
         $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard';
@@ -97,8 +97,8 @@ class EntryCrud extends AbstractCrud
 
         // TODO?: Solve image collection stuff.
         $this->routes['fileimage_images'] = array(
-            'pattern' => sprintf('/%s%s/%s/{entity_id}/{id}/%s/{width}/{height}', $this->routesPrefix, 'entryimage', 'show', 'image'),
-            'name' => sprintf('%s%s_%s', $this->routesNamePrefix, $id, $action . '_images'),
+            'pattern' => sprintf('%s/%s/%s/{entity_id}/{id}/%s/{width}/{height}', $this->routesPrefix, 'entryimage', 'show', 'image'),
+            'name' => sprintf('%s/%s_%s', $this->routesNamePrefix, $id, $action . '_images'),
             'entity' => 'EntryImage',
             'property' => 'image',
             'width' => null,
@@ -294,7 +294,7 @@ class EntryCrud extends AbstractCrud
     protected function getRoutePattern($action, $id, $entityBased = true)
     {
         if ('index' === $action) {
-            return sprintf('/%s', $this->routesPrefix);
+            return sprintf('%s', $this->routesPrefix);
         } else {
             return parent::getRoutePattern($action, 'entry', $entityBased);
         }

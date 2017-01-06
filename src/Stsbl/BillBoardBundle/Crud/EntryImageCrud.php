@@ -61,7 +61,7 @@ class EntryImageCrud extends AbstractCrud
        $this->title = _('Images');
        $this->itemTitle = _('Image');
        // $this->id = 'billboard_images';
-       $this->routesPrefix = 'billboard/images/';
+       $this->routesPrefix = 'billboard/images';
        $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard';
     }
     
@@ -129,7 +129,7 @@ class EntryImageCrud extends AbstractCrud
     protected function getRoutePattern($action, $id, $entityBased = true)
     {
         if ('index' === $action) {
-            return sprintf('/%s', $this->routesPrefix);
+            return sprintf('%s', $this->routesPrefix);
         } else {
             return parent::getRoutePattern($action, 'entry', $entityBased);
         }
