@@ -21,4 +21,4 @@ Description: Schwarzes Brett-Modul für IServ
  https://it.stsbl.de/wp-content/uploads/2016/09/stsbl-iserv-billboard.png
  .
  https://it.stsbl.de/wp-content/uploads/2016/09/stsbl-iserv-billboard-2.png
-Tag: suite::iserv:portal, role::plugin
+Tag: suite::iserv:portal, role::plugin, implemented-in::php
