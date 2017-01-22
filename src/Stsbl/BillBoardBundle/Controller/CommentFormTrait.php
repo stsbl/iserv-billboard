@@ -10,7 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Security\Core\Exception\RuntimeException;
 
 /*
  * The MIT License
@@ -112,7 +111,7 @@ trait CommentFormTrait
     {
         $comment = $this->getComment($id);
         if (null === $comment) {
-            throw new RuntimeException('No comment with that id found.');
+            throw new \RuntimeException('No comment with that id found.');
         }
 
         $builder = $this->createFormBuilder();
