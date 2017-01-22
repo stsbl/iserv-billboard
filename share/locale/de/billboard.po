@@ -2,7 +2,7 @@ msgid "Bill-Board"
 msgstr "Schwarzes Brett"
 
 msgid "Here you can enter rules, which are shown at the form for adding an entry to the bill-board."
-msgstr "Hier können sie Regeln eingeben, die im Formular für das Hinzufügen eines Eintrages zum schwarzen Brett angezeigt werden."
+msgstr "Hier können Sie Regeln eingeben, die im Formular für das Hinzufügen eines Eintrages zum schwarzen Brett angezeigt werden."
 
 msgid "Access the bill-board"
 msgstr "Auf das schwarze Brett zugreifen"
@@ -47,7 +47,7 @@ msgid "Initial Upload"
 msgstr "Zuerst hochgeladen"
 
 msgid "There are no bill-board categories configured yet. Please contact your administrator."
-msgstr "Es sind noch keine Kategorien für das schwarze Brett eingerichtet. Bitte kontaktieren sie Ihren Administrator."
+msgstr "Es sind noch keine Kategorien für das schwarze Brett eingerichtet. Bitte kontaktieren Sie Ihren Administrator."
 
 msgid "Rules"
 msgstr "Regeln"
@@ -68,25 +68,25 @@ msgid "Failed to make entry visible: %s"
 msgstr "Einblenden des Eintrages fehlgeschlagen: %s"
 
 msgid "The bill-board is only intended for small things. Please dont't offer things which have a worth of more than 100 euro."
-msgstr "Das schwarze Brett ist nur für kleine Dinge gedacht. Bitte bieten sie keine Dinge mit einem Wert von mehr als 100 Euro an."
+msgstr "Das schwarze Brett ist nur für kleine Dinge gedacht. Bitte bieten Sie keine Dinge mit einem Wert von mehr als 100 Euro an."
 
 msgid "Name the item that you want to offer in one word, for example »electric guitar«."
-msgstr "Beschreiben sie den Gegenstand den sie anbieten wollen in einem Wort, zum Beispiel »E-Gitarre«."
+msgstr "Beschreiben Sie den Gegenstand den Sie anbieten wollen in einem Wort, zum Beispiel »E-Gitarre«."
 
 msgid "Select the matching category for your item."
-msgstr "Wählen sie eine passende Kategorie für den Gegenstand aus."
+msgstr "Wählen Sie eine passende Kategorie für den Gegenstand aus."
 
 msgid "If you hide the entry, it is only visible by yourself and people who has the privilege to moderate the bill-board."
-msgstr "Wenn sie den Eintrag ausblenden, ist er nur für sie selber und Personen, die das schwarze Brett moderieren können, sichtbar."
+msgstr "Wenn Sie den Eintrag ausblenden, ist er nur für Sie selber und Personen, die das schwarze Brett moderieren können, sichtbar."
 
 msgid "Give a short description of your item."
-msgstr "Bitte beschreiben sie ihren Gegenstand kurz."
+msgstr "Bitte beschreiben Sie Ihren Gegenstand kurz."
 
 msgid "Delete comment"
 msgstr "Kommentar löschen"
 
 msgid "Do you really want to delete the comment \"%s\" by %s?"
-msgstr "Möchten sie den Kommentar \"%s\" von %s wirklich löschen?"
+msgstr "Möchten Sie den Kommentar \"%s\" von %s wirklich löschen?"
 
 msgid "Comment \"%s\" successful deleted."
 msgstr "Kommentar \"%s\" erfolgreich gelöscht."
@@ -110,7 +110,7 @@ msgid "by"
 msgstr "von"
 
 msgid "You don't have the permission to change that entry: %s"
-msgstr "Sie haben sie nicht die Berechtigung, diesen Eintrag zu verändern: %s"
+msgstr "Sie haben nicht die Berechtigung, diesen Eintrag zu verändern: %s"
 
 msgid "Allow comments"
 msgstr "Kommentare erlauben"
