@@ -83,7 +83,8 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    protected function buildRoutes() {
+    protected function buildRoutes()
+    {
         parent::buildRoutes();
         
         $this->routes[self::ACTION_ADD]['_controller'] = 'StsblBillBoardBundle:Entry:add';
@@ -96,22 +97,23 @@ class EntryCrud extends AbstractCrud
         // @Route("/fileimage/{entity}/{id}/{property}/{width}/{height}", name="fileimage")
 
         // TODO?: Solve image collection stuff.
-        $this->routes['fileimage_images'] = array(
-            'pattern' => sprintf('%s/%s/%s/{entity_id}/{id}/%s/{width}/{height}', $this->routesPrefix, 'entryimage', 'show', 'image'),
-            'name' => sprintf('%s/%s_%s', $this->routesNamePrefix, $id, $action . '_images'),
-            'entity' => 'EntryImage',
+        $this->routes['fileimage_images'] = [
+            'pattern' => sprintf('%s/%s/%s/{entity_id}/{id}/%s/{width}/{height}', $this->routesPrefix, 'entryimages', 'show', 'image'),
+            'name' => sprintf('%s_%s_%s', $id, $action, 'image'),
+            'entity' => 'StsblBillBoardBundle:EntryImage',
             'property' => 'image',
             'width' => null,
             'height' => null,
             '_controller' => sprintf('IServCoreBundle:FileImage:%s', $action),
             '_iserv_crud' => $id,
-        );
+        ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function __construct($class, $title = null, $itemTitle = null) {
+    public function __construct($class, $title = null, $itemTitle = null)
+    {
         // set module context for logging
         $this->logModule = 'Bill-Board';
         
@@ -293,17 +295,29 @@ class EntryCrud extends AbstractCrud
      */
     protected function getRoutePattern($action, $id, $entityBased = true)
     {
+        // Overwrite broken route generation of Crud (WHY? =()
         if ('index' === $action) {
             return sprintf('%s', $this->routesPrefix);
-        } else {
-            return parent::getRoutePattern($action, 'entry', $entityBased);
+        } else if ('add' === $action) {
+            return sprintf('%s/%s', $this->routesPrefix, $action);
+        } else if ('batch' === $action) {
+            return sprintf('%s/%s', $this->routesPrefix, $action);
+        } else if ('batch/confirm' === $action) {
+            return sprintf('%s/%s/%s', $this->routesPrefix, 'batch', 'confirm');
+        } else if ('show' === $action) {
+            return sprintf('%s/%s/%s', $this->routesPrefix, $action, '{id}');
+        } else if ('edit' === $action) {
+            return sprintf('%s/%s/%s', $this->routesPrefix, $action, '{id}');
+        } else if ('delete' === $action) {
+           return sprintf('%s/%s/%s', $this->routesPrefix, $action, '{id}');
         }
     }
     
     /**
      * {@inheritdoc}
      */
-    public function getIndexActions() {
+    public function getIndexActions() 
+    {
         $links = parent::getIndexActions();
         
         $links['images'] = array($this->getRouter()->generate('crud_entryimage_index'), _('Images'), 'picture');
@@ -319,7 +333,8 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function isAllowedToEdit(CrudInterface $object = null, UserInterface $user = null) {
+    public function isAllowedToEdit(CrudInterface $object = null, UserInterface $user = null) 
+    {
         if ($object === null && $user === null) {
             return true;
         }
@@ -341,7 +356,8 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function isAllowedToAdd(UserInterface $user = null) {
+    public function isAllowedToAdd(UserInterface $user = null) 
+    {
         if ($user === null) {
             return true;
         }
@@ -356,7 +372,8 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function isAllowedToDelete(CrudInterface $object = null, UserInterface $user = null) {
+    public function isAllowedToDelete(CrudInterface $object = null, UserInterface $user = null) 
+    {
         return $this->isAllowedToEdit($object, $user);
     }
     
@@ -364,7 +381,8 @@ class EntryCrud extends AbstractCrud
      * 
      * {@inheritdoc}
      */
-    public function isAllowedToView(CrudInterface $object = null, UserInterface $user = null) {
+    public function isAllowedToView(CrudInterface $object = null, UserInterface $user = null)
+    {
         if ($object === null && $user === null) {
             return true;
         }
@@ -386,7 +404,8 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function postRemove(CrudInterface $entry) {
+    public function postRemove(CrudInterface $entry)
+    {
         if ($this->isModerator()
         && $this->getUser() !== $entry->getAuthor()) {
             $this->log(sprintf('Moderatives Löschen des Eintrages "%s" von %s', $entry->getTitle(), $entry->getAuthorDisplay()));
@@ -396,7 +415,8 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function postUpdate(CrudInterface $entry, array $previousData = null) {
+    public function postUpdate(CrudInterface $entry, array $previousData = null) 
+    {
         if ($this->isModerator()
         && $this->getUser() !== $entry->getAuthor()) {
             if ($entry->getTitle() !== $previousData['title']) {

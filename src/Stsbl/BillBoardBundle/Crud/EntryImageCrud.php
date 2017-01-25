@@ -61,6 +61,7 @@ class EntryImageCrud extends AbstractCrud
        $this->title = _('Images');
        $this->itemTitle = _('Image');
        // $this->id = 'billboard_images';
+       // $this->routesNamePrefix = '';
        $this->routesPrefix = 'billboard/images';
        $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard';
     }
@@ -122,16 +123,52 @@ class EntryImageCrud extends AbstractCrud
     {
         $image->setAuthor($this->getUser());
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    /*protected function buildRoutes() 
+    {
+        parent::buildRoutes();
+        
+        $id = $this->getId();
+        $action = 'fileimage';
+        
+        // @Route("/fileimage/{entity}/{id}/{property}/{width}/{height}", name="fileimage")
+
+        // TODO?: Solve image collection stuff.
+        $this->routes['fileimage_image'] = [
+            'pattern' => sprintf('%s/%s/{id}/%s/{width}/{height}', $this->routesPrefix, 'show', 'image'),
+            'name' => sprintf('%s%s_%s_%s', $this->routesNamePrefix, $id, $action, 'image'),
+            'entity' => 'StsblBillBoardBundle:EntryImage',
+            'property' => 'image',
+            'width' => null,
+            'height' => null,
+            '_controller' => sprintf('IServCoreBundle:FileImage:%s', $action),
+            '_iserv_crud' => $id,
+        ];
+    }*/
 
     /**
      * {@inheritdoc}
      */
     protected function getRoutePattern($action, $id, $entityBased = true)
     {
+        // Overwrite broken route generation of Crud (WHY? =()
         if ('index' === $action) {
             return sprintf('%s', $this->routesPrefix);
-        } else {
-            return parent::getRoutePattern($action, 'entry', $entityBased);
+        } else if ('add' === $action) {
+            return sprintf('%s/%s', $this->routesPrefix, $action);
+        } else if ('batch' === $action) {
+            return sprintf('%s/%s', $this->routesPrefix, $action);
+        } else if ('batch/confirm' === $action) {
+            return sprintf('%s/%s/%s', $this->routesPrefix, 'batch', 'confirm');
+        } else if ('show' === $action) {
+            return sprintf('%s/%s/%s', $this->routesPrefix, $action, '{id}');
+        } else if ('edit' === $action) {
+            return sprintf('%s/%s/%s', $this->routesPrefix, $action, '{id}');
+        } else if ('delete' === $action) {
+           return sprintf('%s/%s/%s', $this->routesPrefix, $action, '{id}');
         }
     }
     

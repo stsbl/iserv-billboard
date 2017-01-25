@@ -128,7 +128,7 @@ class CategoryAdmin extends AbstractBillBoardAdmin
         if ('index' === $action) {
             return sprintf('%s', $this->routesPrefix);
         } else if ('add' === $action) {
-            return sprintf('%s%s', $this->routesPrefix, $action);
+            return sprintf('%s/%s', $this->routesPrefix, $action);
         } else if ('batch' === $action) {
             return sprintf('%s/%s', $this->routesPrefix, $action);
         } else if ('batch/confirm' === $action) {
