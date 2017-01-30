@@ -36,7 +36,7 @@ use Stsbl\BillBoardBundle\Entity\Entry;
  * BillBoardBundle:EntryImage
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
- * @license MIT license <https://mit.otg/licenses/MIT>
+ * @license MIT license <https://opensource.org/licenses/MIT>
  * @ORM\Entity
  * @ORM\Table(name="billboard_images")
  * @ORM\HasLifecycleCallbacks

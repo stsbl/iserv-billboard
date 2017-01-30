@@ -34,7 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * BillBoardBundle:Category
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
- * @license MIT license <https://mit.otg/licenses/MIT>
+ * @license MIT license <https://opensource.org/licenses/MIT>
  * @ORM\Entity(repositoryClass="CategoryRepository")
  * @ORM\Table(name="billboard_category")
  */

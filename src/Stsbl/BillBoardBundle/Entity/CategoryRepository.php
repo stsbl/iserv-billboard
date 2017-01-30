@@ -31,7 +31,7 @@ use IServ\CrudBundle\Doctrine\ORM\EntitySpecificationRepository;
 
 /**
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
- * @license MIT license <https://mit.otg/licenses/MIT>
+ * @license MIT license <https://opensource.org/licenses/MIT>
  */
 class CategoryRepository extends EntitySpecificationRepository
 {

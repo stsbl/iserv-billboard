@@ -33,7 +33,7 @@ use Stsbl\BillBoardBundle\Security\Privilege;
 
 /**
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
- * @license MIT license <https://mit.otg/licenses/MIT>
+ * @license MIT license <https://opensource.org/licenses/MIT>
  */
 
 class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterface 
