@@ -71,7 +71,7 @@ class EntryCrud extends AbstractCrud
         $this->title = _('Bill-Board');
         $this->itemTitle = _('Entry');
         $this->id = 'billboard';
-        $this->routesPrefix = 'billboard';
+        $this->routesPrefix = 'billboard/entries';
         // no prefix to remove the crud_ prefix
         $this->routesNamePrefix = '';
         $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard';
@@ -98,9 +98,9 @@ class EntryCrud extends AbstractCrud
 
         // TODO?: Solve image collection stuff.
         $this->routes['fileimage_images'] = [
-            'pattern' => sprintf('%s/%s/%s/{entity_id}/{id}/%s/{width}/{height}', $this->routesPrefix, 'entryimages', 'show', 'image'),
-            'name' => sprintf('%s_%s_%s', $id, $action, 'image'),
-            'entity' => 'StsblBillBoardBundle:EntryImage',
+            'pattern' => sprintf('/%s/%s/{entity_id}/{id}/%s/{width}/{height}', $this->routesPrefix, 'show', 'image'),
+            'name' => sprintf('%s%s_%s', $this->routesNamePrefix, $id, $action . '_images'),
+            'entity' => 'EntryImage',
             'property' => 'image',
             'width' => null,
             'height' => null,
@@ -320,7 +320,7 @@ class EntryCrud extends AbstractCrud
     {
         $links = parent::getIndexActions();
         
-        $links['images'] = array($this->getRouter()->generate('crud_entryimage_index'), _('Images'), 'picture');
+        $links['images'] = array($this->getRouter()->generate('billboard_entryimage_index'), _('Images'), 'picture');
         
         // only add category, if user has managemant privilege
         if ($this->isGranted(Privilege::BILLBOARD_MANAGE)) {

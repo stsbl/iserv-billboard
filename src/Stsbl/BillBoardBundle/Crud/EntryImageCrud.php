@@ -60,8 +60,8 @@ class EntryImageCrud extends AbstractCrud
     {
        $this->title = _('Images');
        $this->itemTitle = _('Image');
-       // $this->id = 'billboard_images';
-       // $this->routesNamePrefix = '';
+       //$this->id = 'billboard_images';
+       $this->routesNamePrefix = 'billboard_';
        $this->routesPrefix = 'billboard/images';
        $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard';
     }
@@ -127,27 +127,25 @@ class EntryImageCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    /*protected function buildRoutes() 
+    protected function buildRoutes() 
     {
         parent::buildRoutes();
         
         $id = $this->getId();
         $action = 'fileimage';
         
-        // @Route("/fileimage/{entity}/{id}/{property}/{width}/{height}", name="fileimage")
+        // @Route("/fileimage/{id}/{property}/{width}/{height}", name="fileimage")
 
         // TODO?: Solve image collection stuff.
         $this->routes['fileimage_image'] = [
             'pattern' => sprintf('%s/%s/{id}/%s/{width}/{height}', $this->routesPrefix, 'show', 'image'),
-            'name' => sprintf('%s%s_%s_%s', $this->routesNamePrefix, $id, $action, 'image'),
-            'entity' => 'StsblBillBoardBundle:EntryImage',
-            'property' => 'image',
+            'name' => sprintf('%s_%s_%s', $id, $action, 'image'),
             'width' => null,
             'height' => null,
             '_controller' => sprintf('IServCoreBundle:FileImage:%s', $action),
             '_iserv_crud' => $id,
         ];
-    }*/
+    }
 
     /**
      * {@inheritdoc}
