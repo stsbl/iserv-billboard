@@ -30,7 +30,7 @@ namespace Stsbl\BillBoardBundle\Security;
  * Privilege container for bill-board
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
- * @license MIT license <https://mit.otg/licenses/MIT>
+ * @license MIT license <https://opensource.org/licenses/MIT>
  */
 final class Privilege
 {

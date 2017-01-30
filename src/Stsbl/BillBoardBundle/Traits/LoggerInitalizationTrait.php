@@ -30,7 +30,7 @@ namespace Stsbl\BillBoardBundle\Traits;
  * Trait with common function to initalize the LoggerTrait from CoreBundle.
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
- * @license MIT license <https://mit.otg/licenses/MIT>
+ * @license MIT license <https://opensource.org/licenses/MIT>
  */
 trait LoggerInitalizationTrait {
     /**
