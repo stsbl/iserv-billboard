@@ -1,6 +1,17 @@
 {# src/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.thtml.twig #}
 {% extends 'IServCrudBundle:Crud:show.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    
+    {% if app.environment != 'prod' %}
+        <!-- {{ _self.templateName }} => billboard.css -->
+    {% endif %}
+    {% stylesheets output='css/compiled/billboard.css' '@StsblBillBoardBundle/Resources/public/css/billboard.less' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
 {% block content %}
     <h1>{{ item.title }}</h1>
     {% block crud_form_actions %}
@@ -37,16 +48,20 @@
                     <h3 class="panel-title">{{ _('Images') }}</h3>
                 </div>
                 <div class="panel-body">
-                    {% set thumbsize = thumbsize|default(75) %}
+                    {% set thumbsize = thumbsize|default(80) %}
                     {% set images = item.images %}
                     {% if images is iterable %}
                         {% for ent in images %}
                             {% spaceless %}
+                                <div class="billboard-image-container">
                                 {% set imageRoute = admin.getRoute('fileimage_images')|default('fileimage') %}
                                 <a data-toggle="modal-image" href="{{ path(imageRoute, {'id': ent.id, 'entity_id': item.id}) }}">
                                     <img src="{{ path(imageRoute, {'id': ent.id, 'entity_id': item.id, 'width': thumbsize, 'height': thumbsize}) }}"
                                     alt="{{ ent }}" class="img-thumbnail" width="{{ thumbsize }}" height="{{ thumbsize }}"/>
                                 </a>
+                                <br />
+                                <span class="text-muted text-secondary"><strong>{{ _('Description')}}:</strong><br />{{ ent.description }}</span>
+                                </div>
                             {% endspaceless %}
                         {% endfor %}
                     {% else %}
