@@ -2,7 +2,9 @@
 {% extends admin.getTemplate('list_field_base') %}
 
 {% block field %}
-    {% if value is iterable %}
+    {% if value is iterable and value|length == 0 %}
+        ({{ _('none') }})
+    {% elseif value is iterable %}
         {{ value|length }}
     {% elseif value is null %}
         -

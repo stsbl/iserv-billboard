@@ -14,7 +14,6 @@ use IServ\CrudBundle\Table\ListHandler;
 use IServ\CrudBundle\Table\Filter;
 use Stsbl\BillBoardBundle\Crud\Batch\HideAction;
 use Stsbl\BillBoardBundle\Crud\Batch\ShowAction;
-use Stsbl\BillBoardBundle\Entity\EntryImage;
 use Stsbl\BillBoardBundle\Security\Privilege;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -128,19 +127,27 @@ class EntryCrud extends AbstractCrud
     public function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('title', null, array('label' => _('Title')))
-            ->add('category', null, array('label' => _('Category')))
-            ->add('author', null, array('label' => _('Author')))
+            ->addIdentifier('title', null, [
+                'label' => _('Title')
+            ])
+            ->add('category', null, [
+                'label' => _('Category'),
+                'responsive' => 'mobile'
+            ])
+            ->add('author', null, [
+                'label' => _('Author')
+            ])
             ->add('time', 'datetime', [
                 'label' => _('Added')
             ])
             ->add('updatedAt', 'datetime', [
-                'label' => _('Last refresh')
+                'label' => _('Last refresh'),
+                'responsive' => 'min-tablet'
             ])
             ->add('images', null, [
                 'label' => _('Images'),
                 'required' => false,
-                'template' => 'IServCrudBundle:List:field_imagecollection.html.twig'
+                'template' => 'StsblBillBoardBundle:List:field_imagecollection.html.twig'
             ])
             ->add('comments', null, [
                 'label' => _('Comments'),
