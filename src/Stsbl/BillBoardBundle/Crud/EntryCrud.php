@@ -5,7 +5,7 @@ namespace Stsbl\BillBoardBundle\Crud;
 use IServ\CrudBundle\Crud\AbstractCrud;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CoreBundle\Form\Type\BooleanType;
-use IServ\CoreBundle\Form\Type\UserType;
+use IServ\CoreBundle\Form\Type\PurifiedTextareaType;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use IServ\CrudBundle\Mapper\FormMapper;
 use IServ\CrudBundle\Mapper\ListMapper;
@@ -15,7 +15,6 @@ use IServ\CrudBundle\Table\Filter;
 use Stsbl\BillBoardBundle\Crud\Batch\HideAction;
 use Stsbl\BillBoardBundle\Crud\Batch\ShowAction;
 use Stsbl\BillBoardBundle\Security\Privilege;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /*
@@ -76,6 +75,7 @@ class EntryCrud extends AbstractCrud
         $this->routesNamePrefix = '';
         $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard';
         $this->templates['crud_add'] = 'StsblBillBoardBundle:Crud:entry_add.html.twig';
+        $this->templates['crud_edit'] = 'StsblBillBoardBundle:Crud:entry_edit.html.twig';
         $this->templates['crud_index'] = 'StsblBillBoardBundle:Crud:entry_index.html.twig';
         $this->templates['crud_show'] = 'StsblBillBoardBundle:Crud:entry_show.html.twig';
     }
@@ -88,6 +88,7 @@ class EntryCrud extends AbstractCrud
         parent::buildRoutes();
         
         $this->routes[self::ACTION_ADD]['_controller'] = 'StsblBillBoardBundle:Entry:add';
+        $this->routes[self::ACTION_EDIT]['_controller'] = 'StsblBillBoardBundle:Entry:edit';
         $this->routes[self::ACTION_INDEX]['_controller'] = 'StsblBillBoardBundle:Entry:index';
         $this->routes[self::ACTION_SHOW]['_controller'] = 'StsblBillBoardBundle:Entry:show';
         
@@ -128,22 +129,24 @@ class EntryCrud extends AbstractCrud
         $listMapper
             ->addIdentifier('title', null, array('label' => _('Title')))
             ->add('category', null, array('label' => _('Category')))
-            ->add('author', UserType::class, array('label' => _('Author')))
-            ->add('time', 'datetime', array('label' => _('Added')))
-            ->add('updatedAt', 'datetime', array('label' => _('Last refresh')))
-            ->add('images', null, array(
+            ->add('author', null, array('label' => _('Author')))
+            ->add('time', 'datetime', [
+                'label' => _('Added')
+            ])
+            ->add('updatedAt', 'datetime', [
+                'label' => _('Last refresh')
+            ])
+            ->add('images', null, [
                 'label' => _('Images'),
                 'required' => false,
                 'template' => 'IServCrudBundle:List:field_imagecollection.html.twig'
-                )
-            )
-            ->add('comments', null, array(
+            ])
+            ->add('comments', null, [
                 'label' => _('Comments'),
                 'responsive' => 'desktop',
                 'required' => false, 
                 'template' => 'StsblBillBoardBundle:List:field_comments.html.twig'
-                )
-            )
+            ])
         ;
     }
 
@@ -153,14 +156,33 @@ class EntryCrud extends AbstractCrud
     public function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('title', null, array('label' => _('Title')))
-            ->add('category', null, array('label' => _('Category')))
-            ->add('author', UserType::class, array('label' => _('Author')))
-            ->add('time', 'datetime', array('label' => _('Date')))
-            ->add('updatedAt', 'datetime', array('label' => _('Last refresh')))
-            ->add('visible', 'boolean', array('label' => _('Visible')))
-            ->add('description', null, array('label' => _('Description')))
-            ->add('images', null, array('label' => _('Images'), 'required' => false, 'template' => 'IServCrudBundle:Show:field_imagecollection.html.twig'));
+            ->add('title', null, [
+                'label' => _('Title')
+            ])
+            ->add('category', null, [
+                'label' => _('Category')
+            ])
+            ->add('author', null, [
+                'label' => _('Author')
+            ])
+            ->add('time', 'datetime', [
+                'label' => _('Date')
+            ])
+            ->add('updatedAt', 'datetime', [
+                'label' => _('Last refresh')
+            ])
+            ->add('visible', 'boolean', [
+                'label' => _('Visible')
+            ])
+            ->add('description', null, [
+                'label' => _('Description'), 
+                'template' => 'StsblBillBoardBundle:List:field_formatted_content.html.twig'
+            ])
+            ->add('images', null, [
+                'label' => _('Images'),
+                'hideIfEmpty' => true,
+                'template' => 'IServCrudBundle:Show:field_imagecollection.html.twig'
+            ]);
         ;
     }
 
@@ -174,39 +196,31 @@ class EntryCrud extends AbstractCrud
         }
         
         $formMapper
-            ->add('title', null, 
-                array(
-                    'label' => _('Title'),
-                    'attr' => array(
-                        'help_text' => _('Name the item that you want to offer in one word, for example »electric guitar«.')
-                    ) 
-                )
-            )
-            ->add('category', null,
-                array(
-                    'label' => _('Category'),
-                    'attr' => array(
-                        'help_text' => _('Select the matching category for your item.')
-                    )
-                )
-            )
-            ->add('visible', BooleanType::class,
-                array(
-                    'label' => _('Visible'),
-                    'attr' => array(
-                        'help_text' => _('If you hide the entry, it is only visible by yourself and people who has the privilege to moderate the bill-board.')
-                    )
-                )
-            )
-            ->add('description', TextareaType::class,
-                array(
-                    'label' => _('Description'), 
-                    'attr' => array(
-                        'rows' => 10,
-                        'help_text' => _('Give a short description of your item.')
-                    )
-                )
-            )
+            ->add('title', null, [
+                'label' => _('Title'),
+                'attr' => [
+                    'help_text' => _('Name the item that you want to offer in one word, for example »electric guitar«.')
+                ]
+            ])
+            ->add('category', null, [
+                'label' => _('Category'),
+                'attr' => [
+                    'help_text' => _('Select the matching category for your item.')
+                ]
+            ])
+            ->add('visible', BooleanType::class, [
+                'label' => _('Visible'),
+                'attr' => [
+                    'help_text' => _('If you hide the entry, it is only visible by yourself and people who has the privilege to moderate the bill-board.')
+                ]
+            ])
+            ->add('description', PurifiedTextareaType::class, [
+                'label' => _('Description'), 
+                'attr' => [
+                    'rows' => 30,
+                    'help_text' => _('Give a short description of your item.')
+                ]
+            ])
         ;
     }
     

@@ -1,4 +1,4 @@
-{# src/Stsbl/BillBoardBundle/Resources/views/List/field_comments.html.twig #}
+{# src/Stsbl/BillBoardBundle/Resources/views/List/field_comment.html.twig #}
 {% extends admin.getTemplate('list_field_base') %}
 
 {% block field %}
@@ -7,6 +7,6 @@
     {% elseif value is null %}
         -
     {% else %}
-        value
+        {{ value }}
     {% endif %}
 {% endblock %}

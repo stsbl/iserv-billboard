@@ -45,8 +45,28 @@ class EntryController extends CrudController
      * 
      * @return mixed
      */
-    public function addAction(Request $request) {
+    public function addAction(Request $request) 
+    {
         $ret = parent::addAction($request);
+        
+        if(is_array($ret)) {
+            $ret['rules'] = AdminController::getCurrentRules();
+        }
+        
+        return $ret;
+    }
+
+    /**
+     * Override default editAction to pass some additional variables to the template
+     * 
+     * @param Request $request
+     * @param integer $id
+     * 
+     * @return mixed
+     */
+    public function editAction(Request $request, $id) 
+    {
+        $ret = parent::editAction($request, $id);
         
         if(is_array($ret)) {
             $ret['rules'] = AdminController::getCurrentRules();
@@ -63,7 +83,8 @@ class EntryController extends CrudController
      * 
      * @return mixed
      */
-    public function showAction(Request $request, $id) {
+    public function showAction(Request $request, $id) 
+    {
         $ret = parent::showAction($request, $id);
         
         if(is_array($ret)) {
