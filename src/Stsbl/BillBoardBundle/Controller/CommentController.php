@@ -3,9 +3,12 @@
 namespace Stsbl\BillBoardBundle\Controller;
 
 use IServ\CoreBundle\Controller\PageController;
+use IServ\CoreBundle\Event\NotificationEvent;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Stsbl\BillBoardBundle\Entity\Entry;
+use Stsbl\BillBoardBundle\Entity\EntryComment;
 use Stsbl\BillBoardBundle\Security\Privilege;
 use Stsbl\BillBoardBundle\Traits\LoggerInitalizationTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -91,6 +94,10 @@ class CommentController extends PageController
         
         $manager->persist($data);
         $manager->flush();
+        
+        // trigger notification event
+        $this->notifyAuthor($entry, $data);
+        
         $this->get('iserv.flash')->success(__('Comment to entry "%s" successful added.', (string)$entry));
         
         return $this->redirect($this->generateUrl('billboard_show', array('id' => $entryid)));
@@ -186,5 +193,35 @@ class CommentController extends PageController
         return $this->isGranted(Privilege::BILLBOARD_CREATE)
             || $this->isGranted(Privilege::BILLBOARD_MODERATE)
             || $this->isGranted(Privilege::BILLBOARD_MANAGE);
+    }
+    
+    /**
+     * Notifies the entry author that there is a new comment
+     * 
+     * @param Entry $entry
+     */
+    private function notifyAuthor(Entry $entry, EntryComment $comment)
+    {
+        $author = $entry->getAuthor();
+        
+        if(is_null($author)) {
+            // no notification, if there is no author (e.g. he is deleted)
+            return;
+        }
+        
+        // don't notify the author himself, for example if he added a comment to his own entry
+        if ($author === $comment->getAuthor()) {
+            return;
+        }
+        
+        $dispatcher = $this->get('event_dispatcher');
+        
+        $dispatcher->dispatch(NotificationEvent::NAME, new NotificationEvent(
+            $author,
+            'billboard',
+            ['New comment on your post: %s commented on %s', (string)$this->getUser(), (string)$entry],
+            'comments',
+            ['billboard_show', ['id' => $entry->getId()]]
+        ));
     }
 }

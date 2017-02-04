@@ -127,6 +127,9 @@ msgstr "Das Hinzufügen neuer Kommentare wurde durch Ihren Administrator deaktiv
 msgid "Hidden"
 msgstr "Versteckt"
 
+msgid "New comment on your post: %s commented on %s"
+msgstr "Neuer Kommentar zu Ihrem Beitrag: %s hat %s kommentiert"
+
 msgid "Comments"
 msgctxt "billboard"
 msgstr "Kommentare"
