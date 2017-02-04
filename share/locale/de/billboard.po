@@ -124,6 +124,9 @@ msgstr "Modul: Schwarzes Brett"
 msgid "The adding of new comments was disabled by your administrator."
 msgstr "Das Hinzufügen neuer Kommentare wurde durch Ihren Administrator deaktiviert."
 
+msgid "Hidden"
+msgstr "Versteckt"
+
 msgid "Comments"
 msgctxt "billboard"
 msgstr "Kommentare"

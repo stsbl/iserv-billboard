@@ -1,14 +1,70 @@
 {# src/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.thtml.twig #}
 {% extends 'IServCrudBundle:Crud:show.html.twig' %}
+
 {% block content %}
-    {{ parent() }}
+    <h1>{{ item.title }}</h1>
+    {% block crud_form_actions %}
+        {{ parent() }}
+    {% endblock %}
+    
+    {% block crud_show %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <p class="text-secondary">
+                    <span title="{{ _('Created') }}">{{ icon('calendar') }} {{ item.time|ldate }}</span> | <span title="{{ _('Last refresh') }}">{{ icon('refresh') }} {{ item.updatedAt|ldate }}</span> | {{ icon('user') }} {{ item.author }} | {{ icon('tag') }} {{ item.category }} | 
+                    <span title="{{ _('Visibility') }}">
+                        {% if item.visible %}
+                            {{ icon('eye-open') }} {{ _('Visible') }}
+                        {% else %}
+                            {{ icon('eye-close') }} {{ _('Hidden') }}
+                        {% endif %}
+                    </span>
+                </p>
+
+                <p>
+                    {{ item.description|raw }}
+                </p>
+            </div>
+        </div>
+    {% endblock crud_show %}
+    {% block entry_images %}
+        {% if item.images|length > 0 %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ _('Images') }}</h3>
+                </div>
+                <div class="panel-body">
+                    {% set thumbsize = thumbsize|default(75) %}
+                    {% set images = item.images %}
+                    {% if images is iterable %}
+                        {% for ent in images %}
+                            {% spaceless %}
+                                {% set imageRoute = admin.getRoute('fileimage_images')|default('fileimage') %}
+                                <a data-toggle="modal-image" href="{{ path(imageRoute, {'id': ent.id, 'entity_id': item.id}) }}">
+                                    <img src="{{ path(imageRoute, {'id': ent.id, 'entity_id': item.id, 'width': thumbsize, 'height': thumbsize}) }}"
+                                    alt="{{ ent }}" class="img-thumbnail" width="{{ thumbsize }}" height="{{ thumbsize }}"/>
+                                </a>
+                            {% endspaceless %}
+                        {% endfor %}
+                    {% else %}
+                        {% if images is null %}
+                            -
+                        {% else %}
+                            {{ images }}
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    {% endblock %}
+    
     {% block entry_comments %}
         <h2>{{ _p('billboard', 'Comments') }}</h2>
         {% if item.comments is empty %}
             <div class="alert alert-info">{{ _('Currently no comments.') }}</div>
         {% else %}
             {% for comment in item.comments %}
-                <div id="billboard-comment-{{ comment.id }}" class="panel panel-default ng-scope">
+                <div id="billboard-comment-{{ comment.id }}" class="panel panel-default">
                     <div class="panel-heading">
                         <strong>{{ comment.title }}</strong> {{ ' ' ~ _("by") ~ ' ' }} {{ icon('user') }}  {{ __("%s at %s", comment.authorDisplay, comment.time|ldatetime) }} <br />
                     </div>

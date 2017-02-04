@@ -14,6 +14,7 @@ use IServ\CrudBundle\Table\ListHandler;
 use IServ\CrudBundle\Table\Filter;
 use Stsbl\BillBoardBundle\Crud\Batch\HideAction;
 use Stsbl\BillBoardBundle\Crud\Batch\ShowAction;
+use Stsbl\BillBoardBundle\Entity\EntryImage;
 use Stsbl\BillBoardBundle\Security\Privilege;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -50,7 +51,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class EntryCrud extends AbstractCrud
 {
     use LoggerTrait;
-    
+
     /**
      * {@inheritdoc}
      */
