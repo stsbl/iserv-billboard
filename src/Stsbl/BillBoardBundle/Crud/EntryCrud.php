@@ -128,11 +128,12 @@ class EntryCrud extends AbstractCrud
     {
         $listMapper
             ->addIdentifier('title', null, [
-                'label' => _('Title')
+                'label' => _('Title'),
+                'responsive' => 'min-mobile'
             ])
             ->add('category', null, [
                 'label' => _('Category'),
-                'responsive' => 'mobile'
+                'responsive' => 'min-mobile'
             ])
             ->add('author', null, [
                 'label' => _('Author')
