@@ -11,7 +11,10 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <p class="text-secondary">
-                    <span title="{{ _('Created') }}">{{ icon('calendar') }} {{ item.time|ldate }}</span> | <span title="{{ _('Last refresh') }}">{{ icon('refresh') }} {{ item.updatedAt|ldate }}</span> | {{ icon('user') }} {{ item.author }} | {{ icon('tag') }} {{ item.category }} | 
+                    <span title="{{ _('Created') }}">{{ icon('calendar') }} {{ item.time|ldate }}</span> | 
+                    <span title="{{ _('Last refresh') }}">{{ icon('refresh') }} {{ item.updatedAt|ldate }}</span> | 
+                    <span title="{{ _('Author') }}">{{ icon('user') }} {{ item.author }}</span> | 
+                    <span title="{{ _('Category') }}">{{ icon('tag') }} {{ item.category }}</span> | 
                     <span title="{{ _('Visibility') }}">
                         {% if item.visible %}
                             {{ icon('eye-open') }} {{ _('Visible') }}

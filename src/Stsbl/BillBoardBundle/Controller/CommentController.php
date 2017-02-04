@@ -204,7 +204,7 @@ class CommentController extends PageController
     {
         $author = $entry->getAuthor();
         
-        if(is_null($author)) {
+        if (is_null($author)) {
             // no notification, if there is no author (e.g. he is deleted)
             return;
         }
