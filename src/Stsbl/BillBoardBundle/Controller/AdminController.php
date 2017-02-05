@@ -7,7 +7,7 @@ use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\BillBoardBundle\Security\Privilege;
-use Stsbl\BillBoardBundle\Traits\LoggerInitalizationTrait;
+use Stsbl\BillBoardBundle\Traits\LoggerInitializationTrait;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,7 +46,7 @@ use Symfony\Component\Security\Core\Exception\RuntimeException;
  */
 class AdminController extends PageController 
 {
-    use LoggerTrait, LoggerInitalizationTrait;
+    use LoggerTrait, LoggerInitializationTrait;
     
     const CONFIGDIR = '/var/lib/stsbl/billboard/cfg/';
     const FILE_RULES = 'rules.cfg';
@@ -190,7 +190,7 @@ class AdminController extends PageController
             throw new RuntimeException('Unknown filename '.$filename.'.');
         }
         
-        $this->initalizeLogger();
+        $this->initializeLogger();
         $this->log($logText);
 
         return $this->redirect($this->generateUrl('manage_billboard'));

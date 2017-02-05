@@ -1,5 +1,5 @@
 <?php
-// src/Stsbl/BillBoardBundle/Traits/LoggerInitalizationTrait.php
+// src/Stsbl/BillBoardBundle/Traits/LoggerInitializationTrait.php
 namespace Stsbl\BillBoardBundle\Traits;
 
 /*
@@ -27,16 +27,16 @@ namespace Stsbl\BillBoardBundle\Traits;
  */
 
 /**
- * Trait with common function to initalize the LoggerTrait from CoreBundle.
+ * Trait with common function to initialize the LoggerTrait from CoreBundle.
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-trait LoggerInitalizationTrait {
+trait LoggerInitializationTrait {
     /**
-     * Initalizes the logger
+     * Initializes the logger
      */
-    protected function initalizeLogger()
+    protected function initializeLogger()
     {  
         // set module context for logging
         $this->logModule = 'Bill-Board';

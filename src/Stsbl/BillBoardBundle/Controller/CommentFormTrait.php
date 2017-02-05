@@ -46,7 +46,7 @@ trait CommentFormTrait
     /**
      * Get comment form for entry with id $id.
      * 
-     * @param int $id entry id
+     * @param integer $id entry id
      * @return \Symfony\Component\Form\Form
      */
     public function getCommentForm($id)
