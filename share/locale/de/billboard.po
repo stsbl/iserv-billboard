@@ -157,6 +157,15 @@ msgstr "Ihr Eintrag wurde geschlossen: %s hat %s geschlossen"
 msgid "Your entry was opened: %s opened %s"
 msgstr "Ihr EIntrag wurde geöffnet: %s hat %s geöffnet"
 
+msgid "Add image"
+msgstr "Bild hinzufügen"
+
+msgid "Send an e-mail to the author"
+msgstr "Eine E-Mail an den Autor senden"
+
+msgid "Entry \"%s\" on the billboard"
+msgstr "Eintrag \"%s\" auf dem schwarzen Brett"
+
 msgid "Comments"
 msgctxt "billboard"
 msgstr "Kommentare"

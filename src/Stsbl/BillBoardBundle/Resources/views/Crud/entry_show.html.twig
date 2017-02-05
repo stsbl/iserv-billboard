@@ -12,6 +12,23 @@
     {% endstylesheets %}
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    
+    {% if app.environment != 'prod' %}
+        <!-- {{ _self }} => mail.compose.js -->
+    {% endif %}
+    <script type="text/javascript" src="{{ asset('components/tinymce-dist/tinymce.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('components/tinymce-dist/jquery.tinymce.min.js') }}"></script>
+    {% if app.request.locale == 'de_DE' %}
+        <script type="text/javascript" src="{{ asset('components/tinymce-i10n/langs/de.js') }}"></script>
+    {% endif %}
+    {% javascripts output='js/compiled/mail.compose.js' filter='?uglifyjs2'
+    '@IServMailBundle/Resources/public/js/pages/compose.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
 {% block content %}
     <h1>{{ item.title }}</h1>
     {% block crud_form_actions %}
@@ -24,7 +41,17 @@
                 <p class="text-secondary">
                     <span title="{{ _('Created') }}">{{ icon('calendar') }} {{ item.time|ldate }}</span> | 
                     <span title="{{ _('Last refresh') }}">{{ icon('refresh') }} {{ item.updatedAt|ldate }}</span> | 
-                    <span title="{{ _('Author') }}">{{ icon('user') }} {{ item.author }}</span> | 
+                    <span title="{{ _('Author') }}">
+                        {{ icon('user') }}
+                        {% if not author_is_deleted %}
+                            <a class="mailto" title="{{ _('Send an e-mail to the author') }}"
+                            href="mailto:{{ item.author.name ~ ' <' ~ item.author.username ~ '@' ~ servername ~ '>?subject=' ~ __('Entry "%s" on the billboard', item.title)|url_encode() }}">
+                                {{ item.author }}
+                            </a>
+                        {% else %}
+                            {{ item.author }}
+                        {% endif %}
+                    </span> | 
                     <span title="{{ _('Category') }}">{{ icon('tag') }} {{ item.category }}</span> | 
                     <span title="{{ _('Visibility') }}">
                         {% if item.visible %}
@@ -74,14 +101,13 @@
                             {{ images }}
                         {% endif %}
                     {% endif %}
-                    {% if isauthor %}
-                        <div class="billboard-image-container billboard-add-container">
-                            <span class="glyphicon glyphicon-plus-sign billboard-icon-add"></span>
-                            <br />
-                            <span class="text-secondary">{{ _('Add') }}</span>
-                        </div>
-                    {% endif %}
                 </div>
+                <div class="panel-footer">
+                    {% if isauthor %}
+                        <div style="clear: both"></div>
+                        <a href="#billboard-add-image" id="billboard-add-image" class="btn-default btn">{{ icon('plus') }}{{ _('Add image') }}</a>
+                    {% endif %}
+                </div>    
             </div>
         {% endif %}
     {% endblock %}

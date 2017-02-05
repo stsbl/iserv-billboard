@@ -103,6 +103,8 @@ class EntryController extends CrudController
             $entry = $er->find($id);
             
             $ret['isauthor'] = $entry->getAuthor() === $this->getUser();
+            $ret['author_is_deleted'] = is_null($entry->getAuthor());
+            $ret['servername'] = $this->get('iserv.config')->get('Servername');
         }
         
         return $ret;
