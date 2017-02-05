@@ -130,6 +130,27 @@ msgstr "Versteckt"
 msgid "New comment on your post: %s commented on %s"
 msgstr "Neuer Kommentar zu Ihrem Beitrag: %s hat %s kommentiert"
 
+msgid "Closed"
+msgstr "Geschlossen"
+
+msgid "This entry is locked, therefor the creation of comments is not longer possible."
+msgstr "Dieser Eintrag ist geschlossen, daher ist das Erstellen von Kommentaren nicht länger möglich."
+
+msgid "Open entry"
+msgstr "Eintrag öffnen"
+
+msgid "Close entry"
+msgstr "Eintrag schließen"
+
+msgid "This entry is closed for any write access."
+msgstr "Dieser Eintrag ist für jeglichen Schreibzugriff geschlossen."
+
+msgid "Entry is now unlocked: %s"
+msgstr "Eintrag ist jetzt geöffnet: %s"
+
+msgid "Entry is now locked: %s"
+msgstr "Eintrag ist jetzt geschlossen: %s"
+
 msgid "Comments"
 msgctxt "billboard"
 msgstr "Kommentare"
