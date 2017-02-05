@@ -3,9 +3,11 @@
 namespace Stsbl\BillBoardBundle\Controller;
 
 use IServ\CrudBundle\Controller\CrudController;
+use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Stsbl\BillBoardBundle\Controller\AdminController;
+use Stsbl\BillBoardBundle\Traits\LoggerInitializationTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 /*
@@ -38,7 +40,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class EntryController extends CrudController
 {
-    use CommentFormTrait;
+    use CommentFormTrait, LoggerInitializationTrait, LoggerTrait;
     
     /**
      * Override default addAction to pass some additional variables to the template
@@ -108,6 +110,8 @@ class EntryController extends CrudController
      */
     public function lockAction(Request $request, $id)
     {
+        $this->initializeLogger();
+        
         /* @var $entry \Stsbl\BillBoardBundle\Entity\Entry */
         $entry = $this->getDoctrine()->getRepository('StsblBillBoardBundle:Entry')->find($id);
         $entry->setClosed(true);
@@ -116,6 +120,7 @@ class EntryController extends CrudController
         $em->persist($entry);
         $em->flush();
         
+        $this->log(sprintf('Eintrag "%s" von %s für Schreibzugriffe gesperrt', (string)$entry, (string)$entry->getAuthor()));
         $this->get('iserv.flash')->success(sprintf(_('Entry is now locked: %s'), (string)$entry));
         
         return $this->redirect($this->generateUrl('billboard_show', ['id' => $id]));
@@ -131,6 +136,8 @@ class EntryController extends CrudController
      */
     public function unlockAction(Request $request, $id)
     {
+        $this->initializeLogger();
+        
         /* @var $entry \Stsbl\BillBoardBundle\Entity\Entry */
         $entry = $this->getDoctrine()->getRepository('StsblBillBoardBundle:Entry')->find($id);
         $entry->setClosed(false);
@@ -139,6 +146,7 @@ class EntryController extends CrudController
         $em->persist($entry);
         $em->flush();
         
+        $this->log(sprintf('Eintrag "%s" von %s für Schreibzugriffe geöffnet', (string)$entry, (string)$entry->getAuthor()));
         $this->get('iserv.flash')->success(sprintf(_('Entry is now unlocked: %s'), (string)$entry));
         
         return $this->redirect($this->generateUrl('billboard_show', ['id' => $id]));

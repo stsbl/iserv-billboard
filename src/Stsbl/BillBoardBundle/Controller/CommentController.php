@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Stsbl\BillBoardBundle\Entity\Entry;
 use Stsbl\BillBoardBundle\Entity\EntryComment;
 use Stsbl\BillBoardBundle\Security\Privilege;
-use Stsbl\BillBoardBundle\Traits\LoggerInitalizationTrait;
+use Stsbl\BillBoardBundle\Traits\LoggerInitializationTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 /*
@@ -45,7 +45,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class CommentController extends PageController 
 {
-    use CommentFormTrait, LoggerTrait, LoggerInitalizationTrait;
+    use CommentFormTrait, LoggerTrait, LoggerInitializationTrait;
     
     /**
      * Adds a comment
