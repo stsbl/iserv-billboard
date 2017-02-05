@@ -3,10 +3,12 @@
 namespace Stsbl\BillBoardBundle\Controller;
 
 use IServ\CrudBundle\Controller\CrudController;
+use IServ\CoreBundle\Event\NotificationEvent;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Stsbl\BillBoardBundle\Controller\AdminController;
+use Stsbl\BillBoardBundle\Entity\Entry;
 use Stsbl\BillBoardBundle\Traits\LoggerInitializationTrait;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -120,6 +122,7 @@ class EntryController extends CrudController
         $em->persist($entry);
         $em->flush();
         
+        $this->notifiyLock($entry);
         $this->log(sprintf('Eintrag "%s" von %s für Schreibzugriffe gesperrt', (string)$entry, (string)$entry->getAuthor()));
         $this->get('iserv.flash')->success(sprintf(_('Entry is now locked: %s'), (string)$entry));
         
@@ -146,9 +149,73 @@ class EntryController extends CrudController
         $em->persist($entry);
         $em->flush();
         
+        $this->notifiyOpen($entry);
         $this->log(sprintf('Eintrag "%s" von %s für Schreibzugriffe geöffnet', (string)$entry, (string)$entry->getAuthor()));
         $this->get('iserv.flash')->success(sprintf(_('Entry is now unlocked: %s'), (string)$entry));
         
         return $this->redirect($this->generateUrl('billboard_show', ['id' => $id]));
     }
+    
+    /**
+     * Notifies the entry author that his post is locked
+     * 
+     * @param Entry $entry
+     * @param string type
+     */
+    private function notifiyLock(Entry $entry)
+    {
+        $author = $entry->getAuthor();
+        
+        if (is_null($author)) {
+            // no notification, if there is no author (e.g. he is deleted)
+            return;
+        }
+        
+        // don't notify the author himself, for example if he locks his own post
+        if ($author === $this->getUser()) {
+            return;
+        }
+        
+        $dispatcher = $this->get('event_dispatcher');
+        
+        $dispatcher->dispatch(NotificationEvent::NAME, new NotificationEvent(
+            $author,
+            'billboard',
+            ['Your entry was locked: %s locked %s', (string)$this->getUser(), (string)$entry],
+            'lock',
+            ['billboard_show', ['id' => $entry->getId()]]
+        ));
+    }
+    
+    /**
+     * Notifies the entry author that his post is opened
+     * 
+     * @param Entry $entry
+     * @param string type
+     */
+    private function notifiyOpen(Entry $entry)
+    {
+        $author = $entry->getAuthor();
+        
+        if (is_null($author)) {
+            // no notification, if there is no author (e.g. he is deleted)
+            return;
+        }
+        
+        // don't notify the author himself, for example if he locks his own post
+        if ($author === $this->getUser()) {
+            return;
+        }
+        
+        $dispatcher = $this->get('event_dispatcher');
+        
+        $dispatcher->dispatch(NotificationEvent::NAME, new NotificationEvent(
+            $author,
+            'billboard',
+            ['Your entry was opened: %s opened %s', (string)$this->getUser(), (string)$entry],
+            'pencil',
+            ['billboard_show', ['id' => $entry->getId()]]
+        ));
+    }
 }
+

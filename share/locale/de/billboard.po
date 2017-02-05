@@ -151,6 +151,12 @@ msgstr "Eintrag ist jetzt geöffnet: %s"
 msgid "Entry is now locked: %s"
 msgstr "Eintrag ist jetzt geschlossen: %s"
 
+msgid "Your entry was locked: %s locked %s"
+msgstr "Ihr Eintrag wurde geschlossen: %s hat %s geschlossen"
+
+msgid "Your entry was opened: %s opened %s"
+msgstr "Ihr EIntrag wurde geöffnet: %s hat %s geöffnet"
+
 msgid "Comments"
 msgctxt "billboard"
 msgstr "Kommentare"
