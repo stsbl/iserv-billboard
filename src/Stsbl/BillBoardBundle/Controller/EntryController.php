@@ -55,7 +55,7 @@ class EntryController extends CrudController
     {
         $ret = parent::addAction($request);
         
-        if(is_array($ret)) {
+        if (is_array($ret)) {
             $ret['rules'] = AdminController::getCurrentRules();
         }
         
@@ -74,7 +74,7 @@ class EntryController extends CrudController
     {
         $ret = parent::editAction($request, $id);
         
-        if(is_array($ret)) {
+        if (is_array($ret)) {
             $ret['rules'] = AdminController::getCurrentRules();
         }
         
@@ -93,10 +93,16 @@ class EntryController extends CrudController
     {
         $ret = parent::showAction($request, $id);
         
-        if(is_array($ret)) {
+        if (is_array($ret)) {
             $ret['comment_form'] = $this->getCommentForm($id)->createView();
             $ret['comments_enabled'] = $this->get('iserv.config')->get('BillBoardEnableComments');
             $ret['moderator'] = $this->crud->isModerator();
+            
+            $er = $this->getDoctrine()->getRepository('StsblBillBoardBundle:Entry');
+            /* @var $entry \Stsbl\BillBoardBundle\Entity\Entry */
+            $entry = $er->find($id);
+            
+            $ret['isauthor'] = $entry->getAuthor() === $this->getUser();
         }
         
         return $ret;

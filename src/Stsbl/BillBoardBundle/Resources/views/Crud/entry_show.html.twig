@@ -5,7 +5,7 @@
     {{ parent() }}
     
     {% if app.environment != 'prod' %}
-        <!-- {{ _self.templateName }} => billboard.css -->
+        <!-- {{ _self }} => billboard.css -->
     {% endif %}
     {% stylesheets output='css/compiled/billboard.css' '@StsblBillBoardBundle/Resources/public/css/billboard.less' filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}" />
@@ -45,7 +45,7 @@
         </div>
     {% endblock crud_show %}
     {% block entry_images %}
-        {% if item.images|length > 0 %}
+        {% if item.images|length > 0 or isauthor %}
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">{{ _('Images') }}</h3>
@@ -73,6 +73,13 @@
                         {% else %}
                             {{ images }}
                         {% endif %}
+                    {% endif %}
+                    {% if isauthor %}
+                        <div class="billboard-image-container billboard-add-container">
+                            <span class="glyphicon glyphicon-plus-sign billboard-icon-add"></span>
+                            <br />
+                            <span class="text-secondary">{{ _('Add') }}</span>
+                        </div>
                     {% endif %}
                 </div>
             </div>

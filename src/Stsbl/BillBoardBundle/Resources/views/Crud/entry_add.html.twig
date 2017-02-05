@@ -21,24 +21,24 @@
     {{ parent() }}
     
     {% if app.environment != 'prod' %}
-	<!-- {{ _self.templateName }} => components/tinymce-dist/tinymce.js -->
+	<!-- {{ _self }} => components/tinymce-dist/tinymce.js -->
     {% endif %}
     <script type="text/javascript" src="{{ asset('components/tinymce-dist/tinymce.js') }}"></script>
     
     {% if app.environment != 'prod' %}
-	<!-- {{ _self.templateName }} => components/tinymce-dist/jquery.tinymce.min.js -->
+	<!-- {{ _self }} => components/tinymce-dist/jquery.tinymce.min.js -->
     {% endif %}
     <script type="text/javascript" src="{{ asset('components/tinymce-dist/jquery.tinymce.min.js') }}"></script>
  
     {% if app.request.locale == 'de_DE' %}
         {% if app.environment != 'prod' %}
-            <!-- {{ _self.templateName }} => components/tinymce-i10n/langs/de.js -->
+            <!-- {{ _self }} => components/tinymce-i10n/langs/de.js -->
         {% endif %}
         <script type="text/javascript" src="{{ asset('components/tinymce-i10n/langs/de.js') }}"></script>
     {% endif %}
     
     {% if app.environment != 'prod' %}
-	<!-- {{ _self.templateName }} => billboard.js -->
+	<!-- {{ _self }} => billboard.js -->
     {% endif %}
     {% javascripts output='js/compiled/billboard.js' filter='?uglifyjs2' '@StsblBillBoardBundle/Resources/public/js/billboard.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
