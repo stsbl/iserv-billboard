@@ -16,7 +16,8 @@ CREATE TABLE billboard (
     author      VARCHAR(255) REFERENCES users(act)
                              ON DELETE SET NULL
                              ON UPDATE CASCADE,
-    visible     BOOLEAN
+    visible     BOOLEAN,
+    closed      BOOLEAN
 );
 
 CREATE TABLE billboard_category (

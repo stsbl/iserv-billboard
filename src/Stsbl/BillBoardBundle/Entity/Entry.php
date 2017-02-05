@@ -100,11 +100,18 @@ class Entry implements CrudInterface
     private $author;
     
     /**
-     * @ORM\Column(name="visible",type="boolean")
+     * @ORM\Column(name="visible", type="boolean")
      * 
      * @var boolean
      */ 
     private $visible;
+    
+    /**
+     * @ORM\Column(name="closed", type="boolean")
+     * 
+     * @var boolean
+     */
+    private $closed;
     
     /**
      * @ORM\OneToMany(targetEntity="EntryImage", mappedBy="entry")
@@ -417,5 +424,77 @@ class Entry implements CrudInterface
     public function getAuthorDisplay()
     {
         return $this->hasValidAuthor() ? $this->getAuthor() : '?';
+    }
+
+    /**
+     * Set closed
+     *
+     * @param boolean $closed
+     *
+     * @return Entry
+     */
+    public function setClosed($closed)
+    {
+        $this->closed = $closed;
+
+        return $this;
+    }
+
+    /**
+     * Get closed
+     *
+     * @return boolean
+     */
+    public function getClosed()
+    {
+        return $this->closed;
+    }
+
+    /**
+     * Add image
+     *
+     * @param EntryImage $image
+     *
+     * @return Entry
+     */
+    public function addImage(EntryImage $image)
+    {
+        $this->images[] = $image;
+
+        return $this;
+    }
+
+    /**
+     * Remove image
+     *
+     * @param EntryImage $image
+     */
+    public function removeImage(EntryImage $image)
+    {
+        $this->images->removeElement($image);
+    }
+
+    /**
+     * Add comment
+     *
+     * @param EntryComment $comment
+     *
+     * @return Entry
+     */
+    public function addComment(EntryComment $comment)
+    {
+        $this->comments[] = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Remove comment
+     *
+     * @param EntryComment $comment
+     */
+    public function removeComment(EntryComment $comment)
+    {
+        $this->comments->removeElement($comment);
     }
 }

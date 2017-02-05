@@ -33,6 +33,9 @@
                             {{ icon('eye-close') }} {{ _('Hidden') }}
                         {% endif %}
                     </span>
+                    {% if item.closed %}
+                        | <span title="{{ _('This entry is closed for any write access.') }}">{{ icon('lock') }} {{ _('Closed') }}</span>
+                    {% endif %}
                 </p>
 
                 <p>
@@ -105,7 +108,9 @@
                     <h3 class="panel-title">{{ _('Add a comment') }}</h3>
                 </div>
                 <div class="panel-body">
-                    {% if comments_enabled %}
+                    {% if not moderator and item.closed %}
+                        <div class="alert alert-warning">{{ _('This entry is locked, therefor the creation of comments is not longer possible.') }}</div>
+                    {% elseif comments_enabled %}
                         {{ form(comment_form, {'style': null}) }}
                     {% else %}
                         <div class="alert alert-warning"> {{ _('The adding of new comments was disabled by your administrator.') }} </div>

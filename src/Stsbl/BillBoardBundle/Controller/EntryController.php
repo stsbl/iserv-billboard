@@ -3,6 +3,8 @@
 namespace Stsbl\BillBoardBundle\Controller;
 
 use IServ\CrudBundle\Controller\CrudController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Stsbl\BillBoardBundle\Controller\AdminController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -79,7 +81,7 @@ class EntryController extends CrudController
      * Override default showAction to pass some additional variables to the template
      * 
      * @param Request $request
-     * @param int $id
+     * @param integer $id
      * 
      * @return mixed
      */
@@ -90,8 +92,55 @@ class EntryController extends CrudController
         if(is_array($ret)) {
             $ret['comment_form'] = $this->getCommentForm($id)->createView();
             $ret['comments_enabled'] = $this->get('iserv.config')->get('BillBoardEnableComments');
+            $ret['moderator'] = $this->crud->isModerator();
         }
         
         return $ret;
+    }
+    
+    /**
+     * Locks an opened entry
+     * 
+     * @param Request $request
+     * @param integer $id
+     * @Route("/billboard/entries/lock/{id}", name="billboard_lock")
+     * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
+     */
+    public function lockAction(Request $request, $id)
+    {
+        /* @var $entry \Stsbl\BillBoardBundle\Entity\Entry */
+        $entry = $this->getDoctrine()->getRepository('StsblBillBoardBundle:Entry')->find($id);
+        $entry->setClosed(true);
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($entry);
+        $em->flush();
+        
+        $this->get('iserv.flash')->success(sprintf(_('Entry is now locked: %s'), (string)$entry));
+        
+        return $this->redirect($this->generateUrl('billboard_show', ['id' => $id]));
+    }
+    
+    /**
+     * Opens an locked entry
+     * 
+     * @param Request $request
+     * @param integer $id
+     * @Route("/billboard/entries/unlock/{id}", name="billboard_unlock")
+     * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
+     */
+    public function unlockAction(Request $request, $id)
+    {
+        /* @var $entry \Stsbl\BillBoardBundle\Entity\Entry */
+        $entry = $this->getDoctrine()->getRepository('StsblBillBoardBundle:Entry')->find($id);
+        $entry->setClosed(false);
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($entry);
+        $em->flush();
+        
+        $this->get('iserv.flash')->success(sprintf(_('Entry is now unlocked: %s'), (string)$entry));
+        
+        return $this->redirect($this->generateUrl('billboard_show', ['id' => $id]));
     }
 }

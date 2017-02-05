@@ -304,6 +304,25 @@ class EntryCrud extends AbstractCrud
         
         return $res;
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getShowActions(CrudInterface $item)
+    {
+        /* @var $item \Stsbl\BillBoardBundle\Entity\Entry */
+        $ret = parent::getShowActions($item);
+        
+        if ($this->isModerator()) {
+            if ($item->getClosed()) {
+                $ret['unlock'] = [$this->getRouter()->generate('billboard_unlock', ['id' => $item->getId()]), _('Open entry'), 'pencil'];
+            } else {
+                $ret['lock'] = [$this->getRouter()->generate('billboard_lock', ['id' => $item->getId()]), _('Close entry'), 'lock'];
+            }
+        }
+        
+        return $ret;
+    }
 
     /**
      * {@inheritdoc}
@@ -364,6 +383,11 @@ class EntryCrud extends AbstractCrud
         
         if (!$this->hasCategories()) {
             return;
+        }
+        
+        // only allow moderators to edit locked entries
+        if ($object->getClosed() && !$this->isModerator()) {
+            return false;
         }
         
         if ($object->getAuthor() === $user &&

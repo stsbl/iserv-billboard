@@ -73,6 +73,10 @@ class CommentController extends PageController
             throw $this->createAccessDeniedException('You don\'t have the permission to add a comment to this entry.');
         }
         
+        if ($entry->getClosed() && !$this->isAllowedToDelete()) {
+            throw $this->createAccessDeniedException('The entry is currently locked for write access. You are not allowed to add a new comment.');
+        }
+        
         $form = $this->getCommentForm($entryid);
         
         $form->handleRequest($request);
