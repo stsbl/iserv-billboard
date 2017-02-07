@@ -110,7 +110,8 @@ class HideAction extends AbstractBatchAction
      * @param CrudInterface $entry
      * @param UserInterface $user
      */
-    public function isAllowedToExecute(CrudInterface $entry, UserInterface $user) {
+    public function isAllowedToExecute(CrudInterface $entry, UserInterface $user)
+    {
         if (!$this->crud->isModerator()) {
             if ($this->crud->getUser() !== $entry->getAuthor()) {
                 return false;
