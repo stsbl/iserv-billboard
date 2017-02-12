@@ -4,13 +4,18 @@ namespace Stsbl\BillBoardBundle\Controller;
 
 use IServ\CrudBundle\Controller\CrudController;
 use IServ\CoreBundle\Event\NotificationEvent;
+use IServ\CoreBundle\Form\Type\ImageType;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Stsbl\BillBoardBundle\Controller\AdminController;
 use Stsbl\BillBoardBundle\Entity\Entry;
+use Stsbl\BillBoardBundle\Entity\EntryImage;
 use Stsbl\BillBoardBundle\Traits\LoggerInitializationTrait;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /*
  * The MIT License
@@ -45,7 +50,7 @@ class EntryController extends CrudController
     use CommentFormTrait, LoggerInitializationTrait, LoggerTrait;
     
     /**
-     * Override default addAction to pass some additional variables to the template
+     * Overrides default addAction to pass some additional variables to the template
      * 
      * @param Request $request
      * 
@@ -63,7 +68,7 @@ class EntryController extends CrudController
     }
 
     /**
-     * Override default editAction to pass some additional variables to the template
+     * Overrides default editAction to pass some additional variables to the template
      * 
      * @param Request $request
      * @param integer $id
@@ -82,7 +87,7 @@ class EntryController extends CrudController
     }
 
     /**
-     * Override default showAction to pass some additional variables to the template
+     * Overrides default showAction to pass some additional variables to the template
      * 
      * @param Request $request
      * @param integer $id
@@ -91,10 +96,13 @@ class EntryController extends CrudController
      */
     public function showAction(Request $request, $id) 
     {
+        $this->handleImageUploadForm($request, $id);
+        
         $ret = parent::showAction($request, $id);
         
         if (is_array($ret)) {
             $ret['commentForm'] = $this->getCommentForm($id)->createView();
+            $ret['imageUploadForm'] = $this->getImageUploadForm($id)->createView();
             $ret['commentsEnabled'] = $this->get('iserv.config')->get('BillBoardEnableComments');
             $ret['moderator'] = $this->crud->isModerator();
             
@@ -135,6 +143,71 @@ class EntryController extends CrudController
         $this->get('iserv.flash')->success(sprintf(_('Entry is now locked: %s'), (string)$entry));
         
         return $this->redirect($this->generateUrl('billboard_show', ['id' => $id]));
+    }
+    
+    /**
+     * Create form for image upload
+     * 
+     * @param integer $entryId
+     * @return \Symfony\Component\Form\Form
+     */
+    private function getImageUploadForm($entryId)
+    {
+        $er = $this->getDoctrine()->getRepository('StsblBillBoardBundle:Entry');
+        $entry = $er->find($entryId);
+        
+        $entryImage = new EntryImage();
+        $entryImage->setAuthor($this->getUser());
+        $entryImage->setEntry($entry);
+        
+        $builder = $this->createFormBuilder($entryImage);
+        
+        $builder
+            ->add('image', ImageType::class, [
+                'label' => _('Image'),
+                'constraints' => [new NotBlank(['message' => _('Image should not be empty.')])]
+            ])
+            ->add('description', TextType::class, [
+                'label' => _('Description'),
+                'required' => false
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => _('Upload'),
+                'buttonClass' => 'btn-success',
+                'icon' => 'pro-upload'
+            ])
+        ;
+        
+        return $builder->getForm();
+    }
+    
+    /**
+     * Handles submitted image upload form
+     * 
+     * @param Request $request
+     * @param integer $entryId
+     */
+    private function handleImageUploadForm(Request $request, $entryId)
+    {
+        $form = $this->getImageUploadForm($entryId);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            /* @var $data EntryImage */
+            $data = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+            
+            if (!$this->crud->isAllowedToEdit($data->getEntry(), $this->getUser())) {
+                throw $this->createAccessDeniedException('You are not allowed to add an image to this post.');
+            }
+            
+            $em->persist($data);
+            $em->flush();
+            
+            $this->get('iserv.flash')->success(_('Image was uploaded successfully.'));
+        } else if ($form->isSubmitted()) {
+            $this->get('iserv.flash')->error((string)$form->getErrors());
+        }
     }
     
     /**

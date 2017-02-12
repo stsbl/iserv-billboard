@@ -80,7 +80,7 @@
                 <div class="panel-body">
                     {% set thumbsize = thumbsize|default(80) %}
                     {% set images = item.images %}
-                    {% if images is iterable %}
+                    {% if images is iterable and images|length > 0 %}
                         {% for ent in images %}
                             {% spaceless %}
                                 <div class="billboard-image-container">
@@ -90,20 +90,27 @@
                                     alt="{{ ent }}" class="img-thumbnail" width="{{ thumbsize }}" height="{{ thumbsize }}"/>
                                 </a>
                                 <br />
-                                <span class="text-muted text-secondary"><strong>{{ _('Description')}}:</strong><br />{{ ent.description }}</span>
+                                {% if ent.description|length > 0 %}
+                                    <span class="text-muted text-secondary"><strong>{{ _('Description')}}:</strong><br />{{ ent.description }}</span>
+                                {% endif %}
+                                
+                                {% if admin.isAllowedToEdit(item, app.user) %}
+                                    <br />
+                                    <a href="#delete-image" data-image-id="{{ ent.id }}" class="billboard-delete-image btn-xs btn-default">{{ icon('remove-circle') }}{{ _('Delete') }}</a>
+                                {% endif %}
                                 </div>
                             {% endspaceless %}
                         {% endfor %}
-                    {% else %}
-                        {% if images is null %}
-                            -
+                    {% elseif images is iterable and images|length == 0 %}
+                        {% if item.closed and not admin.isModerator(app.user) %}
+                            <span class="text-muted">{{ _('You can not add further images to this post, because it is closed.') }}</span>
                         {% else %}
-                            {{ images }}
+                            <span class="text-muted">{{  _('This post has currently no images. To add one, click "Add image" below.') }}</span>
                         {% endif %}
                     {% endif %}
                 </div>
                 <div class="panel-footer">
-                    {% if isAuthor %}
+                    {% if isAuthor and (not item.closed or admin.isModerator(app.user)) %}
                         <div style="clear: both"></div>
                         <a href="#billboard-add-image" id="billboard-add-image" data-id="billboard-add-image" data-toggle="modal" data-target="#image-upload-container" class="btn-default btn">{{ icon('plus') }}{{ _('Add image') }}</a>
                     {% endif %}
@@ -153,7 +160,7 @@
         {% endif %}
     {% endblock  %}
     {% block entry_modal_image_upload %}
-    {% if isAuthor %}
+    {% if isAuthor and (not item.closed or admin.isModerator(app.user)) %}
     <div id="image-upload-container" class="modal" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
@@ -164,7 +171,7 @@
                 </div>
                 <div class="modal-body">
                     <p>{{ _("Upload a new image.") }}</p>
-                    {# {{ form(jobUploadForm, { 'style': 'inline', 'attr': {'id': 'file-upload'}}) }} #}
+                    {{ form(imageUploadForm, { 'style': 'inline', 'attr': { 'id': 'image-upload' } }) }}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">{{ icon('remove') }} {{ _('Close') }}</button>
