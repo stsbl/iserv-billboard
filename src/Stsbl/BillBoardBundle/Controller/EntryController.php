@@ -319,6 +319,11 @@ class EntryController extends CrudController
                 $em->remove($image);
                 $em->flush();
                 
+                // log moderative actions
+                if ($image->getEntry()->getAuthor() !== $this->getUser()) {
+                    $this->get('iserv.logger')->writeForModule(sprintf('Moderatives Löschen des Bildes "%s" von Beitrag "%s" von %s"', (string)$image->getImage(), (string)$image->getEntry(), (string)$image->getEntry()->getAuthor()), 'Bill-Board');
+                }
+                
                 $this->get('iserv.flash')->success(__('Image "%s" was deleted successfully.', $image->getImage()->getFileName()));
                 
                 return true;
