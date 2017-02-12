@@ -166,6 +166,32 @@ msgstr "Eine E-Mail an den Autor senden"
 msgid "Entry \"%s\" on the billboard"
 msgstr "Eintrag \"%s\" auf dem schwarzen Brett"
 
+msgid "Add a new image to this entry"
+msgstr "Ein neues Bild zum diesem Eintrag hinzufügen"
+
+msgid "Upload a new image."
+msgstr "Ein neues Bild hochladen."
+
+msgid "You can not add further images to this entry, because it is closed."
+msgstr "Sie können keine weiteren Bilder zum diesem Eintrag hinzufügen, da er geschlossen wurde."
+
+msgid "This entry currently has no images. To add one, click \"Add image\" below."
+msgstr "Dieser Eintrag hat derzeit keine Bilder. Um eines hinzuzufügen, klicken Sie unten auf \"Bild hinzufügen\"."
+
+msgid "Image \"%s\" was uploaded successfully."
+msgstr "Bild \"%s\" wurde erfolgreich hochgeladen."
+
+msgid "Image \"%s\" was deleted successfully."
+msgstr "Bild \"%s\" wurde erfolgreich gelöscht."
+
+msgid "Rules updated successfully."
+msgstr "Regeln erfolgreich aktualisiert."
+
+# Translations with context
 msgid "Comments"
 msgctxt "billboard"
 msgstr "Kommentare"
+
+msgid "Do you really want to delete the image?"
+msgctxt "billboard"
+msgstr "Möchten Sie das Bild wirklich löschen?"

@@ -1,0 +1,7 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Do you really want to delete the image \"{0}\" from entry \"{1}\"?"
+msgstr "Möchten Sie das Bild \"{0}\" vom Eintrag \"{1}\" wirklich löschen?"
