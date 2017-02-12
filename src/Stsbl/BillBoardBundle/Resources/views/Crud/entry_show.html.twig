@@ -86,9 +86,9 @@
                         {% endfor %}
                     {% elseif images is iterable and images|length == 0 %}
                         {% if item.closed and not admin.isModerator(app.user) %}
-                            <span class="text-muted">{{ _('You can not add further images to this post, because it is closed.') }}</span>
+                            <span class="text-muted">{{ _('You can not add further images to this entry, because it is closed.') }}</span>
                         {% else %}
-                            <span class="text-muted">{{  _('This post has currently no images. To add one, click "Add image" below.') }}</span>
+                            <span class="text-muted">{{  _('This entry currently has no images. To add one, click "Add image" below.') }}</span>
                         {% endif %}
                     {% endif %}
                 </div>
@@ -150,7 +150,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">{{ _('Add a new image to this post') }}</h4>
+                    <h4 class="modal-title">{{ _('Add a new image to this entry') }}</h4>
                 </div>
                 <div class="modal-body">
                     <p>{{ _("Upload a new image.") }}</p>
@@ -175,7 +175,7 @@
                             <h4 class="modal-title">{{ _('Delete image') }}</h4>
                         </div>
                         <div class="modal-body">
-                            <p id="image-delete-confirm-question">{{ _("Do you really want to delete the image?") }}</p>
+                            <p id="image-delete-confirm-question">{{ _p("billboard", "Do you really want to delete the image?") }}</p>
                             {{ form(imageDeleteConfirmForm, { 'style': 'inline', 'attr': { 'id': 'image-delete-confirm' } }) }}
                         </div>
                     </div>

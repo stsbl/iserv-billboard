@@ -362,9 +362,7 @@ class EntryCrud extends AbstractCrud
     {
         $links = parent::getIndexActions();
         
-        $links['images'] = array($this->getRouter()->generate('billboard_entryimage_index'), _('Images'), 'picture');
-        
-        // only add category, if user has managemant privilege
+        // only add category, if user has management privilege
         if ($this->isGranted(Privilege::BILLBOARD_MANAGE)) {
             $links['categories'] = array($this->getRouter()->generate('manage_billboard_category_index'), _('Categories'), 'tags');
         }

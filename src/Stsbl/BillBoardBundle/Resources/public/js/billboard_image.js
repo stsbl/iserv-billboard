@@ -27,7 +27,7 @@ IServ.BillBoard.Image = IServ.register(function (IServ) {
     {
         var imageName = e.attr('data-image-name');
         var entryTitle = e.attr('data-image-entry-title');
-        var question = __('Do you really want to delete the image "{0}" from post "{1}"?', imageName, entryTitle);
+        var question = __('Do you really want to delete the image "{0}" from entry "{1}"?', imageName, entryTitle);
         
         $('#image-delete-confirm-question').text(question);
         $('#image_delete_confirm_image_id').attr('value', e.attr('data-image-id'));

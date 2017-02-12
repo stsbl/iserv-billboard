@@ -21,9 +21,3 @@ services:
             - { name: iserv.crud } # Tells IServ about our CRUD
         calls:
             - [ setLogger, ["@iserv.logger"]]
-    
-    stsbl.crud.billboard.entryimage:
-        class: Stsbl\BillBoardBundle\Crud\EntryImageCrud # Our CRUD class
-        arguments: [Stsbl\BillBoardBundle\Entity\EntryImage] # Sets the controlled entity class
-        tags:
-            - { name: iserv.crud } # Tells IServ about our CRUD

@@ -56,7 +56,6 @@ class EntryController extends CrudController
      * Overrides default addAction to pass some additional variables to the template
      * 
      * @param Request $request
-     * 
      * @return mixed
      */
     public function addAction(Request $request) 
@@ -75,7 +74,6 @@ class EntryController extends CrudController
      * 
      * @param Request $request
      * @param integer $id
-     * 
      * @return mixed
      */
     public function editAction(Request $request, $id) 
@@ -94,7 +92,6 @@ class EntryController extends CrudController
      * 
      * @param Request $request
      * @param integer $id
-     * 
      * @return mixed
      */
     public function showAction(Request $request, $id) 
@@ -231,7 +228,7 @@ class EntryController extends CrudController
             $em = $this->getDoctrine()->getManager();
             
             if (!$this->crud->isAuthor($data->getEntry())) {
-                throw $this->createAccessDeniedException('You are not allowed to add an image to this post.');
+                throw $this->createAccessDeniedException('You are not allowed to add an image to this entry.');
             }
             
             $em->persist($data);
@@ -312,7 +309,7 @@ class EntryController extends CrudController
                 }
                 
                 if (!$this->crud->isAllowedToEdit($image->getEntry(), $this->getUser())) {
-                    throw $this->createAccessDeniedException('You are not allowed to delete images of this post.');
+                    throw $this->createAccessDeniedException('You are not allowed to delete images of this entry.');
                 }
                 
                 $em = $this->getDoctrine()->getManager();

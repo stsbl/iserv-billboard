@@ -193,6 +193,7 @@ class AdminController extends PageController
         $this->initializeLogger();
         $this->log($logText);
 
+        $this->get('iserv.flash')->success(_('Rules updated successfully.'));
         return $this->redirect($this->generateUrl('manage_billboard'));
     }
     
