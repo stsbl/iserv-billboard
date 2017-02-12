@@ -35,7 +35,7 @@ stsbl-iserv-billboard (17.02.13-0) experimental; urgency=medium
   * Updated l10n.
   * Generalized form help texts.
 
-  iserv: Das neue Update enthält diverse Verbesserungen: Die Anzeige der Einträge wurde überarbeitet, die Meta-Daten werden verbessert angezeigt. Die Bilder können nun direkt in der Eintragsansischt hochgeladen und gelöscht werden. Für das Formatieren der Einträge ist nun ein Editor integriert, der gängige Textformatierungen erlaubt. Der Autor kann nun mit dem Klick auf seinen Namen direkt per E-Mail kontaktiert werden, es öffnet sich ein Formular für die E-Mail, mit entsprechend vorausgefüllten Empfänger und Betreff. Benutzer mit Moderationsrecht können Einträge, zum Beispiel weil Diskussionen dort ausarten, nun für Schreibzugriff sperren.
+  iserv: Das neue Update enthält diverse Verbesserungen: Die Anzeige der Einträge wurde überarbeitet, die Meta-Daten werden verbessert angezeigt. Die Bilder können nun direkt in der Eintragsansischt hochgeladen und gelöscht werden. Für das Formatieren der Einträge ist nun ein Editor integriert, der gängige Textformatierungen erlaubt. Der Autor kann nun mit dem Klick auf seinen Namen direkt per E-Mail kontaktiert werden, es öffnet sich ein Formular für die E-Mail, mit entsprechend vorausgefüllten Empfänger und Betreff. Benutzer mit Moderationsrecht können Einträge, zum Beispiel weil Diskussionen dort ausarten, nun für Schreibzugriff sperren. Benutzer werden bei neuen Kommentaren zu ihren Einträgen nun per IServ-Benachrichtigung informiert.
   
  -- Stadtteilschule Blankenese <repository@stsbl.de>  Mon, 13 Feb 2017 00:20:56 +0100
 
