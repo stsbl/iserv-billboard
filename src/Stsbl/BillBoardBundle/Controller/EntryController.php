@@ -94,16 +94,16 @@ class EntryController extends CrudController
         $ret = parent::showAction($request, $id);
         
         if (is_array($ret)) {
-            $ret['comment_form'] = $this->getCommentForm($id)->createView();
-            $ret['comments_enabled'] = $this->get('iserv.config')->get('BillBoardEnableComments');
+            $ret['commentForm'] = $this->getCommentForm($id)->createView();
+            $ret['commentsEnabled'] = $this->get('iserv.config')->get('BillBoardEnableComments');
             $ret['moderator'] = $this->crud->isModerator();
             
             $er = $this->getDoctrine()->getRepository('StsblBillBoardBundle:Entry');
             /* @var $entry \Stsbl\BillBoardBundle\Entity\Entry */
             $entry = $er->find($id);
             
-            $ret['isauthor'] = $entry->getAuthor() === $this->getUser();
-            $ret['author_is_deleted'] = is_null($entry->getAuthor());
+            $ret['isAuthor'] = $entry->getAuthor() === $this->getUser();
+            $ret['authorIsDeleted'] = is_null($entry->getAuthor());
             $ret['servername'] = $this->get('iserv.config')->get('Servername');
         }
         

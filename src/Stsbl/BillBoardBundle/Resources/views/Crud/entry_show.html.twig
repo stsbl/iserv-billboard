@@ -43,7 +43,7 @@
                     <span title="{{ _('Last refresh') }}">{{ icon('refresh') }} {{ item.updatedAt|ldate }}</span> | 
                     <span title="{{ _('Author') }}">
                         {{ icon('user') }}
-                        {% if not author_is_deleted %}
+                        {% if not authorIsDeleted %}
                             <a class="mailto" title="{{ _('Send an e-mail to the author') }}"
                             href="mailto:{{ item.author.name ~ ' <' ~ item.author.username ~ '@' ~ servername ~ '>?subject=' ~ __('Entry "%s" on the billboard', item.title)|url_encode() }}">
                                 {{ item.author }}
@@ -72,7 +72,7 @@
         </div>
     {% endblock crud_show %}
     {% block entry_images %}
-        {% if item.images|length > 0 or isauthor %}
+        {% if item.images|length > 0 or isAuthor %}
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">{{ _('Images') }}</h3>
@@ -103,7 +103,7 @@
                     {% endif %}
                 </div>
                 <div class="panel-footer">
-                    {% if isauthor %}
+                    {% if isAuthor %}
                         <div style="clear: both"></div>
                         <a href="#billboard-add-image" id="billboard-add-image" data-id="billboard-add-image" data-toggle="modal" data-target="#image-upload-container" class="btn-default btn">{{ icon('plus') }}{{ _('Add image') }}</a>
                     {% endif %}
@@ -125,7 +125,7 @@
                     <div class="panel-body">
                         {{ comment.content }}
                     </div>
-                    {% if is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE') %}
+                    {% if admin.isModerator(app.user) %}
                         <div class="panel-footer">
                             <a class="btn btn-default" href="{{ path('billboard_comment_delete_confirm', {'id': comment.id}) }}">{{ icon('remove-circle') }}{{ _('Delete') }}</a>
                         </div>
@@ -135,16 +135,16 @@
         {% endif %}
     {% endblock %} 
     {% block entry_add_comment %}
-        {% if is_granted('PRIV_BILLBOARD_CREATE') or is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE') %}
+        {% if admin.isAllowedToAdd(app.user) %}
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">{{ _('Add a comment') }}</h3>
                 </div>
                 <div class="panel-body">
-                    {% if not moderator and item.closed %}
+                    {% if not admin.isModerator(app.user) and item.closed %}
                         <div class="alert alert-warning">{{ _('This entry is locked, therefor the creation of comments is not longer possible.') }}</div>
-                    {% elseif comments_enabled %}
-                        {{ form(comment_form, {'style': null}) }}
+                    {% elseif commentsEnabled and admin.isAllowedToAdd(app.user) %}
+                        {{ form(commentForm, {'style': null}) }}
                     {% else %}
                         <div class="alert alert-warning"> {{ _('The adding of new comments was disabled by your administrator.') }} </div>
                     {% endif %}
@@ -152,13 +152,15 @@
             </div>
         {% endif %}
     {% endblock  %}
+    {% block entry_modal_image_upload %}
+    {% if isAuthor %}
     <div id="image-upload-container" class="modal" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">{{ _('Upload file') }}</h4>
+                    <h4 class="modal-title">{{ _('Add a new image to this post') }}</h4>
                 </div>
                 <div class="modal-body">
                     <p>{{ _("Upload a new image.") }}</p>
@@ -170,4 +172,6 @@
             </div>
         </div>
     </div>
+    {% endif %}
+    {% endblock %}
 {% endblock %}
