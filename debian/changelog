@@ -1,3 +1,44 @@
+stsbl-iserv-billboard (17.02.13-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Fixed l10n.
+  * Use RuntimeException from PHP Platform.
+  * Fixed route generation (except EntryImageCrud which is currently totally broken).
+  * Almost fixed route logic stuff.
+  * Fixed mixing of iservchk script with the one of mail-send-as-group.
+  * Fixed copyright header.
+  * Added support for formatted descriptions.
+  * Reworked show layout.
+  * Improved handling of no images in list.
+  * Improved responsive of EntryCrud.
+  * Add notifications on new comments.
+  * Added tooltips to all metai data in show.
+  * Improved image view: Description is now shown.
+  * Added support for post lockíng.
+  * Updated l10n.
+  * Fixed typo.
+  * Log locking/unlocking of entries.
+  * Added notifications on closing and opening posts.
+  * Replace deprecated _self.templateName with _self. 
+  * Added basics for add button.
+  * Updated add button for images. 
+  * Added option to contact author directly from entry.
+  * Syntax improvements.
+  * Added upload image dialog.
+  * Unified lock and unlock icon in show actions.
+  * Improved privilege check in template.
+  * Implemented upload form.
+  * Added image deletion from show action.
+  * Unified privilege handling.
+  * Log moderative deletions of images.
+  * Removed EntryImageCrud.
+  * Updated l10n.
+  * Generalized form help texts.
+
+  iserv: Das neue Update enthält diverse Verbesserungen: Die Anzeige der Einträge wurde überarbeitet, die Meta-Daten werden verbessert angezeigt. Die Bilder können nun direkt in der Eintragsansischt hochgeladen und gelöscht werden. Für das Formatieren der Einträge ist nun ein Editor integriert, der gängige Textformatierungen erlaubt. Der Autor kann nun mit dem Klick auf seinen Namen direkt per E-Mail kontaktiert werden, es öffnet sich ein Formular für die E-Mail, mit entsprechend vorausgefüllten Empfänger und Betreff. Benutzer mit Moderationsrecht können Einträge, zum Beispiel weil Diskussionen dort ausarten, nun für Schreibzugriff sperren.
+  
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Mon, 13 Feb 2017 00:20:56 +0100
+
 stsbl-iserv-billboard (17.01.06-1) experimental; urgency=medium
 
   [ Felix Jacobi ]
