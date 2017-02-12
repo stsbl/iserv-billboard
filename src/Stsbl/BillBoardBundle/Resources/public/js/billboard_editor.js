@@ -22,9 +22,7 @@
  * THE SOFTWARE.
  */
 
-IServ.Billboard = {};
-
-IServ.Billboard.Editor = IServ.register(function(IServ) {
+IServ.BillBoard.Editor = IServ.register(function(IServ) {
     
     function initialize(scope)
     {

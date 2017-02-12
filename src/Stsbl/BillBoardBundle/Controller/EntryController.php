@@ -2,6 +2,8 @@
 // src/Stsbl/BillBoardBundle/Controller/EntryController.php
 namespace Stsbl\BillBoardBundle\Controller;
 
+use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use Doctrine\ORM\NoResultException;
 use IServ\CrudBundle\Controller\CrudController;
 use IServ\CoreBundle\Event\NotificationEvent;
 use IServ\CoreBundle\Form\Type\ImageType;
@@ -12,6 +14,7 @@ use Stsbl\BillBoardBundle\Controller\AdminController;
 use Stsbl\BillBoardBundle\Entity\Entry;
 use Stsbl\BillBoardBundle\Entity\EntryImage;
 use Stsbl\BillBoardBundle\Traits\LoggerInitializationTrait;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
@@ -96,13 +99,16 @@ class EntryController extends CrudController
      */
     public function showAction(Request $request, $id) 
     {
-        $this->handleImageUploadForm($request, $id);
+        if ($this->handleImageUploadForm($request, $id) || $this->handleDeleteConfirmForm($request)) {
+            return $this->redirectToRoute('billboard_show', ['id' => $id]);
+        }   
         
         $ret = parent::showAction($request, $id);
         
         if (is_array($ret)) {
             $ret['commentForm'] = $this->getCommentForm($id)->createView();
             $ret['imageUploadForm'] = $this->getImageUploadForm($id)->createView();
+            $ret['imageDeleteConfirmForm'] = $this->getDeleteConfirmForm()->createView();
             $ret['commentsEnabled'] = $this->get('iserv.config')->get('BillBoardEnableComments');
             $ret['moderator'] = $this->crud->isModerator();
             
@@ -141,6 +147,33 @@ class EntryController extends CrudController
         $this->notifiyLock($entry);
         $this->log(sprintf('Eintrag "%s" von %s für Schreibzugriffe gesperrt', (string)$entry, (string)$entry->getAuthor()));
         $this->get('iserv.flash')->success(sprintf(_('Entry is now locked: %s'), (string)$entry));
+        
+        return $this->redirect($this->generateUrl('billboard_show', ['id' => $id]));
+    }
+    
+    /**
+     * Opens an locked entry
+     * 
+     * @param Request $request
+     * @param integer $id
+     * @Route("/billboard/entries/unlock/{id}", name="billboard_unlock")
+     * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
+     */
+    public function unlockAction(Request $request, $id)
+    {
+        $this->initializeLogger();
+        
+        /* @var $entry \Stsbl\BillBoardBundle\Entity\Entry */
+        $entry = $this->getDoctrine()->getRepository('StsblBillBoardBundle:Entry')->find($id);
+        $entry->setClosed(false);
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($entry);
+        $em->flush();
+        
+        $this->notifiyOpen($entry);
+        $this->log(sprintf('Eintrag "%s" von %s für Schreibzugriffe geöffnet', (string)$entry, (string)$entry->getAuthor()));
+        $this->get('iserv.flash')->success(sprintf(_('Entry is now unlocked: %s'), (string)$entry));
         
         return $this->redirect($this->generateUrl('billboard_show', ['id' => $id]));
     }
@@ -186,6 +219,7 @@ class EntryController extends CrudController
      * 
      * @param Request $request
      * @param integer $entryId
+     * @return boolean
      */
     private function handleImageUploadForm(Request $request, $entryId)
     {
@@ -204,37 +238,101 @@ class EntryController extends CrudController
             $em->persist($data);
             $em->flush();
             
-            $this->get('iserv.flash')->success(_('Image was uploaded successfully.'));
+            $this->get('iserv.flash')->success(__('Image "%s" was uploaded successfully.', $data->getImage()->getFileName()));
+            
+            return true;
         } else if ($form->isSubmitted()) {
             $this->get('iserv.flash')->error((string)$form->getErrors());
+            
+            return true;
+        } else {
+            return false;
         }
     }
     
     /**
-     * Opens an locked entry
+     * Create confirm form for image deletion
+     * 
+     * @return \Symfony\Component\Form\Form
+     */
+    private function getDeleteConfirmForm()
+    {
+        /* @var $builder \Symfony\Component\Form\FormBuilder */
+        $builder = $this->get('form.factory')->createNamedBuilder('image_delete_confirm');
+        
+        $builder
+            ->add('image_id', HiddenType::class, [
+                'constraints' => [new NotBlank()],
+                'attr' => [
+                    'value' => 0
+                ]
+            ])
+            ->add('submit', FormActionsType::class)
+        ;
+        
+        $submit = $builder->get('submit');
+            
+        $submit
+            ->add('approve', SubmitType::class, [
+                'label' => _('Delete'),
+                'buttonClass' => 'btn-danger',
+                'icon' => 'ok'
+            ])
+            ->add('cancel', SubmitType::class, [
+                'label' => _('Cancel'),
+                'buttonClass' => 'btn-default',
+                'icon' => 'remove',
+                'attr' => [
+                    'data-dismiss' => 'modal'
+                ]
+            ])
+        ;
+        
+        return $builder->getForm();
+    }
+    
+    /**
+     * Handles submitted image delete confirm form
      * 
      * @param Request $request
-     * @param integer $id
-     * @Route("/billboard/entries/unlock/{id}", name="billboard_unlock")
-     * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
+     * @return boolan
      */
-    public function unlockAction(Request $request, $id)
+    private function handleDeleteConfirmForm(Request $request)
     {
-        $this->initializeLogger();
+        $form = $this->getDeleteConfirmForm();
+        $form->handleRequest($request);
         
-        /* @var $entry \Stsbl\BillBoardBundle\Entity\Entry */
-        $entry = $this->getDoctrine()->getRepository('StsblBillBoardBundle:Entry')->find($id);
-        $entry->setClosed(false);
-        
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($entry);
-        $em->flush();
-        
-        $this->notifiyOpen($entry);
-        $this->log(sprintf('Eintrag "%s" von %s für Schreibzugriffe geöffnet', (string)$entry, (string)$entry->getAuthor()));
-        $this->get('iserv.flash')->success(sprintf(_('Entry is now unlocked: %s'), (string)$entry));
-        
-        return $this->redirect($this->generateUrl('billboard_show', ['id' => $id]));
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->getClickedButton()->getName() === 'approve') {
+                $er = $this->getDoctrine()->getRepository('StsblBillBoardBundle:EntryImage');
+                /* @var $image \Stsbl\BillBoardBundle\Entity\EntryImage */
+                $image = $er->find($form->getData()['image_id']);
+                
+                if ($image === null) {
+                    throw new NoResultException();
+                }
+                
+                if (!$this->crud->isAllowedToEdit($image->getEntry(), $this->getUser())) {
+                    throw $this->createAccessDeniedException('You are not allowed to delete images of this post.');
+                }
+                
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($image);
+                $em->flush();
+                
+                $this->get('iserv.flash')->success(__('Image "%s" was deleted successfully.', $image->getImage()->getFileName()));
+                
+                return true;
+            } else {
+                return false;
+            }
+        } else if ($form->isSubmitted()) {
+            $this->get('iserv.flash')->error((string)$form->getErrors());
+            
+            return true;
+        } else {
+            return false;
+        }
     }
     
     /**
@@ -299,4 +397,3 @@ class EntryController extends CrudController
         ));
     }
 }
-

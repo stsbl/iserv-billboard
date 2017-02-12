@@ -12,23 +12,6 @@
     {% endstylesheets %}
 {% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    
-    {% if app.environment != 'prod' %}
-        <!-- {{ _self }} => mail.compose.js -->
-    {% endif %}
-    <script type="text/javascript" src="{{ asset('components/tinymce-dist/tinymce.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('components/tinymce-dist/jquery.tinymce.min.js') }}"></script>
-    {% if app.request.locale == 'de_DE' %}
-        <script type="text/javascript" src="{{ asset('components/tinymce-i10n/langs/de.js') }}"></script>
-    {% endif %}
-    {% javascripts output='js/compiled/mail.compose.js' filter='?uglifyjs2'
-    '@IServMailBundle/Resources/public/js/pages/compose.js' %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock %}
-
 {% block content %}
     <h1>{{ item.title }}</h1>
     {% block crud_form_actions %}
@@ -96,7 +79,7 @@
                                 
                                 {% if admin.isAllowedToEdit(item, app.user) %}
                                     <br />
-                                    <a href="#delete-image" data-image-id="{{ ent.id }}" class="billboard-delete-image btn-xs btn-default">{{ icon('remove-circle') }}{{ _('Delete') }}</a>
+                                    <a href="#delete-image" id="billboard-delete-image-{{ ent.id }}" data-id="#billboard-delete-image-{{ ent.id }}" data-image-name="{{ ent.image.fileName }}" data-image-entry-title="{{ ent.entry.title }}" data-image-id="{{ ent.id }}" data-toggle="modal" data-target="#image-delete-confirm-container" class="billboard-delete-image btn btn-xs btn-default">{{ icon('remove-circle') }}{{ _('Delete') }}</a>
                                 {% endif %}
                                 </div>
                             {% endspaceless %}
@@ -163,7 +146,7 @@
     {% if isAuthor and (not item.closed or admin.isModerator(app.user)) %}
     <div id="image-upload-container" class="modal" role="dialog">
         <div class="modal-dialog">
-            <!-- Modal content-->
+            <!-- Modal content -->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -181,4 +164,68 @@
     </div>
     {% endif %}
     {% endblock %}
+    {% block entry_modal_image_delete_confirm %}
+        {% if admin.isAllowedToEdit(item, app.user) %}
+            <div id="image-delete-confirm-container" class="modal" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">{{ _('Delete image') }}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p id="image-delete-confirm-question">{{ _("Do you really want to delete the image?") }}</p>
+                            {{ form(imageDeleteConfirmForm, { 'style': 'inline', 'attr': { 'id': 'image-delete-confirm' } }) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endblock %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent () }}
+    
+    {% if app.environment != 'prod' %}
+	<!-- {{ _self }} => components/tinymce-dist/tinymce.js -->
+    {% endif %}
+    <script type="text/javascript" src="{{ asset('components/tinymce-dist/tinymce.js') }}"></script>
+    
+    {% if app.environment != 'prod' %}
+	<!-- {{ _self }} => components/tinymce-dist/jquery.tinymce.min.js -->
+    {% endif %}
+    <script type="text/javascript" src="{{ asset('components/tinymce-dist/jquery.tinymce.min.js') }}"></script>
+ 
+    {% if app.request.locale == 'de_DE' %}
+        {% if app.environment != 'prod' %}
+            <!-- {{ _self }} => components/tinymce-i10n/langs/de.js -->
+        {% endif %}
+        <script type="text/javascript" src="{{ asset('components/tinymce-i10n/langs/de.js') }}"></script>
+    {% endif %}
+    
+    {% if app.environment != 'prod' %}
+        <!-- {{ _self }} => mail.compose.js -->
+    {% endif %}
+    
+    {% javascripts output='js/compiled/mail.compose.js' filter='?uglifyjs2' '@IServMailBundle/Resources/public/js/pages/compose.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    
+    {% if app.environment != 'prod' %}
+	<!-- {{ _self }} => billboard_image.js -->
+    {% endif %}
+    
+    {% javascripts output='js/compiled/billboard_image.js' filter='?uglifyjs2' '@StsblBillBoardBundle/Resources/public/js/billboard_image.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    
+    {% if app.environment != 'prod' %}
+	<!-- {{ _self }} => billboard_common.js -->
+    {% endif %}
+    
+    {% javascripts output='js/compiled/billboard_common.js' filter='?uglifyjs2' '@StsblBillBoardBundle/Resources/public/js/billboard_common.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}
