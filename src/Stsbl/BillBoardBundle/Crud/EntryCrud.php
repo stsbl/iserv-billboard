@@ -129,17 +129,19 @@ class EntryCrud extends AbstractCrud
         $listMapper
             ->addIdentifier('title', null, [
                 'label' => _('Title'),
-                'responsive' => 'min-mobile'
+                'responsive' => 'all'
             ])
             ->add('category', null, [
                 'label' => _('Category'),
-                'responsive' => 'min-mobile'
+                'responsive' => 'all'
             ])
             ->add('author', null, [
-                'label' => _('Author')
+                'label' => _('Author'),
+                'responsive' => 'min-tablet'
             ])
             ->add('time', 'datetime', [
-                'label' => _('Added')
+                'label' => _('Added'),
+                'responsive' => 'min-tablet'
             ])
             ->add('updatedAt', 'datetime', [
                 'label' => _('Last refresh'),
@@ -208,13 +210,13 @@ class EntryCrud extends AbstractCrud
             ->add('title', null, [
                 'label' => _('Title'),
                 'attr' => [
-                    'help_text' => _('Name the item that you want to offer in one word, for example »electric guitar«.')
+                    'help_text' => _('Name the matter that you want to offer in one sentence, for example »I am oferring my electric guitar for selling«.')
                 ]
             ])
             ->add('category', null, [
                 'label' => _('Category'),
                 'attr' => [
-                    'help_text' => _('Select the matching category for your item.')
+                    'help_text' => _('Select the matching category for your matter.')
                 ]
             ])
             ->add('visible', BooleanType::class, [
@@ -227,7 +229,7 @@ class EntryCrud extends AbstractCrud
                 'label' => _('Description'), 
                 'attr' => [
                     'rows' => 30,
-                    'help_text' => _('Give a short description of your item.')
+                    'help_text' => _('Please give a short description of your matter.')
                 ]
             ])
         ;
