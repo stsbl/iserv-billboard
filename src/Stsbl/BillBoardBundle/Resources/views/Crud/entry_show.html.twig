@@ -55,7 +55,7 @@
         </div>
     {% endblock crud_show %}
     {% block entry_images %}
-        {% if item.images|length > 0 or isAuthor %}
+        {% if item.images|length > 0 or admin.isAuthor(item) %}
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">{{ _('Images') }}</h3>
@@ -93,8 +93,8 @@
                     {% endif %}
                 </div>
                 <div class="panel-footer">
-                    {% if isAuthor and (not item.closed or admin.isModerator(app.user)) %}
-                        <div style="clear: both"></div>
+                    {% if admin.isAuthor(item) and (not item.closed or admin.isModerator(app.user)) %}
+                        <div class="billboard-clear-both"></div>
                         <a href="#billboard-add-image" id="billboard-add-image" data-id="billboard-add-image" data-toggle="modal" data-target="#image-upload-container" class="btn-default btn">{{ icon('plus') }}{{ _('Add image') }}</a>
                     {% endif %}
                 </div>    
@@ -143,7 +143,7 @@
         {% endif %}
     {% endblock  %}
     {% block entry_modal_image_upload %}
-    {% if isAuthor and (not item.closed or admin.isModerator(app.user)) %}
+    {% if admin.isAuthor(item) and (not item.closed or admin.isModerator(app.user)) %}
     <div id="image-upload-container" class="modal" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content -->

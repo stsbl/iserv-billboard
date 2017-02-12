@@ -479,7 +479,7 @@ class EntryCrud extends AbstractCrud
     /**
      * Returns true if there is at least one category
      *
-     * @return bool
+     * @return boolan
      */
     private function hasCategories()
     {
@@ -489,11 +489,22 @@ class EntryCrud extends AbstractCrud
     /**
      * Returns true if the current user has moderation privileges
      * 
-     * @return bool
+     * @return boolean
      */
     public function isModerator()
     {
         return $this->isGranted(Privilege::BILLBOARD_MODERATE)
         || $this->isGranted(Privilege::BILLBOARD_MANAGE);
+    }
+    
+    /**
+     * Returns true if current user is author of the given post
+     * 
+     * @return boolean
+     */
+    public function isAuthor(CrudInterface $object)
+    {
+        /* @var $object \Stsbl\BillBoardBundle\Entity\Entry */
+        return $object->getAuthor() === $this->getUser();
     }
 }

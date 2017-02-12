@@ -116,7 +116,6 @@ class EntryController extends CrudController
             /* @var $entry \Stsbl\BillBoardBundle\Entity\Entry */
             $entry = $er->find($id);
             
-            $ret['isAuthor'] = $entry->getAuthor() === $this->getUser();
             $ret['authorIsDeleted'] = is_null($entry->getAuthor());
             $ret['servername'] = $this->get('iserv.config')->get('Servername');
         }
@@ -231,7 +230,7 @@ class EntryController extends CrudController
             $data = $form->getData();
             $em = $this->getDoctrine()->getManager();
             
-            if (!$this->crud->isAllowedToEdit($data->getEntry(), $this->getUser())) {
+            if (!$this->crud->isAuthor($data->getEntry())) {
                 throw $this->createAccessDeniedException('You are not allowed to add an image to this post.');
             }
             
