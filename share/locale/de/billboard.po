@@ -187,6 +187,9 @@ msgstr "Bild \"%s\" wurde erfolgreich gelöscht."
 msgid "Rules updated successfully."
 msgstr "Regeln erfolgreich aktualisiert."
 
+msgid "Delete image"
+msgstr "Bild löschen"
+
 # Translations with context
 msgid "Comments"
 msgctxt "billboard"
