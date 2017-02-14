@@ -23,6 +23,7 @@
  */
 
 IServ.BillBoard.Editor = IServ.register(function(IServ) {
+    "use strict";
     
     function initialize(scope)
     {

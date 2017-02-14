@@ -23,6 +23,8 @@
  */
 
 IServ.BillBoard.Image = IServ.register(function (IServ) {
+    "use strict";
+    
     function updateDeleteForm(e)
     {
         var imageName = e.attr('data-image-name');
