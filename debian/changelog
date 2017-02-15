@@ -1,3 +1,11 @@
+stsbl-iserv-billboard (17.02.15-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Added missing l10n.
+  * Declare strict behaviour in all javascripts.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Wed, 15 Feb 2017 04:00:47 +0100
+
 stsbl-iserv-billboard (17.02.13-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
