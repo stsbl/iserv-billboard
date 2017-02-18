@@ -144,7 +144,7 @@
     {% endblock  %}
     {% block entry_modal_image_upload %}
     {% if admin.isAuthor(item) and (not item.closed or admin.isModerator(app.user)) %}
-    <div id="image-upload-container" class="modal" role="dialog">
+    <div id="image-upload-container" class="modal fade in" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content -->
             <div class="modal-content">
@@ -166,7 +166,7 @@
     {% endblock %}
     {% block entry_modal_image_delete_confirm %}
         {% if admin.isAllowedToEdit(item, app.user) %}
-            <div id="image-delete-confirm-container" class="modal" role="dialog">
+            <div id="image-delete-confirm-container" class="modal fade in" role="dialog">
                 <div class="modal-dialog">
                     <!-- Modal content -->
                     <div class="modal-content">
