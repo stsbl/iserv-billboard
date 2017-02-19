@@ -1,3 +1,10 @@
+stsbl-iserv-billboard (17.02.19-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Added dialog animations.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Sun, 19 Feb 2017 19:54:53 +0100
+
 stsbl-iserv-billboard (17.02.15-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
