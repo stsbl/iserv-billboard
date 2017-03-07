@@ -144,7 +144,7 @@ class CommentController extends PageController
             $manager->flush();
             
             // dirty workaround: Can not run as constructor, it breaks Symfony.
-            $this->initalizeLogger();
+            $this->initializeLogger();
             $this->log(sprintf('Moderatives Löschen des Kommentars "%s" von %s', $title, $author));
             $this->get('iserv.flash')->success(__('Comment "%s" successful deleted.', $title));
         }
