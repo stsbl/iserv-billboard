@@ -1,3 +1,10 @@
+stsbl-iserv-billboard (17.03.09-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Fixed typo.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Thu, 09 Mar 2017 23:17:17 +0100
+
 stsbl-iserv-billboard (17.02.19-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
