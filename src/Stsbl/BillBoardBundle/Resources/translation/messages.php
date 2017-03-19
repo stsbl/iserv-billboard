@@ -38,7 +38,7 @@ _('Create new entries at the bill-board');
 _('Users with this privilege can create new entries on the bill-board, edit their existing entries and comment entries of other users.');
 
 _('Moderate the bill-board');
-_('Users with this privilege can edit and delete every entry on the bill-board. Includes the create privilege.');
+_('Users with this privilege can edit and delete every entry on the bill-board. Includes the creation privilege.');
 
 _('Manage the bill-board');
 _('Users with this privilege can manange the bill-board and create new categories. Includes the moderation privilege.');

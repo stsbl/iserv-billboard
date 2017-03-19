@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-19 15:20+0100\n"
+"POT-Creation-Date: 2017-03-19 15:44+0100\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
@@ -246,7 +246,7 @@ msgstr "Schwarzes Brett moderieren"
 #: src/Stsbl/BillBoardBundle/Resources/translation/messages.php:41
 msgid ""
 "Users with this privilege can edit and delete every entry on the bill-board. "
-"Includes the create privilege."
+"Includes the creation privilege."
 msgstr ""
 "Benutzer mit diesem Recht können alle Einträge auf dem schwarzen Brett "
 "bearbeiten oder löschen. Beinhaltet das Erstellrecht."
