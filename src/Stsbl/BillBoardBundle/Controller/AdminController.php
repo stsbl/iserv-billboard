@@ -181,7 +181,7 @@ class AdminController extends PageController
             $file = new \SplFileObject($folder . $filename, 'w');
             $file->fwrite($content);
         } catch (\RuntimeException $e) {
-            $this->get('iserv.flash')->error(_('This should never happen.'));
+            $this->get('iserv.flash')->error(_p('billboard', 'This should never happen.'));
         }
         
         if ($filename == self::FILE_RULES) {

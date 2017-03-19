@@ -1,0 +1,510 @@
+msgid ""
+msgstr ""
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-03-19 15:20+0100\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:53
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:73
+#: src/Stsbl/BillBoardBundle/Controller/CommentController.php:173
+msgid "Delete comment"
+msgstr "Kommentar löschen"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:79
+#, php-format
+msgid "Do you really want to delete the comment \"%s\" by %s?"
+msgstr "Möchten Sie den Kommentar \"%s\" von %s wirklich löschen?"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:197
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:307
+msgid "none"
+msgstr "keine"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:529
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:2129
+#: src/Stsbl/BillBoardBundle/Controller/AdminController.php:68
+msgid "Manage"
+msgstr "Verwalten"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:535
+#: src/Stsbl/BillBoardBundle/EventListener/MenuListener.php:55
+#: src/Stsbl/BillBoardBundle/EventListener/MenuListener.php:74
+#: src/Stsbl/BillBoardBundle/EventListener/MenuListener.php:79
+#: src/Stsbl/BillBoardBundle/Controller/CommentController.php:171
+#: src/Stsbl/BillBoardBundle/Controller/AdminController.php:67
+#: src/Stsbl/BillBoardBundle/Controller/AdminController.php:70
+#: src/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php:73
+#: src/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php:75
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:70
+msgid "Bill-Board"
+msgstr "Schwarzes Brett"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:542
+msgid "Administration"
+msgstr "Verwaltung"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:568
+msgid "Rules"
+msgstr "Regeln"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:823
+msgid "Created"
+msgstr ""
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:831
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:147
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:183
+msgid "Last refresh"
+msgstr "Zuletzt aktualisiert"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:839
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:139
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:177
+msgid "Author"
+msgstr "Autor"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:850
+msgid "Send an e-mail to the author"
+msgstr "Eine E-Mail an den Autor senden"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:854
+#, php-format
+msgid "Entry \"%s\" on the billboard"
+msgstr "Eintrag \"%s\" auf dem schwarzen Brett"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:873
+#: src/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php:60
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:135
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:174
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:217
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:251
+msgid "Category"
+msgstr "Kategorie"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:881
+msgid "Visibility"
+msgstr ""
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:890
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:186
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:223
+msgid "Visible"
+msgstr "Sichtbar"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:898
+msgid "Hidden"
+msgstr "Versteckt"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:909
+msgid "This entry is closed for any write access."
+msgstr "Dieser Eintrag ist für jeglichen Schreibzugriff geschlossen."
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:913
+msgid "Closed"
+msgstr "Geschlossen"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:954
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:151
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:193
+msgid "Images"
+msgstr "Bilder"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1003
+#: src/Stsbl/BillBoardBundle/Controller/EntryController.php:200
+#: src/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php:96
+#: src/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php:107
+#: src/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php:118
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:189
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:229
+msgid "Description"
+msgstr "Beschreibung"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1029
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1153
+#: src/Stsbl/BillBoardBundle/Controller/EntryController.php:273
+msgid "Delete"
+msgstr "Löschen"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1051
+msgid "You can not add further images to this entry, because it is closed."
+msgstr ""
+"Sie können keine weiteren Bilder zum diesem Eintrag hinzufügen, da er "
+"geschlossen wurde."
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1057
+msgid ""
+"This entry currently has no images. To add one, click \"Add image\" below."
+msgstr ""
+"Dieser Eintrag hat derzeit keine Bilder. Um eines hinzuzufügen, klicken Sie "
+"unten auf \"Bild hinzufügen\"."
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1075
+msgid "Add image"
+msgstr "Bild hinzufügen"
+
+# Translations with context
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1105
+msgctxt "billboard"
+msgid "Comments"
+msgstr "Kommentare"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1112
+msgid "Currently no comments."
+msgstr "Derzeit keine Kommentare."
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1130
+msgid "by"
+msgstr "von"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1134
+#, php-format
+msgid "%s at %s"
+msgstr ""
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1195
+msgid "Add a comment"
+msgstr "Einen Kommentar hinzufügen"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1204
+msgid ""
+"This entry is locked, therefor the creation of comments is not longer "
+"possible."
+msgstr ""
+"Dieser Eintrag ist geschlossen, daher ist das Erstellen von Kommentaren "
+"nicht länger möglich."
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1217
+msgid "The adding of new comments was disabled by your administrator."
+msgstr ""
+"Das Hinzufügen neuer Kommentare wurde durch Ihren Administrator deaktiviert."
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1257
+msgid "Add a new image to this entry"
+msgstr "Ein neues Bild zum diesem Eintrag hinzufügen"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1263
+msgid "Upload a new image."
+msgstr "Ein neues Bild hochladen."
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1275
+msgid "Close"
+msgstr "Schließen"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1314
+msgid "Delete image"
+msgstr "Bild löschen"
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1320
+msgctxt "billboard"
+msgid "Do you really want to delete the image?"
+msgstr ""
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1823
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:2244
+msgid ""
+"There are no bill-board categories configured yet. Please contact your "
+"administrator."
+msgstr ""
+"Es sind noch keine Kategorien für das schwarze Brett eingerichtet. Bitte "
+"kontaktieren Sie Ihren Administrator."
+
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1835
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:2256
+msgid "Rules for posting on the Bill-Board:"
+msgstr "Regeln für das Veröffentlichen auf dem schwarzen Brett:"
+
+#: src/Stsbl/BillBoardBundle/Resources/translation/messages.php:34
+msgid "Access the bill-board"
+msgstr "Auf das schwarze Brett zugreifen"
+
+#: src/Stsbl/BillBoardBundle/Resources/translation/messages.php:35
+msgid ""
+"Users with this privilege are able to access the bill-board and read the "
+"entries but there are not able to create and edit entries."
+msgstr ""
+"Benutzer mit diesem Recht können auf das schwarze Brett zugreifen, können "
+"jedoch keine neue Einträge erstellen und Bestehende bearbeiten."
+
+#: src/Stsbl/BillBoardBundle/Resources/translation/messages.php:37
+msgid "Create new entries at the bill-board"
+msgstr "Neue Einträge auf dem schwarzen Brett erstellen"
+
+#: src/Stsbl/BillBoardBundle/Resources/translation/messages.php:38
+msgid ""
+"Users with this privilege can create new entries on the bill-board, edit "
+"their existing entries and comment entries of other users."
+msgstr ""
+"Benutzer mit diesem Recht können neue Einträge auf dem schwarzen Brett "
+"erstellen, ihre bestehenden Einträge bearbeiten sowie Einträge anderer "
+"Benutzer kommentieren."
+
+#: src/Stsbl/BillBoardBundle/Resources/translation/messages.php:40
+msgid "Moderate the bill-board"
+msgstr "Schwarzes Brett moderieren"
+
+#: src/Stsbl/BillBoardBundle/Resources/translation/messages.php:41
+msgid ""
+"Users with this privilege can edit and delete every entry on the bill-board. "
+"Includes the create privilege."
+msgstr ""
+"Benutzer mit diesem Recht können alle Einträge auf dem schwarzen Brett "
+"bearbeiten oder löschen. Beinhaltet das Erstellrecht."
+
+#: src/Stsbl/BillBoardBundle/Resources/translation/messages.php:43
+msgid "Manage the bill-board"
+msgstr "Schwarzes Brett verwalten"
+
+#: src/Stsbl/BillBoardBundle/Resources/translation/messages.php:44
+msgid ""
+"Users with this privilege can manange the bill-board and create new "
+"categories. Includes the moderation privilege."
+msgstr ""
+"Benutzer mit diesem Recht können das Schwarze Brett verwalten und neue "
+"Kategorien anlegen. Beinhaltet das Moderationsrecht."
+
+#: src/Stsbl/BillBoardBundle/Resources/translation/messages.php:47
+msgid "Module: Bill-Board"
+msgstr "Modul: Schwarzes Brett"
+
+#: src/Stsbl/BillBoardBundle/Resources/translation/messages.php:48
+msgid "Allow comments"
+msgstr "Kommentare erlauben"
+
+#: src/Stsbl/BillBoardBundle/Resources/translation/messages.php:49
+msgid ""
+"Control whether comments on entries are allowed or not. If you disable "
+"commenting, no one can add new comments. Existing comments will still "
+"displayed."
+msgstr ""
+"Steuern sie, ob das Kommentieren von Einträgen erlaubt ist oder nicht. Wenn "
+"sie das Kommentieren deaktivieren, kann keiner neue Kommentare hinzufügen. "
+"Bestehende Kommentare werden weiterhin angezeigt."
+
+#: src/Stsbl/BillBoardBundle/Resources/translation/messages.php:52
+#, php-format
+msgid "New comment on your post: %s commented on %s"
+msgstr "Neuer Kommentar zu Ihrem Beitrag: %s hat %s kommentiert"
+
+#: src/Stsbl/BillBoardBundle/Resources/translation/messages.php:53
+#, php-format
+msgid "Your entry was locked: %s locked %s"
+msgstr "Ihr Eintrag wurde geschlossen: %s hat %s geschlossen"
+
+#: src/Stsbl/BillBoardBundle/Resources/translation/messages.php:54
+#, php-format
+msgid "Your entry was opened: %s opened %s"
+msgstr "Ihr Eintrag wurde geöffnet: %s hat %s geöffnet"
+
+#: src/Stsbl/BillBoardBundle/EventListener/MenuListener.php:86
+#: src/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php:59
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:369
+msgid "Categories"
+msgstr "Kategorien"
+
+#: src/Stsbl/BillBoardBundle/Controller/EntryController.php:145
+#, php-format
+msgid "Entry is now locked: %s"
+msgstr "Eintrag ist jetzt geschlossen: %s"
+
+#: src/Stsbl/BillBoardBundle/Controller/EntryController.php:172
+#, php-format
+msgid "Entry is now unlocked: %s"
+msgstr "Eintrag ist jetzt geöffnet: %s"
+
+#: src/Stsbl/BillBoardBundle/Controller/EntryController.php:196
+msgid "Image"
+msgstr "Bild"
+
+#: src/Stsbl/BillBoardBundle/Controller/EntryController.php:197
+msgid "Image should not be empty."
+msgstr "Bild sollte leer sein."
+
+#: src/Stsbl/BillBoardBundle/Controller/EntryController.php:204
+msgid "Upload"
+msgstr "Hochladen"
+
+#: src/Stsbl/BillBoardBundle/Controller/EntryController.php:237
+#, php-format
+msgid "Image \"%s\" was uploaded successfully."
+msgstr "Bild \"%s\" wurde erfolgreich hochgeladen."
+
+#: src/Stsbl/BillBoardBundle/Controller/EntryController.php:278
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: src/Stsbl/BillBoardBundle/Controller/EntryController.php:324
+#, php-format
+msgid "Image \"%s\" was deleted successfully."
+msgstr "Bild \"%s\" wurde erfolgreich gelöscht."
+
+#: src/Stsbl/BillBoardBundle/Controller/CommentFormTrait.php:69
+#: src/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php:95
+#: src/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php:106
+#: src/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php:117
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:131
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:171
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:211
+msgid "Title"
+msgstr "Titel"
+
+#: src/Stsbl/BillBoardBundle/Controller/CommentFormTrait.php:79
+msgid "Comment text"
+msgstr "Kommentartext"
+
+#: src/Stsbl/BillBoardBundle/Controller/CommentFormTrait.php:84
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: src/Stsbl/BillBoardBundle/Controller/CommentFormTrait.php:125
+msgid "Yes"
+msgstr "Ja"
+
+#: src/Stsbl/BillBoardBundle/Controller/CommentFormTrait.php:131
+msgid "No"
+msgstr "Nein"
+
+#: src/Stsbl/BillBoardBundle/Controller/CommentController.php:94
+msgid "Entry not found."
+msgstr "Eintrag nicht gefunden."
+
+#: src/Stsbl/BillBoardBundle/Controller/CommentController.php:105
+#, php-format
+msgid "Comment to entry \"%s\" successful added."
+msgstr "Kommentrar zu Eintrag \"%s\" erfolgreich hinzugefügt."
+
+#: src/Stsbl/BillBoardBundle/Controller/CommentController.php:149
+#, php-format
+msgid "Comment \"%s\" successful deleted."
+msgstr "Kommentar \"%s\" erfolgreich gelöscht."
+
+#: src/Stsbl/BillBoardBundle/Controller/AdminController.php:102
+msgid "Invalid rules text"
+msgstr "Ungültiger Regeltext"
+
+#: src/Stsbl/BillBoardBundle/Controller/AdminController.php:136
+msgid ""
+"The bill-board is only intended for small things. Please dont't offer things "
+"which have a worth of more than 100 euro."
+msgstr ""
+"Das schwarze Brett ist nur für kleine Dinge gedacht. Bitte bieten Sie keine "
+"Dinge mit einem Wert von mehr als 100 Euro an."
+
+#: src/Stsbl/BillBoardBundle/Controller/AdminController.php:155
+msgid ""
+"Here you can enter rules, which are shown at the form for adding an entry to "
+"the bill-board."
+msgstr ""
+"Hier können Sie Regeln eingeben, die im Formular für das Hinzufügen eines "
+"Eintrages zum schwarzen Brett angezeigt werden."
+
+#: src/Stsbl/BillBoardBundle/Controller/AdminController.php:160
+msgid "Save"
+msgstr "Speichern"
+
+#: src/Stsbl/BillBoardBundle/Controller/AdminController.php:184
+msgctxt "billboard"
+msgid "This should never happen."
+msgstr "Dies sollte niemals vorkommen."
+
+#: src/Stsbl/BillBoardBundle/Controller/AdminController.php:196
+msgid "Rules updated successfully."
+msgstr "Regeln erfolgreich aktualisiert."
+
+#: src/Stsbl/BillBoardBundle/Crud/Batch/ShowAction.php:65
+#, php-format
+msgid "Entry is now visible: %s"
+msgstr "Eintrag ist jetzt eingeblendet: %s"
+
+#: src/Stsbl/BillBoardBundle/Crud/Batch/ShowAction.php:67
+#: src/Stsbl/BillBoardBundle/Crud/Batch/HideAction.php:67
+#, php-format
+msgid "You don't have the permission to change that entry: %s"
+msgstr "Sie haben nicht die Berechtigung, diesen Eintrag zu verändern: %s"
+
+#: src/Stsbl/BillBoardBundle/Crud/Batch/ShowAction.php:70
+#, php-format
+msgid "Failed to make entry visible: %s"
+msgstr "Einblenden des Eintrages fehlgeschlagen: %s"
+
+#: src/Stsbl/BillBoardBundle/Crud/Batch/ShowAction.php:90
+msgid "Show"
+msgstr "Anzeigen"
+
+#: src/Stsbl/BillBoardBundle/Crud/Batch/HideAction.php:65
+#, php-format
+msgid "Entry is now hidden: %s"
+msgstr "Eintrag ist jetzt ausgeblendet: %s"
+
+#: src/Stsbl/BillBoardBundle/Crud/Batch/HideAction.php:70
+#, php-format
+msgid "Failed to hide entry: %s"
+msgstr "Ausblenden des Eintrages fehlgeschlagen: %s"
+
+#: src/Stsbl/BillBoardBundle/Crud/Batch/HideAction.php:90
+msgid "Hide"
+msgstr "Ausblenden"
+
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:71
+msgid "Entry"
+msgstr "Eintrag"
+
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:143
+msgid "Added"
+msgstr "Hinzugefügt"
+
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:156
+msgid "Comments"
+msgstr "Kommentare"
+
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:180
+msgid "Date"
+msgstr "Datum"
+
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:213
+msgid ""
+"Name the matter that you want to offer in one sentence, for example »I am "
+"oferring my electric guitar for selling«."
+msgstr ""
+"Beschreiben Sie Ihr Anliegen in einem Satz, zum Beispiel »Ich biete meine E-"
+"Gitarre zum Verkauf an«."
+
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:219
+msgid "Select the matching category for your matter."
+msgstr "Wählen Sie eine passende Kategorie für Ihr Anliegen aus."
+
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:225
+msgid ""
+"If you hide the entry, it is only visible by yourself and people who has the "
+"privilege to moderate the bill-board."
+msgstr ""
+"Wenn Sie den Eintrag ausblenden, ist er nur für Sie selber und Personen, die "
+"das schwarze Brett moderieren können, sichtbar."
+
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:232
+msgid "Please give a short description of your matter."
+msgstr "Bitte beschreiben Sie Ihr Anliegen kurz."
+
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:255
+msgid "All entries"
+msgstr "Alle Einträge"
+
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:262
+msgid "Entries I created"
+msgstr "Einträge, die ich erstellt habe"
+
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:270
+msgid "My hidden entries"
+msgstr "Meine versteckten Einträge"
+
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:286
+msgid "Hidden entries of other users"
+msgstr "Versteckte Einträge anderer Benutzer"
+
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:320
+msgid "Open entry"
+msgstr "Eintrag öffnen"
+
+#: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:322
+msgid "Close entry"
+msgstr "Eintrag schließen"
