@@ -50,7 +50,7 @@ msgstr "Regeln"
 
 #: /tmp/billboard-StsblBillBoardBundle.twig.php:823
 msgid "Created"
-msgstr ""
+msgstr "Erstellt"
 
 #: /tmp/billboard-StsblBillBoardBundle.twig.php:831
 #: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:147
