@@ -84,7 +84,7 @@ msgstr "Kategorie"
 
 #: /tmp/billboard-StsblBillBoardBundle.twig.php:881
 msgid "Visibility"
-msgstr ""
+msgstr "Sichtbarkeit"
 
 #: /tmp/billboard-StsblBillBoardBundle.twig.php:890
 #: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:186
@@ -160,7 +160,7 @@ msgstr "von"
 #: /tmp/billboard-StsblBillBoardBundle.twig.php:1134
 #, php-format
 msgid "%s at %s"
-msgstr ""
+msgstr "%s am %s"
 
 #: /tmp/billboard-StsblBillBoardBundle.twig.php:1195
 msgid "Add a comment"
@@ -198,7 +198,7 @@ msgstr "Bild löschen"
 #: /tmp/billboard-StsblBillBoardBundle.twig.php:1320
 msgctxt "billboard"
 msgid "Do you really want to delete the image?"
-msgstr ""
+msgstr "Möchten Sie das Bild wirklich löschen?"
 
 #: /tmp/billboard-StsblBillBoardBundle.twig.php:1823
 #: /tmp/billboard-StsblBillBoardBundle.twig.php:2244
