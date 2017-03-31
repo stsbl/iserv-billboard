@@ -141,7 +141,7 @@ class EntryController extends CrudController
         $em->flush();
         
         $this->notifiyLock($entry);
-        $this->log(sprintf('Eintrag "%s" von %s für Schreibzugriffe gesperrt', (string)$entry, (string)$entry->getAuthor()));
+        $this->log(sprintf('Eintrag "%s" von %s für Schreibzugriffe gesperrt', (string)$entry, (string)$entry->getAuthorDisplay()));
         $this->get('iserv.flash')->success(sprintf(_('Entry is now locked: %s'), (string)$entry));
         
         return $this->redirect($this->generateUrl('billboard_show', ['id' => $id]));
@@ -168,7 +168,7 @@ class EntryController extends CrudController
         $em->flush();
         
         $this->notifiyOpen($entry);
-        $this->log(sprintf('Eintrag "%s" von %s für Schreibzugriffe geöffnet', (string)$entry, (string)$entry->getAuthor()));
+        $this->log(sprintf('Eintrag "%s" von %s für Schreibzugriffe geöffnet', (string)$entry, (string)$entry->getAuthorDisplay()));
         $this->get('iserv.flash')->success(sprintf(_('Entry is now unlocked: %s'), (string)$entry));
         
         return $this->redirect($this->generateUrl('billboard_show', ['id' => $id]));
