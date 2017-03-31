@@ -7,6 +7,7 @@ use IServ\CoreBundle\Event\NotificationEvent;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Stsbl\BillBoardBundle\Entity\Entry;
 use Stsbl\BillBoardBundle\Entity\EntryComment;
 use Stsbl\BillBoardBundle\Security\Privilege;
@@ -53,15 +54,11 @@ class CommentController extends PageController
      * @param Request $request
      * @param int $entryid
      * @Route("/billboard/entry/{entryid}/comment/add", name="billboard_comment_add")
+     * @Security("is_granted('PRIV_BILLBOARD_CREATE') or is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
      * @Method("POST")
      */
     public function addAction(Request $request, $entryid)
-    {
-        // Check privilege
-        if (!$this->isAllowedToAdd()) {
-            throw $this->createAccessDeniedException('You don\'t have the permission to add a comment.');
-        }
-        
+    {   
         if (!$this->get('iserv.config')->get('BillBoardEnableComments')) {
             throw $this->createAccessDeniedException('The adding of new comments was disabled by your administrator.');
         }
@@ -113,14 +110,11 @@ class CommentController extends PageController
      * @param Request $request
      * @param int $id
      * @Route("/billboard/comment/delete/{id}", name="billboard_comment_delete")
+     * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
      * @Method("POST")
      */
     public function deleteAction(Request $request, $id)
     {
-        // Check privilege
-        if (!$this->isAllowedToDelete()) {
-            throw $this->createAccessDeniedException('You don\'t have the permission to delete comments.');
-        }
         $form = $this->getConfirmationForm($id);
         $manager = $this->getDoctrine()->getManager();
         
@@ -157,14 +151,10 @@ class CommentController extends PageController
      * @param Request $request
      * @param int $id
      * @Route("/billboard/comment/delete/{id}/confirm", name="billboard_comment_delete_confirm")
+     * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
      */
     public function confirmAction(Request $request, $id)
-    {
-        // Check privilege
-        if (!$this->isAllowedToDelete()) {
-            throw $this->createAccessDeniedException('You don\'t have the permission to delete comments.');
-        }
-        
+    {        
         $comment = $this->getComment($id);
         
         // track path
@@ -178,24 +168,13 @@ class CommentController extends PageController
     
     /**
      * Checks if the user is allowed to delete comments
+     * For this time only used for the "post comments on locked entries" check above.
      * 
      * @return bool
      */
     private function isAllowedToDelete()
     {
         return $this->isGranted(Privilege::BILLBOARD_MODERATE)
-            || $this->isGranted(Privilege::BILLBOARD_MANAGE);
-    }
-    
-    /**
-     * Checks if the user is allowed to add comments
-     * 
-     * @return bool
-     */
-    private function isAllowedToAdd()
-    {
-        return $this->isGranted(Privilege::BILLBOARD_CREATE)
-            || $this->isGranted(Privilege::BILLBOARD_MODERATE)
             || $this->isGranted(Privilege::BILLBOARD_MANAGE);
     }
     
