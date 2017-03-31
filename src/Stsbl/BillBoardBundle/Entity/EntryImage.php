@@ -296,11 +296,7 @@ class EntryImage implements CrudInterface
      */
     public function hasValidAuthor()
     {
-        try {
-            return $this->author->id;
-        } catch (\Exception $e) {
-            return false;
-        }
+        return $this->author != null;
     }
 
     /**

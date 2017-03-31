@@ -29,10 +29,10 @@
                         {% if not authorIsDeleted %}
                             <a class="mailto" title="{{ _('Send an e-mail to the author') }}"
                             href="mailto:{{ item.author.name ~ ' <' ~ item.author.username ~ '@' ~ servername ~ '>?subject=' ~ __('Entry "%s" on the billboard', item.title)|url_encode() }}">
-                                {{ item.author }}
+                                {{ item.authorDisplay }}
                             </a>
                         {% else %}
-                            {{ item.author }}
+                            {{ item.authorDisplay }}
                         {% endif %}
                     </span> | 
                     <span title="{{ _('Category') }}">{{ icon('tag') }} {{ item.category }}</span> | 
