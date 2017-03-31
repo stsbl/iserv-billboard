@@ -113,7 +113,7 @@ class EntryController extends CrudController
             /* @var $entry \Stsbl\BillBoardBundle\Entity\Entry */
             $entry = $er->find($id);
             
-            $ret['authorIsDeleted'] = $entry->hasValidAuthor();
+            $ret['authorIsDeleted'] = !$entry->hasValidAuthor();
             $ret['servername'] = $this->get('iserv.config')->get('Servername');
         }
         
