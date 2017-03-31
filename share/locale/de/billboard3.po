@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-19 15:44+0100\n"
+"POT-Creation-Date: 2017-03-31 17:22+0200\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
@@ -22,7 +22,7 @@ msgid "none"
 msgstr "keine"
 
 #: /tmp/billboard-StsblBillBoardBundle.twig.php:529
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:2129
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:2156
 #: src/Stsbl/BillBoardBundle/Controller/AdminController.php:68
 msgid "Manage"
 msgstr "Verwalten"
@@ -121,7 +121,7 @@ msgid "Description"
 msgstr "Beschreibung"
 
 #: /tmp/billboard-StsblBillBoardBundle.twig.php:1029
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1153
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1158
 #: src/Stsbl/BillBoardBundle/Controller/EntryController.php:273
 msgid "Delete"
 msgstr "Löschen"
@@ -149,24 +149,24 @@ msgctxt "billboard"
 msgid "Comments"
 msgstr "Kommentare"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1112
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1115
 msgid "Currently no comments."
 msgstr "Derzeit keine Kommentare."
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1130
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1135
 msgid "by"
 msgstr "von"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1134
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1139
 #, php-format
 msgid "%s at %s"
 msgstr "%s am %s"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1195
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1200
 msgid "Add a comment"
 msgstr "Einen Kommentar hinzufügen"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1204
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1212
 msgid ""
 "This entry is locked, therefor the creation of comments is not longer "
 "possible."
@@ -174,34 +174,34 @@ msgstr ""
 "Dieser Eintrag ist geschlossen, daher ist das Erstellen von Kommentaren "
 "nicht länger möglich."
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1217
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1230
 msgid "The adding of new comments was disabled by your administrator."
 msgstr ""
 "Das Hinzufügen neuer Kommentare wurde durch Ihren Administrator deaktiviert."
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1257
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1272
 msgid "Add a new image to this entry"
 msgstr "Ein neues Bild zum diesem Eintrag hinzufügen"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1263
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1278
 msgid "Upload a new image."
 msgstr "Ein neues Bild hochladen."
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1275
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1290
 msgid "Close"
 msgstr "Schließen"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1314
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1329
 msgid "Delete image"
 msgstr "Bild löschen"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1320
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1335
 msgctxt "billboard"
 msgid "Do you really want to delete the image?"
 msgstr "Möchten Sie das Bild wirklich löschen?"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1823
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:2244
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1850
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:2271
 msgid ""
 "There are no bill-board categories configured yet. Please contact your "
 "administrator."
@@ -209,8 +209,8 @@ msgstr ""
 "Es sind noch keine Kategorien für das schwarze Brett eingerichtet. Bitte "
 "kontaktieren Sie Ihren Administrator."
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1835
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:2256
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1862
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:2283
 msgid "Rules for posting on the Bill-Board:"
 msgstr "Regeln für das Veröffentlichen auf dem schwarzen Brett:"
 
@@ -502,9 +502,11 @@ msgid "Hidden entries of other users"
 msgstr "Versteckte Einträge anderer Benutzer"
 
 #: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:320
-msgid "Open entry"
-msgstr "Eintrag öffnen"
+msgid "Open"
+msgstr "Öffnen"
 
 #: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:322
-msgid "Close entry"
-msgstr "Eintrag schließen"
+msgctxt "billboard"
+msgid "Lock"
+msgstr "Schließen"
+
