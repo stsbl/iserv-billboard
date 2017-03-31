@@ -317,9 +317,9 @@ class EntryCrud extends AbstractCrud
         
         if ($this->isModerator()) {
             if ($item->getClosed()) {
-                $ret['unlock'] = [$this->getRouter()->generate('billboard_unlock', ['id' => $item->getId()]), _('Open entry'), 'pro-unlock'];
+                $ret['unlock'] = [$this->getRouter()->generate('billboard_unlock', ['id' => $item->getId()]), _('Open'), 'pro-unlock'];
             } else {
-                $ret['lock'] = [$this->getRouter()->generate('billboard_lock', ['id' => $item->getId()]), _('Close entry'), 'lock'];
+                $ret['lock'] = [$this->getRouter()->generate('billboard_lock', ['id' => $item->getId()]), _p('billboard', 'Lock'), 'lock'];
             }
         }
         
