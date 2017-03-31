@@ -105,7 +105,11 @@
     {% block entry_comments %}
         <h2>{{ _p('billboard', 'Comments') }}</h2>
         {% if item.comments is empty %}
-            <div class="alert alert-info">{{ _('Currently no comments.') }}</div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{ _('Currently no comments.') }}
+                </div>
+            </div>
         {% else %}
             {% for comment in item.comments %}
                 <div id="billboard-comment-{{ comment.id }}" class="panel panel-default">
@@ -132,11 +136,19 @@
                 </div>
                 <div class="panel-body">
                     {% if not admin.isModerator(app.user) and item.closed %}
-                        <div class="alert alert-warning">{{ _('This entry is locked, therefor the creation of comments is not longer possible.') }}</div>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                {{ _('This entry is locked, therefor the creation of comments is not longer possible.') }}
+                            </div>
+                        </div>
                     {% elseif commentsEnabled and admin.isAllowedToAdd(app.user) %}
                         {{ form(commentForm, {'style': null}) }}
                     {% else %}
-                        <div class="alert alert-warning"> {{ _('The adding of new comments was disabled by your administrator.') }} </div>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                {{ _('The adding of new comments was disabled by your administrator.') }}
+                            </div>
+                        </div>
                     {% endif %}
                 </div>
             </div>
