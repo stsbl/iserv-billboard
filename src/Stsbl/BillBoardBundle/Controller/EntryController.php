@@ -113,7 +113,7 @@ class EntryController extends CrudController
             /* @var $entry \Stsbl\BillBoardBundle\Entity\Entry */
             $entry = $er->find($id);
             
-            $ret['authorIsDeleted'] = is_null($entry->getAuthor());
+            $ret['authorIsDeleted'] = $entry->hasValidAuthor();
             $ret['servername'] = $this->get('iserv.config')->get('Servername');
         }
         
@@ -317,8 +317,8 @@ class EntryController extends CrudController
                 $em->flush();
                 
                 // log moderative actions
-                if ($image->getEntry()->getAuthor() !== $this->getUser()) {
-                    $this->get('iserv.logger')->writeForModule(sprintf('Moderatives Löschen des Bildes "%s" von Beitrag "%s" von %s"', (string)$image->getImage(), (string)$image->getEntry(), (string)$image->getEntry()->getAuthor()), 'Bill-Board');
+                if ($image->getAuthor() !== $this->getUser()) {
+                    $this->get('iserv.logger')->writeForModule(sprintf('Moderatives Löschen des Bildes "%s" von Beitrag "%s" von %s"', (string)$image->getImage(), (string)$image->getEntry(), (string)$image->getAuthorDisplay()), 'Bill-Board');
                 }
                 
                 $this->get('iserv.flash')->success(__('Image "%s" was deleted successfully.', $image->getImage()->getFileName()));
