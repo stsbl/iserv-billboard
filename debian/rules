@@ -1,25 +1,31 @@
 #!/usr/bin/make -f
-# See debhelper(7) (uncomment to enable)
-# output every command that modifies files on the build system.
-#export DH_VERBOSE = 1
+# rules for debuild
 
+# needed for lintian
+build:
+	dh_testdir
+binary-indep: 
+	dh_clean
+	dh_testdir
+	dh_testroot
+	dh_prep
+	dh_testroot
+	dh_installchangelogs 
+	dh_compress
+	dh_fixperms
+	dh_iservinstall3
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
 
-# see FEATURE AREAS in dpkg-buildflags(1)
-#export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+# needed for lintian
+binary-arch:
 
-# see ENVIRONMENT in dpkg-buildflags(1)
-# package maintainers to append CFLAGS
-#export DEB_CFLAGS_MAINT_APPEND  = -Wall -pedantic
-# package maintainers to append LDFLAGS
-#export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
+binary: binary-indep
 
+clean:
+	dh_testdir
+	dh_testroot
+	dh_clean 
 
-%:
-	dh $@ 
-
-
-# dh_make generated override targets
-# This is example for Cmake (See https://bugs.debian.org/641051 )
-#override_dh_auto_configure:
-#	dh_auto_configure -- #	-DCMAKE_LIBRARY_PATH=$(DEB_HOST_MULTIARCH)
-
+.PHONY: build clean binary-indep binary install
