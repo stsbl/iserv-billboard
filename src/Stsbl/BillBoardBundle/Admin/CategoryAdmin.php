@@ -56,12 +56,25 @@ class CategoryAdmin extends AbstractBillBoardAdmin
      */    
     protected function configure()
     {
+        parent::configure();
+
         $this->title = _('Categories');
         $this->itemTitle = _('Category');
         $this->id = 'billboard_category';
-        $this->routesPrefix = 'billboard/manage/categories';
-        $this->routesNamePrefix = 'manage_';
         $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard';
+
+        // set module context for logging
+        $this->logModule = 'Bill-Board';
+    }
+
+    /**
+     * billboard/manage/category is nicer than billboard/manage/billboard_category
+     *
+     * @return string
+     */
+    public function getRouteIdentifier()
+    {
+        return 'category';
     }
 
     /**
@@ -74,16 +87,6 @@ class CategoryAdmin extends AbstractBillBoardAdmin
         } else {
             return [_('Bill-Board') => $this->router->generate('billboard_index')];
         } 
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($class, $title = null, $itemTitle = null) {
-        // set module context for logging
-        $this->logModule = 'Bill-Board';
-        
-        return parent::__construct($class, $title, $itemTitle);
     }
 
     /**
@@ -124,22 +127,12 @@ class CategoryAdmin extends AbstractBillBoardAdmin
      */
     protected function getRoutePattern($action, $id, $entityBased = true)
     {
-        // Overwrite broken route generation of Crud (WHY? =()
+        // nicer plural categories instead of categorys
         if ('index' === $action) {
-            return sprintf('%s', $this->routesPrefix);
-        } else if ('add' === $action) {
-            return sprintf('%s/%s', $this->routesPrefix, $action);
-        } else if ('batch' === $action) {
-            return sprintf('%s/%s', $this->routesPrefix, $action);
-        } else if ('batch/confirm' === $action) {
-            return sprintf('%s/%s/%s', $this->routesPrefix, 'batch', 'confirm');
-        } else if ('show' === $action) {
-            return sprintf('%s/%s/%s', $this->routesPrefix, $action, '{id}');
-        } else if ('edit' === $action) {
-            return sprintf('%s/%s/%s', $this->routesPrefix, $action, '{id}');
-        } else if ('delete' === $action) {
-           return sprintf('%s/%s/%s', $this->routesPrefix, $action, '{id}');
+            return sprintf('%s%s', $this->routesPrefix, 'categories');
         }
+
+        return parent::getRoutePattern($action, $id, $entityBased);
     }
 
     /**

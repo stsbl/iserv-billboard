@@ -1,7 +1,7 @@
 /**
  * Author:  Felix Jacobi
  * Created: 15.08.2016
- * License: http://gnu.org/licenses/gpl-3.0 GNU General Public License 
+ * License: https://opensource.org/licenses/MIT MIT license
  */
 
 CREATE TABLE billboard (

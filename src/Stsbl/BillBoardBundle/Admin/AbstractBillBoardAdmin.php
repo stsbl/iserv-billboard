@@ -39,6 +39,16 @@ abstract class AbstractBillBoardAdmin extends AbstractCrud
     /**
      * {@inheritdoc}
      */
+    protected function configure()
+    {
+        // set base parameter
+        $this->routesPrefix = 'billboard/manage/';
+        $this->routesNamePrefix = 'manage_';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getTemplate($action)
     {
         // Move management into admin section for admins

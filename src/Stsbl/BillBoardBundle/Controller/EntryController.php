@@ -17,6 +17,7 @@ use Stsbl\BillBoardBundle\Traits\LoggerInitializationTrait;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -125,7 +126,8 @@ class EntryController extends CrudController
      * 
      * @param Request $request
      * @param integer $id
-     * @Route("/billboard/entries/lock/{id}", name="billboard_lock")
+     * @return RedirectResponse
+     * @Route("/billboard/entry/lock/{id}", name="billboard_lock")
      * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
      */
     public function lockAction(Request $request, $id)
@@ -152,7 +154,8 @@ class EntryController extends CrudController
      * 
      * @param Request $request
      * @param integer $id
-     * @Route("/billboard/entries/unlock/{id}", name="billboard_unlock")
+     * @return RedirectResponse
+     * @Route("/billboard/entry/unlock/{id}", name="billboard_unlock")
      * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
      */
     public function unlockAction(Request $request, $id)
@@ -291,7 +294,8 @@ class EntryController extends CrudController
      * Handles submitted image delete confirm form
      * 
      * @param Request $request
-     * @return boolan
+     * @throws NoResultException
+     * @return boolean
      */
     private function handleDeleteConfirmForm(Request $request)
     {

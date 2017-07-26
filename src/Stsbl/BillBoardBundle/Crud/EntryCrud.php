@@ -70,16 +70,28 @@ class EntryCrud extends AbstractCrud
         $this->title = _('Bill-Board');
         $this->itemTitle = _('Entry');
         $this->id = 'billboard';
-        $this->routesPrefix = 'billboard/entries';
-        // no prefix to remove the crud_ prefix
+        $this->routesPrefix = 'billboard/';
         $this->routesNamePrefix = '';
         $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard';
         $this->templates['crud_add'] = 'StsblBillBoardBundle:Crud:entry_add.html.twig';
         $this->templates['crud_edit'] = 'StsblBillBoardBundle:Crud:entry_edit.html.twig';
         $this->templates['crud_index'] = 'StsblBillBoardBundle:Crud:entry_index.html.twig';
         $this->templates['crud_show'] = 'StsblBillBoardBundle:Crud:entry_show.html.twig';
+
+        // set module context for logging
+        $this->logModule = 'Bill-Board';
     }
-    
+
+    /**
+     * billboard/entry is nicer than billboard/billboard
+     *
+     * @return string
+     */
+    public function getRouteIdentifier()
+    {
+        return 'entry';
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -99,7 +111,7 @@ class EntryCrud extends AbstractCrud
 
         // TODO?: Solve image collection stuff.
         $this->routes['fileimage_images'] = [
-            'pattern' => sprintf('/%s/%s/{entity_id}/{id}/%s/{width}/{height}', $this->routesPrefix, 'show', 'image'),
+            'pattern' => sprintf('/%s%s/{entity_id}/{id}/%s/{width}/{height}', $this->routesPrefix, 'show', 'image'),
             'name' => sprintf('%s%s_%s', $this->routesNamePrefix, $id, $action . '_images'),
             'entity' => 'EntryImage',
             'property' => 'image',
@@ -108,17 +120,6 @@ class EntryCrud extends AbstractCrud
             '_controller' => sprintf('IServCoreBundle:FileImage:%s', $action),
             '_iserv_crud' => $id,
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($class, $title = null, $itemTitle = null)
-    {
-        // set module context for logging
-        $this->logModule = 'Bill-Board';
-        
-        return parent::__construct($class, $title, $itemTitle);
     }
 
     /**
@@ -339,22 +340,12 @@ class EntryCrud extends AbstractCrud
      */
     protected function getRoutePattern($action, $id, $entityBased = true)
     {
-        // Overwrite broken route generation of Crud (WHY? =()
+        // nicer plural entries instead of entrys
         if ('index' === $action) {
-            return sprintf('%s', $this->routesPrefix);
-        } else if ('add' === $action) {
-            return sprintf('%s/%s', $this->routesPrefix, $action);
-        } else if ('batch' === $action) {
-            return sprintf('%s/%s', $this->routesPrefix, $action);
-        } else if ('batch/confirm' === $action) {
-            return sprintf('%s/%s/%s', $this->routesPrefix, 'batch', 'confirm');
-        } else if ('show' === $action) {
-            return sprintf('%s/%s/%s', $this->routesPrefix, $action, '{id}');
-        } else if ('edit' === $action) {
-            return sprintf('%s/%s/%s', $this->routesPrefix, $action, '{id}');
-        } else if ('delete' === $action) {
-           return sprintf('%s/%s/%s', $this->routesPrefix, $action, '{id}');
+            return sprintf('%s%s', $this->routesPrefix, 'entries');
         }
+
+        return parent::getRoutePattern($action, $id, $entityBased);
     }
     
     /**
