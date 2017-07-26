@@ -14,6 +14,7 @@ use IServ\CrudBundle\Table\ListHandler;
 use IServ\CrudBundle\Table\Filter;
 use Stsbl\BillBoardBundle\Crud\Batch\HideAction;
 use Stsbl\BillBoardBundle\Crud\Batch\ShowAction;
+use Stsbl\BillBoardBundle\Entity\Entry;
 use Stsbl\BillBoardBundle\Security\Privilege;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -332,6 +333,7 @@ class EntryCrud extends AbstractCrud
      */
     public function prePersist(CrudInterface $entry)
     {
+        /* @var Entry $entry */
         $entry->setAuthor($this->getUser());
     }
 
@@ -373,7 +375,7 @@ class EntryCrud extends AbstractCrud
         }
         
         if (!$this->hasCategories()) {
-            return;
+            return false;
         }
         
         // only allow moderators to edit locked entries
@@ -389,6 +391,8 @@ class EntryCrud extends AbstractCrud
         if ($this->isModerator()) {
             return true;
         }
+
+        return false;
     }
 
     /**
@@ -402,9 +406,11 @@ class EntryCrud extends AbstractCrud
         
         if ($this->isGranted(Privilege::BILLBOARD_CREATE)
         || $this->isModerator()) {
-            // allow users with creation nand moderation privilege to add entries
+            // allow users with creation and moderation privilege to add entries
             return true;
         }
+
+        return false;
     }
 
     /**
@@ -421,6 +427,7 @@ class EntryCrud extends AbstractCrud
      */
     public function isAllowedToView(CrudInterface $object = null, UserInterface $user = null)
     {
+        /* @var Entry $object */
         if ($object === null && $user === null) {
             return true;
         }
@@ -437,6 +444,8 @@ class EntryCrud extends AbstractCrud
             // allow users with moderation and admin privilege to show hidden objects
             return true;
         }
+
+        return false;
     }
     
     /**
@@ -444,6 +453,7 @@ class EntryCrud extends AbstractCrud
      */
     public function postRemove(CrudInterface $entry)
     {
+        /* @var Entry $entry */
         if ($this->isModerator()
         && $this->getUser() !== $entry->getAuthor()) {
             $this->log(sprintf('Moderatives Löschen des Eintrages "%s" von %s', $entry->getTitle(), $entry->getAuthorDisplay()));
@@ -455,13 +465,14 @@ class EntryCrud extends AbstractCrud
      */
     public function postUpdate(CrudInterface $entry, array $previousData = null) 
     {
+        /* @var Entry $entry */
         if ($this->isModerator()
         && $this->getUser() !== $entry->getAuthor()) {
             if ($entry->getTitle() !== $previousData['title']) {
                 // write rename log, if old and new title does not match
                 $this->log(sprintf('Moderatives Bearbeiten des Eintrages "%s" von %s und Umbenennen des Eintrages in "%s"', $previousData['title'], $entry->getAuthorDisplay(), $entry->getTitle()));
             } else {
-                $this->log('Moderatives Bearbeiten des Eintrages "%s" von %s', $entry->getTitle(), $entry->getAuthorDisplay());
+                $this->log(sprintf('Moderatives Bearbeiten des Eintrages "%s" von %s', $entry->getTitle(), $entry->getAuthorDisplay()));
             }
         }       
     }
@@ -470,7 +481,7 @@ class EntryCrud extends AbstractCrud
     /**
      * Returns true if there is at least one category
      *
-     * @return boolan
+     * @return boolean
      */
     private function hasCategories()
     {
@@ -487,15 +498,16 @@ class EntryCrud extends AbstractCrud
         return $this->isGranted(Privilege::BILLBOARD_MODERATE)
         || $this->isGranted(Privilege::BILLBOARD_MANAGE);
     }
-    
+
     /**
      * Returns true if current user is author of the given post
-     * 
-     * @return boolean
+     *
+     * @param CrudInterface $object
+     * @return bool
      */
     public function isAuthor(CrudInterface $object)
     {
-        /* @var $object \Stsbl\BillBoardBundle\Entity\Entry */
+        /* @var $object Entry */
         return $object->getAuthor() === $this->getUser();
     }
 }

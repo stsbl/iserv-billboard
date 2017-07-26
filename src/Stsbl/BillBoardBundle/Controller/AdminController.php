@@ -50,12 +50,14 @@ class AdminController extends PageController
     
     const CONFIGDIR = '/var/lib/stsbl/billboard/cfg/';
     const FILE_RULES = 'rules.cfg';
-    
+
     /**
      * Rules configuration page
-     * 
+     *
      * @Route("", name="manage_billboard")
      * @Template()
+     * @param Request $request
+     * @return array
      */
     public function indexAction(Request $request)
     {
@@ -85,11 +87,13 @@ class AdminController extends PageController
             'is_admin' => $isAdmin
         ];
     }
-    
+
     /**
      * Write new rules text to file
-     * 
+     *
      * @Route("/update/rules", name="manage_billboard_update_rules")
+     * @param Request $request
+     * @return RedirectResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function updateRulesAction(Request $request)
     {
@@ -207,7 +211,7 @@ class AdminController extends PageController
     }
     
     /**
-     * Checks if user is authentificated admin
+     * Checks if user is authenticated admin
      * 
      * @return boolean
      */
