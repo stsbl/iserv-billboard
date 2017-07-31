@@ -177,11 +177,12 @@ class CommentController extends PageController
         return $this->isGranted(Privilege::BILLBOARD_MODERATE)
             || $this->isGranted(Privilege::BILLBOARD_MANAGE);
     }
-    
+
     /**
      * Notifies the entry author that there is a new comment
-     * 
+     *
      * @param Entry $entry
+     * @param EntryComment $comment
      */
     private function notifyAuthor(Entry $entry, EntryComment $comment)
     {

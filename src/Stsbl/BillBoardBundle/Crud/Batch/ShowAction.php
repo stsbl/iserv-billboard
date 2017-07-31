@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use IServ\CrudBundle\Crud\Batch\AbstractBatchAction;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CrudBundle\Entity\FlashMessageBag;
-use Stsbl\BillBoardBundle\Entity\Entry;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /*
@@ -66,7 +65,7 @@ class ShowAction extends AbstractBatchAction
                 } else {
                     $bag->addMessage('error', __("You don't have the permission to change that entry: %s", (string) $entry));
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $bag->addMessage('error', __("Failed to make entry visible: %s", (string) $entry));
             }
         }
@@ -105,17 +104,20 @@ class ShowAction extends AbstractBatchAction
     {
         return false;
     }
-    
+
     /**
-     * 
+     *
      * @param CrudInterface $entry
      * @param UserInterface $user
+     * @return bool
      */
     public function isAllowedToExecute(CrudInterface $entry, UserInterface $user) {
         if (!$this->crud->isModerator()) {
             if ($this->crud->getUser() !== $entry->getAuthor()) {
                 return true;
             }
+
+            return false;
         }
         
         return true;
