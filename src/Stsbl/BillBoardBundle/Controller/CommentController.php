@@ -8,10 +8,12 @@ use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\BillBoardBundle\Entity\Entry;
 use Stsbl\BillBoardBundle\Entity\EntryComment;
 use Stsbl\BillBoardBundle\Security\Privilege;
 use Stsbl\BillBoardBundle\Traits\LoggerInitializationTrait;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /*
@@ -53,6 +55,7 @@ class CommentController extends PageController
      * 
      * @param Request $request
      * @param int $entryid
+     * @return RedirectResponse
      * @Route("/billboard/entry/{entryid}/comment/add", name="billboard_comment_add")
      * @Security("is_granted('PRIV_BILLBOARD_CREATE') or is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
      * @Method("POST")
@@ -109,6 +112,7 @@ class CommentController extends PageController
      * 
      * @param Request $request
      * @param int $id
+     * @return RedirectResponse
      * @Route("/billboard/comment/delete/{id}", name="billboard_comment_delete")
      * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
      * @Method("POST")
@@ -150,8 +154,10 @@ class CommentController extends PageController
      * 
      * @param Request $request
      * @param int $id
+     * @return array
      * @Route("/billboard/comment/delete/{id}/confirm", name="billboard_comment_delete_confirm")
      * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
+     * @Template()
      */
     public function confirmAction(Request $request, $id)
     {        
@@ -163,7 +169,7 @@ class CommentController extends PageController
         $this->addBreadcrumb(_('Delete comment'));
         
         $form = $this->getConfirmationForm($id)->createView();
-        return $this->render('StsblBillBoardBundle:Comment:delete_confirm.html.twig', ['delete_confirm_form' => $form, 'comment' => $comment, 'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard']);
+        return ['delete_confirm_form' => $form, 'comment' => $comment, 'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard'];
     }
     
     /**
