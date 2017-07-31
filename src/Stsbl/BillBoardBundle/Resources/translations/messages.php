@@ -1,5 +1,5 @@
 <?php
-// src/Stsbl/BillBoardBundle/Resources/translation/messages.php
+// src/Stsbl/BillBoardBundle/Resources/translations/messages.php
 
 /* 
  * The MIT License
@@ -52,3 +52,4 @@ _('Control whether comments on entries are allowed or not. If you disable commen
 _('New comment on your post: %s commented on %s');
 _('Your entry was locked: %s locked %s');
 _('Your entry was opened: %s opened %s');
+_('Bill-Board');

@@ -142,7 +142,7 @@ class EntryController extends CrudController
         $em->persist($entry);
         $em->flush();
         
-        $this->notifiyLock($entry);
+        $this->notifyLock($entry);
         $this->log(sprintf('Eintrag "%s" von %s für Schreibzugriffe gesperrt', (string)$entry, (string)$entry->getAuthorDisplay()));
         $this->get('iserv.flash')->success(sprintf(_('Entry is now locked: %s'), (string)$entry));
         
@@ -170,7 +170,7 @@ class EntryController extends CrudController
         $em->persist($entry);
         $em->flush();
         
-        $this->notifiyOpen($entry);
+        $this->notifyOpen($entry);
         $this->log(sprintf('Eintrag "%s" von %s für Schreibzugriffe geöffnet', (string)$entry, (string)$entry->getAuthorDisplay()));
         $this->get('iserv.flash')->success(sprintf(_('Entry is now unlocked: %s'), (string)$entry));
         
@@ -339,14 +339,26 @@ class EntryController extends CrudController
             return false;
         }
     }
+
+    /**
+     * Stub for old typo
+     *
+     * @param Entry $entry
+     * @deprecated
+     */
+    private function notifiyLock(Entry $entry)
+    {
+        @trigger_error('The method notifiyLock is deprecated and will removed.', E_USER_DEPRECATED);
+
+        $this->notifyLock($entry);
+    }
     
     /**
      * Notifies the entry author that his post is locked
      * 
      * @param Entry $entry
-     * @param string type
      */
-    private function notifiyLock(Entry $entry)
+    private function notifyLock(Entry $entry)
     {
         $author = $entry->getAuthor();
         
@@ -370,14 +382,26 @@ class EntryController extends CrudController
             ['billboard_show', ['id' => $entry->getId()]]
         ));
     }
-    
+
+    /**
+     * Stub for old typo
+     *
+     * @param Entry $entry
+     * @deprecated
+     */
+    private function notifiyOpen(Entry $entry)
+    {
+        @trigger_error('The method notifiyOpen is deprecated and will removed.', E_USER_DEPRECATED);
+
+        $this->notifyOpen($entry);
+    }
+
     /**
      * Notifies the entry author that his post is opened
      * 
      * @param Entry $entry
-     * @param string type
      */
-    private function notifiyOpen(Entry $entry)
+    private function notifyOpen(Entry $entry)
     {
         $author = $entry->getAuthor();
         
