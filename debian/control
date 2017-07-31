@@ -12,8 +12,8 @@ Depends: iserv-portal, stsbl-iserv3-maintenance
 Description: Schwarzes Brett-Modul für IServ
  Das Modul "Schwarzes Brett" stellt eine digitale Biete-Pinnwand zur Verfügung.
  .
- Ausgewählte Gruppen können Einträge mit optionalen Bildern zu dieser Pinnwand
- hinzufügen.
+ Ausgewählte Gruppen können Einträge mit optionalen Bildern zu dieser
+ Pinnwand hinzufügen.
  .
  Das Modul befindet sich derzeit in Entwicklung und wird in naher Zukunft um 
  weitere Funktionen ergänzt.
