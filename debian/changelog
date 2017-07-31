@@ -1,3 +1,28 @@
+stsbl-iserv-billboard (17.07.31-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Updated i18n.
+  * Fixed l10n.
+  * Fixed handling of deleted users.
+  * Made comment information boxes less conspicuous.
+  * Renamed {Open,Close} Entry to {Open,Lock}.
+  * Updated l10n.
+  * Added support for linkify.
+  * Fixed logging for moderative write access protection for posts with deleted author.
+  * Replaced getAuthor() with getAuthorDisplay() on places where the author's name is printed out.
+  * Fixed incorrect usage of hasValidAuthor() check.
+  * Switched from PHP code to Sensio annotations for privilege check in CommentController.
+  * Updated build deps and rules.
+  * Reworked routing.
+  * Improved authorization check methods.
+  * Rewrote list filter expression using QueryBuilder.
+  * Updated phpdoc.
+  * Improved notifications (fixed typos and added compiler pass).
+  * Removed entity backup.
+  * Updated l10n.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Mon, 31 Jul 2017 18:56:35 +0200
+
 stsbl-iserv-billboard (17.03.09-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
