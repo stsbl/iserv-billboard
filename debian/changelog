@@ -1,3 +1,11 @@
+stsbl-iserv-billboard (17.09.10-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Removed deprecated debian/install.
+  * Fixed sql statement order.
+
+ -- Felix Jacobi <felix.jacobi@iserv.eu>  Sun, 10 Sep 2017 23:01:35 +0200
+
 stsbl-iserv-billboard (17.08.20-0) experimental; urgency=medium
 
   * Fixed too long extended description.
