@@ -27,10 +27,7 @@
                     <span title="{{ _('Author') }}">
                         {{ icon('user') }}
                         {% if not authorIsDeleted %}
-                            <a class="mailto" title="{{ _('Send an e-mail to the author') }}"
-                            href="mailto:{{ item.author.name ~ ' <' ~ item.author.username ~ '@' ~ servername ~ '>?subject=' ~ __('Entry "%s" on the billboard', item.title)|url_encode() }}">
-                                {{ item.authorDisplay }}
-                            </a>
+                            <a>{{ item.author|mailto({'addressee': item.author, 'subject': __('Entry "%s" on the billboard', item.title)}) }}</a>
                         {% else %}
                             {{ item.authorDisplay }}
                         {% endif %}
