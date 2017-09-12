@@ -1,3 +1,20 @@
+stsbl-iserv-billboard (17.09.10-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Removed deprecated debian/install.
+  * Fixed sql statement order.
+
+ -- Felix Jacobi <felix.jacobi@iserv.eu>  Sun, 10 Sep 2017 23:01:35 +0200
+
+stsbl-iserv-billboard (17.08.20-0) experimental; urgency=medium
+
+  * Fixed too long extended description.
+  * Switched to Sension annotation for template.
+  * Fixed twig comment.
+  * Fixed registering of compiler pass.
+
+ -- Felix Jacobi <felix.jacobi@iserv.eu>  Sun, 20 Aug 2017 14:20:25 +0200
+
 stsbl-iserv-billboard (17.07.31-0) experimental; urgency=medium
 
   [ Felix Jacobi ]

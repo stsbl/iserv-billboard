@@ -3,6 +3,11 @@
  * Created: 15.08.2016
  * License: https://opensource.org/licenses/MIT MIT license
  */
+CREATE TABLE billboard_category (
+  id          SERIAL      PRIMARY KEY,
+  title       VARCHAR(255),
+  description TEXT
+);
 
 CREATE TABLE billboard (
     id          SERIAL              PRIMARY KEY,
@@ -18,12 +23,6 @@ CREATE TABLE billboard (
                              ON UPDATE CASCADE,
     visible     BOOLEAN,
     closed      BOOLEAN
-);
-
-CREATE TABLE billboard_category (
-    id          SERIAL      PRIMARY KEY,
-    title       VARCHAR(255),
-    description TEXT
 );
 
 CREATE TABLE billboard_images (
