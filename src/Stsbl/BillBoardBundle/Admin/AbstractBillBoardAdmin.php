@@ -7,7 +7,7 @@ use IServ\CrudBundle\Crud\AbstractCrud;
 /*
  * The MIT License
  *
- * Copyright 2017 felix.
+ * Copyright 2018 felix.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
