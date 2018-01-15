@@ -1,13 +1,13 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-31 18:25+0200\n"
+"POT-Creation-Date: 2018-01-15 18:33+0100\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: /tmp/billboard-StsblBillBoardBundle.twig.php:53
 #: /tmp/billboard-StsblBillBoardBundle.twig.php:73
-#: src/Stsbl/BillBoardBundle/Controller/CommentController.php:163
+#: src/Stsbl/BillBoardBundle/Controller/CommentController.php:169
 msgid "Delete comment"
 msgstr "Kommentar löschen"
 
@@ -22,7 +22,7 @@ msgid "none"
 msgstr "keine"
 
 #: /tmp/billboard-StsblBillBoardBundle.twig.php:529
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:2156
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:2144
 #: src/Stsbl/BillBoardBundle/Controller/AdminController.php:70
 msgid "Manage"
 msgstr "Verwalten"
@@ -32,7 +32,7 @@ msgstr "Verwalten"
 #: src/Stsbl/BillBoardBundle/EventListener/MenuListener.php:55
 #: src/Stsbl/BillBoardBundle/EventListener/MenuListener.php:74
 #: src/Stsbl/BillBoardBundle/EventListener/MenuListener.php:79
-#: src/Stsbl/BillBoardBundle/Controller/CommentController.php:161
+#: src/Stsbl/BillBoardBundle/Controller/CommentController.php:167
 #: src/Stsbl/BillBoardBundle/Controller/AdminController.php:69
 #: src/Stsbl/BillBoardBundle/Controller/AdminController.php:72
 #: src/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php:86
@@ -66,15 +66,11 @@ msgid "Author"
 msgstr "Autor"
 
 #: /tmp/billboard-StsblBillBoardBundle.twig.php:850
-msgid "Send an e-mail to the author"
-msgstr "Eine E-Mail an den Autor senden"
-
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:854
 #, php-format
 msgid "Entry \"%s\" on the billboard"
 msgstr "Eintrag \"%s\" auf dem schwarzen Brett"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:873
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:864
 #: src/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php:62
 #: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:138
 #: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:177
@@ -83,35 +79,36 @@ msgstr "Eintrag \"%s\" auf dem schwarzen Brett"
 msgid "Category"
 msgstr "Kategorie"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:881
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:872
 msgid "Visibility"
 msgstr "Sichtbarkeit"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:890
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:881
 #: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:189
 #: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:226
 msgid "Visible"
 msgstr "Sichtbar"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:898
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:889
 msgid "Hidden"
 msgstr "Versteckt"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:909
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:900
 msgid "This entry is closed for any write access."
 msgstr "Dieser Eintrag ist für jeglichen Schreibzugriff geschlossen."
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:913
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:904
+msgctxt "billboard"
 msgid "Closed"
 msgstr "Geschlossen"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:954
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:945
 #: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:154
 #: src/Stsbl/BillBoardBundle/Crud/EntryCrud.php:196
 msgid "Images"
 msgstr "Bilder"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1003
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:994
 #: src/Stsbl/BillBoardBundle/Controller/EntryController.php:203
 #: src/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php:99
 #: src/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php:110
@@ -121,53 +118,53 @@ msgstr "Bilder"
 msgid "Description"
 msgstr "Beschreibung"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1029
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1158
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1020
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1149
 #: src/Stsbl/BillBoardBundle/Controller/EntryController.php:276
 msgid "Delete"
 msgstr "Löschen"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1051
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1042
 msgid "You can not add further images to this entry, because it is closed."
 msgstr ""
 "Sie können keine weiteren Bilder zum diesem Eintrag hinzufügen, da er "
 "geschlossen wurde."
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1057
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1048
 msgid ""
 "This entry currently has no images. To add one, click \"Add image\" below."
 msgstr ""
 "Dieser Eintrag hat derzeit keine Bilder. Um eines hinzuzufügen, klicken Sie "
 "unten auf \"Bild hinzufügen\"."
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1075
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1066
 msgid "Add image"
 msgstr "Bild hinzufügen"
 
 # Translations with context
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1105
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1096
 msgctxt "billboard"
 msgid "Comments"
 msgstr "Kommentare"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1115
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1106
 msgid "Currently no comments."
 msgstr "Derzeit keine Kommentare."
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1135
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1126
 msgid "by"
 msgstr "von"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1139
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1130
 #, php-format
 msgid "%s at %s"
 msgstr "%s am %s"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1200
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1191
 msgid "Add a comment"
 msgstr "Einen Kommentar hinzufügen"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1212
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1203
 msgid ""
 "This entry is locked, therefor the creation of comments is not longer "
 "possible."
@@ -175,34 +172,34 @@ msgstr ""
 "Dieser Eintrag ist geschlossen, daher ist das Erstellen von Kommentaren "
 "nicht länger möglich."
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1230
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1221
 msgid "The adding of new comments was disabled by your administrator."
 msgstr ""
 "Das Hinzufügen neuer Kommentare wurde durch Ihren Administrator deaktiviert."
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1272
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1263
 msgid "Add a new image to this entry"
 msgstr "Ein neues Bild zum diesem Eintrag hinzufügen"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1278
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1269
 msgid "Upload a new image."
 msgstr "Ein neues Bild hochladen."
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1290
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1281
 msgid "Close"
 msgstr "Schließen"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1329
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1320
 msgid "Delete image"
 msgstr "Bild löschen"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1335
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1326
 msgctxt "billboard"
 msgid "Do you really want to delete the image?"
 msgstr "Möchten Sie das Bild wirklich löschen?"
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1850
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:2271
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1838
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:2259
 msgid ""
 "There are no bill-board categories configured yet. Please contact your "
 "administrator."
@@ -210,8 +207,8 @@ msgstr ""
 "Es sind noch keine Kategorien für das schwarze Brett eingerichtet. Bitte "
 "kontaktieren Sie Ihren Administrator."
 
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:1862
-#: /tmp/billboard-StsblBillBoardBundle.twig.php:2283
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:1850
+#: /tmp/billboard-StsblBillBoardBundle.twig.php:2271
 msgid "Rules for posting on the Bill-Board:"
 msgstr "Regeln für das Veröffentlichen auf dem schwarzen Brett:"
 
@@ -365,16 +362,16 @@ msgstr "Ja"
 msgid "No"
 msgstr "Nein"
 
-#: src/Stsbl/BillBoardBundle/Controller/CommentController.php:91
+#: src/Stsbl/BillBoardBundle/Controller/CommentController.php:94
 msgid "Entry not found."
 msgstr "Eintrag nicht gefunden."
 
-#: src/Stsbl/BillBoardBundle/Controller/CommentController.php:102
+#: src/Stsbl/BillBoardBundle/Controller/CommentController.php:105
 #, php-format
 msgid "Comment to entry \"%s\" successful added."
 msgstr "Kommentrar zu Eintrag \"%s\" erfolgreich hinzugefügt."
 
-#: src/Stsbl/BillBoardBundle/Controller/CommentController.php:143
+#: src/Stsbl/BillBoardBundle/Controller/CommentController.php:147
 #, php-format
 msgid "Comment \"%s\" successful deleted."
 msgstr "Kommentar \"%s\" erfolgreich gelöscht."
@@ -510,3 +507,9 @@ msgstr "Öffnen"
 msgctxt "billboard"
 msgid "Lock"
 msgstr "Schließen"
+
+#~ msgid "Send an e-mail to the author"
+#~ msgstr "Eine E-Mail an den Autor senden"
+
+#~ msgid "Closed"
+#~ msgstr "Geschlossen"
