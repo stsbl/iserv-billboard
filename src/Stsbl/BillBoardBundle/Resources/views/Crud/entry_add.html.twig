@@ -40,14 +40,10 @@
     {% if app.environment != 'prod' %}
 	<!-- {{ _self }} => billboard_editor.js -->
     {% endif %}
-    {% javascripts output='js/compiled/billboard_editor.js' filter='?uglifyjs2' '@StsblBillBoardBundle/Resources/public/js/billboard_editor.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %} 
+    <script src="{{ asset('js/billboard_editor.js', 'stsbl-bill-board') }}"></script>
     
     {% if app.environment != 'prod' %}
 	<!-- {{ _self }} => billboard_common.js -->
-    {% endif %}
-    {% javascripts output='js/compiled/billboard_common.js' filter='?uglifyjs2' '@StsblBillBoardBundle/Resources/public/js/billboard_common.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %} 
+    {% endif %}}
+    <script src="{{ asset('js/billboard_common.js', 'stsbl-bill-board') }}"></script>
 {% endblock %}

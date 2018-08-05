@@ -213,28 +213,14 @@
         {% endif %}
         <script type="text/javascript" src="{{ asset('components/tinymce-i10n/langs/de.js') }}"></script>
     {% endif %}
-    
+
     {% if app.environment != 'prod' %}
-        <!-- {{ _self }} => mail.compose.js -->
+        <!-- {{ _self }} => billboard_image.js -->
     {% endif %}
-    
-    {% javascripts output='js/compiled/mail.compose.js' filter='?uglifyjs2' '@IServMailBundle/Resources/public/js/pages/compose.js' %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-    
+    <script src="{{ asset('js/billboard_image.js', 'stsbl-bill-board') }}"></script>
+
     {% if app.environment != 'prod' %}
-	<!-- {{ _self }} => billboard_image.js -->
-    {% endif %}
-    
-    {% javascripts output='js/compiled/billboard_image.js' filter='?uglifyjs2' '@StsblBillBoardBundle/Resources/public/js/billboard_image.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-    
-    {% if app.environment != 'prod' %}
-	<!-- {{ _self }} => billboard_common.js -->
-    {% endif %}
-    
-    {% javascripts output='js/compiled/billboard_common.js' filter='?uglifyjs2' '@StsblBillBoardBundle/Resources/public/js/billboard_common.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    <!-- {{ _self }} => billboard_common.js -->
+    {% endif %}}
+    <script src="{{ asset('js/billboard_common.js', 'stsbl-bill-board') }}"></script>
 {% endblock %}
