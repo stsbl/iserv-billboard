@@ -31,24 +31,4 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class StsblBillBoardExtension extends IServBaseExtension
 {
-    const ALIAS = 'stsbl_billboard';
-
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $configs, ContainerBuilder $container)
-    {
-        $configuration = new Configuration($this->getAlias());
-        $this->processConfiguration($configuration, $configs);
-
-        parent::load($configs, $container);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAlias()
-    {
-        return self::ALIAS;
-    }
 }
