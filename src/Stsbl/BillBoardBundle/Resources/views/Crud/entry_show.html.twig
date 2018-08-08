@@ -1,17 +1,6 @@
 {# src/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.thtml.twig #}
 {% extends 'IServCrudBundle:Crud:show.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    
-    {% if app.environment != 'prod' %}
-        <!-- {{ _self }} => billboard.css -->
-    {% endif %}
-    {% stylesheets output='css/compiled/billboard.css' '@StsblBillBoardBundle/Resources/public/css/billboard.less' filter='cssrewrite' %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
-{% endblock %}
-
 {% block content %}
     <h1>{{ item.title }}</h1>
     {% block crud_form_actions %}
@@ -192,6 +181,15 @@
             </div>
         {% endif %}
     {% endblock %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% if app.environment != 'prod' %}
+        <!-- {{ _self }} => billboard.less -->
+    {% endif %}
+    <link rel="stylesheet" href="{{ asset('less/billboard.less', 'stsbl-bill-board') }}" />
 {% endblock %}
 
 {% block javascripts %}
