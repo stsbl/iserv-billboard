@@ -40,10 +40,10 @@
     {% if app.environment != 'prod' %}
 	<!-- {{ _self }} => billboard_editor.js -->
     {% endif %}
-    <script src="{{ asset('js/billboard_editor.js', 'stsbl-bill-board') }}"></script>
+    <script src="{{ asset('js/billboard_editor.js', 'stsbl_bill_board') }}"></script>
     
     {% if app.environment != 'prod' %}
 	<!-- {{ _self }} => billboard_common.js -->
     {% endif %}}
-    <script src="{{ asset('js/billboard_common.js', 'stsbl-bill-board') }}"></script>
+    <script src="{{ asset('js/billboard_common.js', 'stsbl_bill_board') }}"></script>
 {% endblock %}

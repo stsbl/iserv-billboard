@@ -215,10 +215,10 @@
     {% if app.environment != 'prod' %}
         <!-- {{ _self }} => billboard_image.js -->
     {% endif %}
-    <script src="{{ asset('js/billboard_image.js', 'stsbl-bill-board') }}"></script>
+    <script src="{{ asset('js/billboard_image.js', 'stsbl_bill_board') }}"></script>
 
     {% if app.environment != 'prod' %}
     <!-- {{ _self }} => billboard_common.js -->
     {% endif %}}
-    <script src="{{ asset('js/billboard_common.js', 'stsbl-bill-board') }}"></script>
+    <script src="{{ asset('js/billboard_common.js', 'stsbl_bill_board') }}"></script>
 {% endblock %}
