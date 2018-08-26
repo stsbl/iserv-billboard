@@ -1,17 +1,21 @@
-<?php
+<?php declare(strict_types = 1);
 // src/Stsbl/BillBoardBundle/Controller/AdminController.php
 namespace Stsbl\BillBoardBundle\Controller;
 
-use IServ\CoreBundle\Controller\PageController;
+use IServ\CoreBundle\Controller\AbstractPageController;
+use IServ\CoreBundle\Service\Flash;
+use IServ\CoreBundle\Service\Logger;
 use IServ\CoreBundle\Traits\LoggerTrait;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\BillBoardBundle\Security\Privilege;
 use Stsbl\BillBoardBundle\Traits\LoggerInitializationTrait;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\RuntimeException;
+use Symfony\Component\Routing\Annotation\Route;
 
 /*
  * The MIT License
@@ -44,28 +48,27 @@ use Symfony\Component\Security\Core\Exception\RuntimeException;
  * @license MIT license <https://mit.otg/licenses/MIT>
  * @Route("/billboard/manage")
  */
-class AdminController extends PageController 
+class AdminController extends AbstractPageController
 {
     use LoggerTrait, LoggerInitializationTrait;
     
-    const CONFIGDIR = '/var/lib/stsbl/billboard/cfg/';
+    const CONFIG_DIR = '/var/lib/stsbl/billboard/cfg/';
     const FILE_RULES = 'rules.cfg';
 
     /**
      * Rules configuration page
      *
      * @Route("", name="manage_billboard")
-     * @Template()
-     * @param Request $request
+     * @Template("@StsblBillBoard/Admin/index.html.twig")
      * @return array
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        $this->isAdmin();
+        $this->denyAccessUnlessMangePrivilegeIsGranted();
         
         // track path
         // change breadcrumb depending on if user is logged in admin section or not
-        if(!$this->isAuthenticatedAdmin()) {
+        if (!$this->isAdmin()) {
             $this->addBreadcrumb(_('Bill-Board'), $this->generateUrl('billboard_index'));
             $this->addBreadcrumb(_('Manage'));
         } else {
@@ -73,7 +76,7 @@ class AdminController extends PageController
         }
         
         // changing extended template depending on you know already ;)
-        if ($this->isAuthenticatedAdmin()) {
+        if ($this->isAdmin()) {
             $bundle = 'IServAdminBundle';
             $isAdmin = true;
         } else {
@@ -81,9 +84,9 @@ class AdminController extends PageController
             $isAdmin = false;
         }
         
-        return ['rules_form' => $this->getRulesForm()->createView(), 
-            'bundle' => $bundle, 
-            'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard', 
+        return ['rules_form' => $this->getRulesForm()->createView(),
+            'bundle' => $bundle,
+            'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard',
             'is_admin' => $isAdmin
         ];
     }
@@ -97,13 +100,13 @@ class AdminController extends PageController
      */
     public function updateRulesAction(Request $request)
     {
-        $this->isAdmin();
+        $this->denyAccessUnlessMangePrivilegeIsGranted();
         
         $form = $this->getRulesForm();
         $form->handleRequest($request);
         
         if (!$form->isValid()) {
-            $this->get('iserv.flash')->error(_('Invalid rules text'));
+            $this->get(Flash::class)->error(_('Invalid rules text'));
             
             return $this->redirect($this->generateUrl('manage_billboard'));
         }
@@ -117,35 +120,38 @@ class AdminController extends PageController
     /**
      * Returns the current bill-board rules
      * returns the default rules, if no rules text is set
-     * 
-     * @return string rules
+     *
+     * @return string
      */
-    public static function getCurrentRules()
+    public static function getCurrentRules(): string
     {
-        if (!is_file(self::CONFIGDIR . self::FILE_RULES) || !is_readable(self::CONFIGDIR . self::FILE_RULES)) {
+        if (!is_file(self::CONFIG_DIR . self::FILE_RULES) || !is_readable(self::CONFIG_DIR . self::FILE_RULES)) {
             return self::getDefaultRules();
         }
         
-        return file_get_contents(self::CONFIGDIR . self::FILE_RULES);
+        return file_get_contents(self::CONFIG_DIR . self::FILE_RULES);
     }
     
     /**
      * Returns the translated default bill-board rules.
      * Used when no custom rules text is set
-     * 
+     *
      * @return string
      */
-    public static function getDefaultRules()
+    public static function getDefaultRules(): string
     {
-        return _('The bill-board is only intended for small things. Please dont\'t offer things which have a worth of more than 100 euro.');
+        return _(
+            'The bill-board is only intended for small things. Please dont\'t offer things which have a worth of more '.
+            'than 100 euro.'
+        );
     }
-    
+
     /**
      * Returns a Form to set the rules text
-     * 
-     * @return Form
+     *
+     * @return FormInterface
      */
-    private function getRulesForm()
+    private function getRulesForm(): FormInterface
     {
         $builder = $this->createFormBuilder();
         
@@ -156,7 +162,8 @@ class AdminController extends PageController
                 'data' => self::getCurrentRules(),
                 'attr' => array(
                     'rows' => 10,
-                    'help_text' => _('Here you can enter rules, which are shown at the form for adding an entry to the bill-board.')
+                    'help_text' => _('Here you can enter rules, which are shown at the form for adding an entry to '.
+                        'the bill-board.')
                 ),
                 'required' => false
             ))
@@ -178,45 +185,66 @@ class AdminController extends PageController
      * @param  string $folder   folder the file is inside of
      * @return RedirectResponse redirect to admin page
      */
-    private function updateFile($content, $filename, $folder = self::CONFIGDIR)
+    private function updateFile(string $content, string $filename, string $folder = self::CONFIG_DIR): RedirectResponse
     {
         try {
             touch($folder . $filename);
             $file = new \SplFileObject($folder . $filename, 'w');
             $file->fwrite($content);
         } catch (\RuntimeException $e) {
-            $this->get('iserv.flash')->error(_p('billboard', 'This should never happen.'));
+            $this->get(Flash::class)->error(_p('billboard', 'This should never happen.'));
+
+            $this->get(LoggerInterface::class)->error(sprintf(
+                'Exception on writing rules file: %s',
+                $e->getMessage()
+            ), ['exception' => $e]);
         }
         
         if ($filename == self::FILE_RULES) {
             $logText = 'Regeln aktualisiert';
         } else {
-            throw new RuntimeException('Unknown filename '.$filename.'.');
+            throw new \InvalidArgumentException('Unknown filename '.$filename.'.');
         }
-        
-        $this->initializeLogger();
+
         $this->log($logText);
 
-        $this->get('iserv.flash')->success(_('Rules updated successfully.'));
+        $this->get(Flash::class)->success(_('Rules updated successfully.'));
+
         return $this->redirect($this->generateUrl('manage_billboard'));
     }
     
     /**
      * Checks if the user has the manage privilege
      */
-    private function isAdmin()
+    private function denyAccessUnlessMangePrivilegeIsGranted()/*: void*/
     {
         // check privilege
-        $this->denyAccessUnlessGranted(Privilege::BILLBOARD_MANAGE, null, 'You need the `BILLBOARD_MANAGE` privilege to access this page.');
+        $this->denyAccessUnlessGranted(
+            Privilege::BILLBOARD_MANAGE,
+            null,
+            'You need the `BILLBOARD_MANAGE` privilege to access this page.'
+        );
     }
     
     /**
      * Checks if user is authenticated admin
-     * 
-     * @return boolean
+     *
+     * @return bool
      */
-    private function isAuthenticatedAdmin()
+    private function isAdmin(): bool
     {
         return $this->isGranted('IS_AUTHENTICATED_ADMIN');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        $deps = parent::getSubscribedServices();
+        $deps[] = Flash::class;
+        $deps['logger'] = LoggerInterface::class;
+
+        return $deps;
     }
 }

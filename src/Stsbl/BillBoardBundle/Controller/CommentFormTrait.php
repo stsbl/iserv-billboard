@@ -1,15 +1,22 @@
-<?php
+<?php declare(strict_types = 1);
 // src/Stsbl/BillBoardBundle/Controller/CommentFormTrait.php
 namespace Stsbl\BillBoardBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use IServ\CoreBundle\Entity\User;
 use Stsbl\BillBoardBundle\Entity\Entry;
 use Stsbl\BillBoardBundle\Entity\EntryComment;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /*
  * The MIT License
@@ -41,82 +48,91 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://mit.otg/licenses/MIT>
  */
-trait CommentFormTrait 
-{   
+trait CommentFormTrait
+{
+    /**
+     * @return RegistryInterface|ManagerRegistry
+     */
+    abstract protected function getDoctrine();
+
+    /**
+     * @return User|UserInterface
+     */
+    abstract protected function getUser();
+
+    /**
+     * @param mixed $data
+     * @param array $options
+     * @return FormBuilderInterface
+     */
+    abstract protected function createFormBuilder($data = null, array $options = array());
+
     /**
      * Get comment form for entry with id $id.
-     * 
-     * @param integer $id entry id
-     * @return \Symfony\Component\Form\Form
+     *
+     * @param Entry $entry
+     * @return FormInterface
      */
-    public function getCommentForm($id)
+    public function getCommentForm(Entry $entry): FormInterface
     {
-        $entry = $this->getEntry($id);
-        $comment = new EntryComment();
-        $comment->setAuthor($this->getUser());
-        if (null !== $entry) {
-            $comment->setEntry($entry);
-        }
+        $comment = EntryComment::createForEntryAndUser($entry, $this->getUser());
+
         $builder = $this->createFormBuilder($comment);
         
         $builder
-            ->setAction($this->generateUrl('billboard_comment_add', ['entryid' => $id]))
-            ->add('title', TextType::class, array(
+            ->setAction($this->generateUrl('billboard_comment_add', ['entry' => $entry->getId()]))
+            ->add('title', TextType::class, [
                 'label' => false,
                 'required' => true,
-                'attr' => array(
+                'attr' => [
                     'widget_col' => 12,
                     'placeholder' => _('Title')
-                    )
-                )
-            )
-            ->add('content', TextareaType::class, array(
+                ]
+            ])
+            ->add('content', TextareaType::class, [
                 'label' => false,
                 'required' => true,
-                'attr' => array(
+                'attr' => [
                     'rows' => 4,
                     'widget_col' => 12,
                     'placeholder' => _('Comment text'),
-                    )
-                )
-            )
-            ->add('submit', SubmitType::class, array(
+                ]
+            ])
+            ->add('submit', SubmitType::class, [
                 'label' => _('Add'),
                 'buttonClass' => 'btn-success',
                 'icon' => 'ok'
-                )
-            )
-            ->add('entry', HiddenType::class, array('data' => $entry, 'data_class' => null))
+            ])
+            ->add('entry', HiddenType::class, ['data' => $entry, 'data_class' => null])
         ;
         
         $builder->get('entry')->addModelTransformer(new CallbackTransformer(
             function (Entry $entry) {
                 return $entry->getId();
             },
-            function ($entryid) {
-                return $this->getEntry($entryid);
+            function (int $entryId = null): Entry {
+                if (null == $entryId) {
+                    return null;
+                }
+
+                return $this->getEntry($entryId);
             }
         ));
         
         return $builder->getForm();
     }
-    
+
     /**
      * Get confirmation form for comment with id $id.
-     * 
-     * @param int $id comment id
-     * @return \Symfony\Component\Form\Form
+     *
+     * @param EntryComment $comment
+     * @return FormInterface|Form
      */
-    public function getConfirmationForm($id)
+    protected function getConfirmationForm(EntryComment $comment): FormInterface
     {
-        $comment = $this->getComment($id);
-        if (null === $comment) {
-            throw new \RuntimeException('No comment with that id found.');
-        }
-
         $builder = $this->createFormBuilder();
         $builder
-            ->setAction($this->generateUrl('billboard_comment_delete', ['id' => $id]))
+            ->setAction($this->generateUrl('billboard_comment_delete', ['id' => $comment->getId()]))
             ->add('actions', FormActionsType::class)
         ;
         
@@ -125,43 +141,39 @@ trait CommentFormTrait
                 'label' => _('Yes'),
                 'buttonClass' => 'btn-danger',
                 'icon' => 'ok'
-                )
-            )
+            ))
             ->add('cancel', SubmitType::class, array(
                 'label' => _('No'),
                 'buttonClass' => 'btn-default',
                 'icon' => 'remove'
-                )
-            )
+            ))
         ;
       
-        return $builder->getForm();         
+        return $builder->getForm();
     }
 
     /**
      * Returns a entry for given id, or null if not found
-     * 
+     *
      * @param $id int
      * @return Entry|null
      */
-    protected function getEntry($id)
+    protected function getEntry(int $id)/*: ?Entry*/
     {
-        /* @var $repo EntityRepository */
-        $repo = $this->getDoctrine()->getRepository('StsblBillBoardBundle:Entry');
+        $repo = $this->getDoctrine()->getRepository(Entry::class);
         
         return $repo->find($id);
     }
     
     /**
      * Returns a comment for given id, or null if not found
-     * 
+     *
      * @param $id int
      * @return EntryComment|null
      */
-    protected function getComment($id)
+    protected function getComment(int $id)/*: ?EntryComment*/
     {
-        /* @var $repo EntityRepository */
-        $repo = $this->getDoctrine()->getRepository('StsblBillBoardBundle:EntryComment');
+        $repo = $this->getDoctrine()->getRepository(EntryComment::class);
         
         return $repo->find($id);
     }

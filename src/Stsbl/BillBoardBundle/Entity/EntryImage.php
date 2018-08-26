@@ -33,10 +33,9 @@ use Stsbl\BillBoardBundle\Entity\Entry;
  */
 
 /**
- * BillBoardBundle:EntryImage
- *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
+ *
  * @ORM\Entity
  * @ORM\Table(name="billboard_images")
  * @ORM\HasLifecycleCallbacks
@@ -307,5 +306,22 @@ class EntryImage implements CrudInterface
     public function getAuthorDisplay()
     {
         return $this->hasValidAuthor() ? $this->getAuthor() : '?';
+    }
+
+    /**
+     * @param Entry $entry
+     * @param User $user
+     * @return self
+     */
+    public static function createForEntryAndUser(Entry $entry, User $user): self
+    {
+        $instance = new self();
+
+        $instance
+            ->setEntry($entry)
+            ->setAuthor($user)
+        ;
+
+        return $instance;
     }
 }

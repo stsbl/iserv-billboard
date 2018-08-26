@@ -1,6 +1,8 @@
-<?php
+<?php declare(strict_types = 1);
 // src/Stsbl/BillBoardBundle/Traits/LoggerInitializationTrait.php
 namespace Stsbl\BillBoardBundle\Traits;
+
+use IServ\CoreBundle\Service\Logger;
 
 /*
  * The MIT License
@@ -32,16 +34,29 @@ namespace Stsbl\BillBoardBundle\Traits;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-trait LoggerInitializationTrait {
+trait LoggerInitializationTrait
+{
+    /**
+     * @var string
+     */
+    protected $logModule;
+
+    /**
+     * @param Logger $logger
+     */
+    abstract public function setLogger(Logger $logger);
+
     /**
      * Initializes the logger
+     *
+     * @required
+     * @param Logger $logger
      */
-    protected function initializeLogger()
-    {  
+    public function initializeLogger(Logger $logger)/*: void*/
+    {
         // set module context for logging
         $this->logModule = 'Bill-Board';
-        
-        $logger = $this->get('iserv.logger');
+
         $this->setLogger($logger);
     }
 }

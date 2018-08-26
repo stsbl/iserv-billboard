@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 // src/Stsbl/BillBoardBundle/EventListener/MenuListener.php
 namespace Stsbl\BillBoardBundle\EventListener;
 
@@ -36,10 +36,10 @@ use Stsbl\BillBoardBundle\Security\Privilege;
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
 
-class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterface 
+class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterface
 {
     /**
-     * @param \IServ\CoreBundle\Event\MenuEvent $event
+     * @param MenuEvent $event
      */
     public function onBuildMainMenu(MenuEvent $event)
     {
@@ -48,7 +48,7 @@ class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterf
             || $event->getAuthorizationChecker()->isGranted(Privilege::BILLBOARD_CREATE)
             || $event->getAuthorizationChecker()->isGranted(Privilege::BILLBOARD_MODERATE)
             || $event->getAuthorizationChecker()->isGranted(Privilege::BILLBOARD_MANAGE)
-        ) {            
+        ) {
             $menu = $event->getMenu(self::COMMUNICATION);
             $item = $menu->addChild('billboard', array(
                 'route' => 'billboard_index',
@@ -63,13 +63,12 @@ class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterf
     }
     
     /**
-     * @param \IServ\CoreBundle\Event\MenuEvent $event
+     * @param MenuEvent $event
      */
     public function onBuildAdminMenu(MenuEvent $event)
     {
         // check if user is privileged
-        if ($event->getAuthorizationChecker()->isGranted(Privilege::BILLBOARD_MANAGE))
-        {
+        if ($event->getAuthorizationChecker()->isGranted(Privilege::BILLBOARD_MANAGE)) {
             $menu = $event->getMenu();
             $block = $menu->addChild(_('Bill-Board'));
             $block->setExtra('orderNumber', 30);

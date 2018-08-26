@@ -1,9 +1,11 @@
-<?php
+<?php declare(strict_types = 1);
 // src/Stsbl/BillBoardBundle/Crud/EntryCrud.php
 namespace Stsbl\BillBoardBundle\Crud;
 
 use Doctrine\ORM\QueryBuilder;
+use IServ\CoreBundle\Service\Logger;
 use IServ\CrudBundle\Crud\AbstractCrud;
+use IServ\CrudBundle\Doctrine\ORM\ORMObjectManager;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CoreBundle\Form\Type\BooleanType;
 use IServ\CoreBundle\Form\Type\PurifiedTextareaType;
@@ -15,8 +17,11 @@ use IServ\CrudBundle\Table\ListHandler;
 use IServ\CrudBundle\Table\Filter;
 use Stsbl\BillBoardBundle\Crud\Batch\HideAction;
 use Stsbl\BillBoardBundle\Crud\Batch\ShowAction;
+use Stsbl\BillBoardBundle\Entity\Category;
+use Stsbl\BillBoardBundle\Entity\CategoryRepository;
 use Stsbl\BillBoardBundle\Entity\Entry;
 use Stsbl\BillBoardBundle\Security\Privilege;
+use Stsbl\BillBoardBundle\Traits\LoggerInitializationTrait;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /*
@@ -45,13 +50,18 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Bill-Board entry list
- * 
+ *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://mit.otg/licenses/MIT>
  */
 class EntryCrud extends AbstractCrud
 {
-    use LoggerTrait;
+    use LoggerTrait, LoggerInitializationTrait;
+
+    public function __construct()
+    {
+        parent::__construct(Category::class);
+    }
 
     /**
      * {@inheritdoc}
@@ -66,7 +76,7 @@ class EntryCrud extends AbstractCrud
 
     /**
      * {@inheritdoc}
-     */    
+     */
     protected function configure()
     {
         $this->title = _('Bill-Board');
@@ -79,9 +89,6 @@ class EntryCrud extends AbstractCrud
         $this->templates['crud_edit'] = 'StsblBillBoardBundle:Crud:entry_edit.html.twig';
         $this->templates['crud_index'] = 'StsblBillBoardBundle:Crud:entry_index.html.twig';
         $this->templates['crud_show'] = 'StsblBillBoardBundle:Crud:entry_show.html.twig';
-
-        // set module context for logging
-        $this->logModule = 'Bill-Board';
     }
 
     /**
@@ -158,7 +165,7 @@ class EntryCrud extends AbstractCrud
             ->add('comments', null, [
                 'label' => _('Comments'),
                 'responsive' => 'desktop',
-                'required' => false, 
+                'required' => false,
                 'template' => 'StsblBillBoardBundle:List:field_comments.html.twig'
             ])
         ;
@@ -189,7 +196,7 @@ class EntryCrud extends AbstractCrud
                 'label' => _('Visible')
             ])
             ->add('description', null, [
-                'label' => _('Description'), 
+                'label' => _('Description'),
                 'template' => 'StsblBillBoardBundle:List:field_formatted_content.html.twig'
             ])
             ->add('images', null, [
@@ -229,7 +236,7 @@ class EntryCrud extends AbstractCrud
                 ]
             ])
             ->add('description', PurifiedTextareaType::class, [
-                'label' => _('Description'), 
+                'label' => _('Description'),
                 'attr' => [
                     'rows' => 30,
                     'help_text' => _('Please give a short description of your matter.')
@@ -243,8 +250,10 @@ class EntryCrud extends AbstractCrud
      */
     public function configureListFilter(ListHandler $listHandler)
     {
-        /* @var QueryBuilder $qb */
-        $qb = $this->getObjectManager()->createQueryBuilder($this->class);
+        /** @var ORMObjectManager $em */
+        $em = $this->getObjectManager();
+        $qb = $em->createQueryBuilder($this->class);
+
         $qb->select('p')
             ->from('StsblBillBoardBundle:Entry', 'p')
             ->where($qb->expr()->eq('p', 'parent'))
@@ -252,14 +261,17 @@ class EntryCrud extends AbstractCrud
         ;
         
         $listHandler
-            ->addListFilter((new Filter\ListPropertyFilter(_('Category'), 'category', 'StsblBillBoardBundle:Category'))->allowNone())
+            ->addListFilter(
+                (new Filter\ListPropertyFilter(_('Category'), 'category', 'StsblBillBoardBundle:Category'))
+                    ->allowNone()
+            )
             ->addListFilter(new Filter\ListSearchFilter('search', ['title', 'description']))
         ;
         
         $allFilter = new Filter\ListExpressionFilter(_('All entries'), $qb->expr()->exists($qb));
-        $allFilter    
+        $allFilter
             ->setName('all_entries')
-            ->setListMapperUpdater(function() use ($listHandler) {
+            ->setListMapperUpdater(function () use ($listHandler) {
                 $listHandler->disableBatchAction('show');
             })
         ;
@@ -268,7 +280,7 @@ class EntryCrud extends AbstractCrud
         $authorFilter
             ->setName('created_entries')
             ->setParameters(array('user' => $this->getUser()))
-            ->setListMapperUpdater(function() use ($listHandler) {
+            ->setListMapperUpdater(function () use ($listHandler) {
                 $listHandler->disableBatchAction('show');
             })
         ;
@@ -280,7 +292,7 @@ class EntryCrud extends AbstractCrud
         $hiddenFilter
             ->setName('my_hidden_entries')
             ->setParameters(array('user' => $this->getUser()))
-            ->setListMapperUpdater(function() use ($listHandler) {
+            ->setListMapperUpdater(function () use ($listHandler) {
                 $listHandler->disableBatchAction('hide');
             })
         ;
@@ -300,7 +312,7 @@ class EntryCrud extends AbstractCrud
             $hiddenAllFilter
                 ->setName('hidden_entries_other_users')
                 ->setParameters(array('user' => $this->getUser()))
-                ->setListMapperUpdater(function() use ($listHandler) {
+                ->setListMapperUpdater(function () use ($listHandler) {
                     $listHandler->disableBatchAction('hide');
                 })
             ;
@@ -331,9 +343,15 @@ class EntryCrud extends AbstractCrud
         
         if ($this->isModerator()) {
             if ($item->getClosed()) {
-                $ret['unlock'] = [$this->getRouter()->generate('billboard_unlock', ['id' => $item->getId()]), _('Open'), 'pro-unlock'];
+                $ret['unlock'] = [$this->getRouter()->generate(
+                    'billboard_unlock',
+                    ['id' => $item->getId()]
+                ), _('Open'), 'pro-unlock'];
             } else {
-                $ret['lock'] = [$this->getRouter()->generate('billboard_lock', ['id' => $item->getId()]), _p('billboard', 'Lock'), 'lock'];
+                $ret['lock'] = [$this->getRouter()->generate(
+                    'billboard_lock',
+                    ['id' => $item->getId()]
+                ), _p('billboard', 'Lock'), 'lock'];
             }
         }
         
@@ -365,7 +383,7 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function getIndexActions() 
+    public function getIndexActions()
     {
         $links = parent::getIndexActions();
         
@@ -380,8 +398,9 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function isAllowedToEdit(CrudInterface $object = null, UserInterface $user = null) 
+    public function isAllowedToEdit(CrudInterface $object = null, UserInterface $user = null)
     {
+        /** @var $object Entry */
         if ($object === null && $user === null) {
             return true;
         }
@@ -410,7 +429,7 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function isAllowedToAdd(UserInterface $user = null) 
+    public function isAllowedToAdd(UserInterface $user = null)
     {
         if ($user === null) {
             return true;
@@ -428,7 +447,7 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function isAllowedToDelete(CrudInterface $object = null, UserInterface $user = null) 
+    public function isAllowedToDelete(CrudInterface $object = null, UserInterface $user = null)
     {
         return $this->isAllowedToEdit($object, $user);
     }
@@ -466,46 +485,62 @@ class EntryCrud extends AbstractCrud
     public function postRemove(CrudInterface $entry)
     {
         /* @var Entry $entry */
-        if ($this->isModerator()
-        && $this->getUser() !== $entry->getAuthor()) {
-            $this->log(sprintf('Moderatives Löschen des Eintrages "%s" von %s', $entry->getTitle(), $entry->getAuthorDisplay()));
+        if ($this->isModerator() && $this->getUser() !== $entry->getAuthor()) {
+            $this->log(sprintf(
+                'Moderatives Löschen des Eintrages "%s" von %s',
+                $entry->getTitle(),
+                $entry->getAuthorDisplay()
+            ));
         }
     }
     
     /**
      * {@inheritdoc}
      */
-    public function postUpdate(CrudInterface $entry, array $previousData = null) 
+    public function postUpdate(CrudInterface $entry, array $previousData = null)
     {
         /* @var Entry $entry */
-        if ($this->isModerator()
-        && $this->getUser() !== $entry->getAuthor()) {
+        if ($this->isModerator() && $this->getUser() !== $entry->getAuthor()) {
             if ($entry->getTitle() !== $previousData['title']) {
                 // write rename log, if old and new title does not match
-                $this->log(sprintf('Moderatives Bearbeiten des Eintrages "%s" von %s und Umbenennen des Eintrages in "%s"', $previousData['title'], $entry->getAuthorDisplay(), $entry->getTitle()));
+                $this->log(sprintf(
+                    'Moderatives Bearbeiten des Eintrages "%s" von %s und Umbenennen des Eintrages in "%s"',
+                    $previousData['title'],
+                    $entry->getAuthorDisplay(),
+                    $entry->getTitle()
+                ));
             } else {
-                $this->log(sprintf('Moderatives Bearbeiten des Eintrages "%s" von %s', $entry->getTitle(), $entry->getAuthorDisplay()));
+                $this->log(sprintf(
+                    'Moderatives Bearbeiten des Eintrages "%s" von %s',
+                    $entry->getTitle(),
+                    $entry->getAuthorDisplay()
+                ));
             }
-        }       
+        }
     }
 
 
     /**
      * Returns true if there is at least one category
      *
-     * @return boolean
+     * @return bool
      */
-    private function hasCategories()
+    private function hasCategories(): bool
     {
-        return $this->getObjectManager()->getRepository('StsblBillBoardBundle:Category')->exists();
+        /** @var ORMObjectManager $em */
+        $em = $this->getObjectManager();
+        /** @var CategoryRepository $repo */
+        $repo = $em->getRepository(Category::class);
+
+        return $repo->exists();
     }
     
     /**
      * Returns true if the current user has moderation privileges
-     * 
-     * @return boolean
+     *
+     * @return bool
      */
-    public function isModerator()
+    public function isModerator(): bool
     {
         return $this->isGranted(Privilege::BILLBOARD_MODERATE)
         || $this->isGranted(Privilege::BILLBOARD_MANAGE);
@@ -517,7 +552,7 @@ class EntryCrud extends AbstractCrud
      * @param CrudInterface $object
      * @return bool
      */
-    public function isAuthor(CrudInterface $object)
+    public function isAuthor(CrudInterface $object): bool
     {
         /* @var $object Entry */
         return $object->getAuthor() === $this->getUser();

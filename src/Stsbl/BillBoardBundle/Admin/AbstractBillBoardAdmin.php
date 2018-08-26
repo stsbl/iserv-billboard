@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace Stsbl\BillBoardBundle\Admin;
 
 use IServ\AdminBundle\Admin\AbstractAdmin;
@@ -34,7 +34,7 @@ use IServ\CrudBundle\Crud\AbstractCrud;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-abstract class AbstractBillBoardAdmin extends AbstractCrud 
+abstract class AbstractBillBoardAdmin extends AbstractCrud
 {
     /**
      * {@inheritdoc}
@@ -54,8 +54,7 @@ abstract class AbstractBillBoardAdmin extends AbstractCrud
         // Move management into admin section for admins
         if ('page' === $action && $this->isAdmin()) {
             return AbstractAdmin::TEMPLATE_PAGE;
-        }
-        elseif ('crud_base' === $action && $this->isAdmin()) {
+        } elseif ('crud_base' === $action && $this->isAdmin()) {
             return AbstractAdmin::TEMPLATE_BASE;
         }
 
@@ -67,7 +66,7 @@ abstract class AbstractBillBoardAdmin extends AbstractCrud
      *
      * @return bool
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         return $this->isGranted('IS_AUTHENTICATED_ADMIN');
     }

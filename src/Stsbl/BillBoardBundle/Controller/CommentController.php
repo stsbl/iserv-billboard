@@ -1,20 +1,24 @@
-<?php
+<?php declare(strict_types = 1);
 // src/Stsbl/BillBoardBundle/Controller/CommentController.php
 namespace Stsbl\BillBoardBundle\Controller;
 
-use IServ\CoreBundle\Controller\PageController;
+use IServ\CoreBundle\Controller\AbstractPageController;
 use IServ\CoreBundle\Event\NotificationEvent;
+use IServ\CoreBundle\Service\Config;
+use IServ\CoreBundle\Service\Flash;
+use IServ\CoreBundle\Service\Logger;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\BillBoardBundle\Entity\Entry;
 use Stsbl\BillBoardBundle\Entity\EntryComment;
 use Stsbl\BillBoardBundle\Security\Privilege;
 use Stsbl\BillBoardBundle\Traits\LoggerInitializationTrait;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /*
  * The MIT License
@@ -46,139 +50,143 @@ use Symfony\Component\HttpFoundation\Request;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://mit.otg/licenses/MIT>
  */
-class CommentController extends PageController 
+class CommentController extends AbstractPageController
 {
     use CommentFormTrait, LoggerTrait, LoggerInitializationTrait;
-    
+
     /**
      * Adds a comment
-     * 
+     *
+     * @Route("/billboard/entry/{entry}/comment/add", name="billboard_comment_add", methods={"POST"})
+     * @Security("is_granted('PRIV_BILLBOARD_CREATE') or
+            is_granted('PRIV_BILLBOARD_MODERATE') or
+            is_granted('PRIV_BILLBOARD_MANAGE')
+       ")
+     *
      * @param Request $request
-     * @param int $entryid
+     * @param Entry $entry
+     * @param Config $config
      * @return RedirectResponse
-     * @Route("/billboard/entry/{entryid}/comment/add", name="billboard_comment_add")
-     * @Security("is_granted('PRIV_BILLBOARD_CREATE') or is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
-     * @Method("POST")
      */
-    public function addAction(Request $request, $entryid)
-    {   
-        if (!$this->get('iserv.config')->get('BillBoardEnableComments')) {
+    public function addAction(Request $request, Entry $entry, Config $config): RedirectResponse
+    {
+        if (!$config->get('BillBoardEnableComments')) {
             throw $this->createAccessDeniedException('The adding of new comments was disabled by your administrator.');
         }
-        
-        $manager = $this->getDoctrine()->getManager();
-        $entryrepo = $manager->getRepository('StsblBillBoardBundle:Entry');
-        $entry = $entryrepo->find($entryid);
+
+        $manager = $this->getDoctrine()->getManagerForClass(EntryComment::class);
+
         if (!$entry->getVisible() && $this->getUser() !== $entry->getAuthor() && !$this->isAllowedToDelete()) {
             throw $this->createAccessDeniedException('You don\'t have the permission to add a comment to this entry.');
         }
-        
+
         if ($entry->getClosed() && !$this->isAllowedToDelete()) {
-            throw $this->createAccessDeniedException('The entry is currently locked for write access. You are not allowed to add a new comment.');
+            throw $this->createAccessDeniedException(
+                'The entry is currently locked for write access. You are not allowed to add a new comment.'
+            );
         }
-        
-        $form = $this->getCommentForm($entryid);
-        
+
+        $form = $this->getCommentForm($entry);
+
         $form->handleRequest($request);
-        if(!$form->isValid()) {
+        if (!$form->isValid()) {
             foreach ($form->getErrors(true, true) as $error) {
-                $this->get('iserv.flash')->error($error->getMessage());
+                $this->get(Flash::class)->error($error->getMessage());
             }
-            
-            return $this->redirect($this->generateUrl('billboard_show', array('id' => $entryid)));
+
+            return $this->redirect($this->generateUrl('billboard_show', ['id' => $entry->getId()]));
         }
-        
+
         $data = $form->getData();
 
-        if (null === $entry) {
-            $this->get('iserv.flash')->error(_('Entry not found.'));
-            
-            return $this->redirect($this->generateUrl('billboard_index'));
-        }
-        
         $manager->persist($data);
         $manager->flush();
-        
+
         // trigger notification event
         $this->notifyAuthor($entry, $data);
-        
-        $this->get('iserv.flash')->success(__('Comment to entry "%s" successful added.', (string)$entry));
-        
-        return $this->redirect($this->generateUrl('billboard_show', array('id' => $entryid)));
+
+        $this->get(Flash::class)->success(__('Comment to entry "%s" successful added.', (string)$entry));
+
+        return $this->redirect($this->generateUrl('billboard_show', ['id' => $entry->getId()]));
     }
-    
+
     /**
      * Deletes a comment
-     * 
-     * @param Request $request
-     * @param int $id
-     * @return RedirectResponse
-     * @Route("/billboard/comment/delete/{id}", name="billboard_comment_delete")
+     *
+     * @Route("/billboard/comment/delete/{id}", name="billboard_comment_delete", methods={"POST"})
      * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
      * @Method("POST")
+     *
+     * @param Request $request
+     * @param EntryComment $comment
+     * @return RedirectResponse
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Request $request, EntryComment $comment): RedirectResponse
     {
-        $form = $this->getConfirmationForm($id);
+        $form = $this->getConfirmationForm($comment);
         $manager = $this->getDoctrine()->getManager();
-        
+
         $form->handleRequest($request);
-        if(!$form->isValid() or !$form->isSubmitted()) {
+        if (!$form->isValid() || !$form->isSubmitted()) {
             foreach ($form->getErrors(true, true) as $error) {
-                $this->get('iserv.flash')->error($error->getMessage());
+                $this->get(Flash::class)->error($error->getMessage());
             }
-            
+
             return $this->redirect($this->generateUrl('billboard_index'));
         }
-        
+
         $button = $form->getClickedButton()->getName();
-        $comment = $this->getComment($id);
-        $entryid = $comment->getEntry()->getId();
         $title = $comment->getTitle();
         $author = $comment->getAuthorDisplay();
-        
+
         if ($button === 'approve') {
             $manager->remove($comment);
             $manager->flush();
-            
-            // dirty workaround: Can not run as constructor, it breaks Symfony.
-            $this->initializeLogger();
+
             $this->log(sprintf('Moderatives Löschen des Kommentars "%s" von %s', $title, $author));
-            $this->get('iserv.flash')->success(__('Comment "%s" successful deleted.', $title));
+            $this->get(Flash::class)->success(__('Comment "%s" successful deleted.', $title));
         }
-        return $this->redirect($this->generateUrl('billboard_show', array('id' => $entryid)));
+
+        return $this->redirect($this->generateUrl('billboard_show', ['id' => $comment->getEntry()->getId()]));
     }
-    
+
     /**
      * Confirms the deletion of a comment
-     * 
-     * @param Request $request
-     * @param int $id
-     * @return array
+     *
      * @Route("/billboard/comment/delete/{id}/confirm", name="billboard_comment_delete_confirm")
      * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
      * @Template()
+     *
+     * @param EntryComment $comment
+     * @return array
      */
-    public function confirmAction(Request $request, $id)
-    {        
-        $comment = $this->getComment($id);
-        
+    public function confirmAction(EntryComment $comment): array
+    {
+
         // track path
         $this->addBreadcrumb(_('Bill-Board'), $this->generateUrl('billboard_index'));
-        $this->addBreadcrumb((string)$comment->getEntry(), $this->generateUrl('billboard_show', array('id' => $comment->getEntry()->getId())));
+        $this->addBreadcrumb(
+            $comment->getEntry(),
+            $this->generateUrl('billboard_show', ['id' => $comment->getEntry()->getId()])
+        );
         $this->addBreadcrumb(_('Delete comment'));
-        
-        $form = $this->getConfirmationForm($id)->createView();
-        return ['delete_confirm_form' => $form, 'comment' => $comment, 'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard'];
+
+        $form = $this->getConfirmationForm($comment)->createView();
+
+        return [
+            'delete_confirm_form' => $form,
+            'comment' => $comment,
+            'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard'
+        ];
     }
-    
+
     /**
-     * Checks if the user is allowed to delete comments
-     * For this time only used for the "post comments on locked entries" check above.
-     * 
+     * Checks if the user is allowed to delete comments. For this time only used for the "post comments on locked
+     * entries" check above.
+     *
      * @return bool
      */
-    private function isAllowedToDelete()
+    private function isAllowedToDelete(): bool
     {
         return $this->isGranted(Privilege::BILLBOARD_MODERATE)
             || $this->isGranted(Privilege::BILLBOARD_MANAGE);
@@ -190,28 +198,41 @@ class CommentController extends PageController
      * @param Entry $entry
      * @param EntryComment $comment
      */
-    private function notifyAuthor(Entry $entry, EntryComment $comment)
+    private function notifyAuthor(Entry $entry, EntryComment $comment)/*: void*/
     {
         $author = $entry->getAuthor();
-        
-        if (is_null($author)) {
+
+        if (null === $author) {
             // no notification, if there is no author (e.g. he is deleted)
             return;
         }
-        
+
         // don't notify the author himself, for example if he added a comment to his own entry
         if ($author === $comment->getAuthor()) {
             return;
         }
-        
+
         $dispatcher = $this->get('event_dispatcher');
-        
+
         $dispatcher->dispatch(NotificationEvent::NAME, new NotificationEvent(
             $author,
             'billboard',
-            ['New comment on your post: %s commented on %s', (string)$this->getUser(), (string)$entry],
+            ['New comment on your post: %s commented on %s', $this->getUser(), $entry],
             'comments',
             ['billboard_show', ['id' => $entry->getId()]]
         ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        $deps = parent::getSubscribedServices();
+
+        $deps['event_dispatcher'] = EventDispatcherInterface::class;
+        $deps[] = Flash::class;
+
+        return $deps;
     }
 }

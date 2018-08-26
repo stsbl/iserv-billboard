@@ -1,13 +1,16 @@
-<?php
+<?php declare(strict_types = 1);
 // src/Stsbl/BillBoardBundle/Crud/CategoryListCrud.php
 namespace Stsbl\BillBoardBundle\Admin;
 
+use IServ\CoreBundle\Service\Logger;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CrudBundle\Mapper\FormMapper;
 use IServ\CrudBundle\Mapper\ListMapper;
 use IServ\CrudBundle\Mapper\ShowMapper;
+use Stsbl\BillBoardBundle\Entity\Category;
 use Stsbl\BillBoardBundle\Security\Privilege;
+use Stsbl\BillBoardBundle\Traits\LoggerInitializationTrait;
 
 /*
  * The MIT License
@@ -39,10 +42,16 @@ use Stsbl\BillBoardBundle\Security\Privilege;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://mit.otg/licenses/MIT>
  */
-class CategoryAdmin extends AbstractBillBoardAdmin 
+class CategoryAdmin extends AbstractBillBoardAdmin
 {
-    use LoggerTrait;
-    
+    use LoggerTrait, LoggerInitializationTrait;
+
+
+    public function __construct()
+    {
+        parent::__construct(Category::class);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -53,7 +62,7 @@ class CategoryAdmin extends AbstractBillBoardAdmin
 
     /**
      * {@inheritdoc}
-     */    
+     */
     protected function configure()
     {
         parent::configure();
@@ -62,9 +71,6 @@ class CategoryAdmin extends AbstractBillBoardAdmin
         $this->itemTitle = _('Category');
         $this->id = 'billboard_category';
         $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard';
-
-        // set module context for logging
-        $this->logModule = 'Bill-Board';
     }
 
     /**
@@ -86,7 +92,7 @@ class CategoryAdmin extends AbstractBillBoardAdmin
             return [_('Bill-Board') => $this->router->generate('manage_billboard')];
         } else {
             return [_('Bill-Board') => $this->router->generate('billboard_index')];
-        } 
+        }
     }
 
     /**
@@ -140,6 +146,7 @@ class CategoryAdmin extends AbstractBillBoardAdmin
      */
     public function postPersist(CrudInterface $category)
     {
+        /** @var Category $category */
         $this->log('Kategorie "'.$category->getTitle().'" hinzugefügt');
     }
 
@@ -148,6 +155,7 @@ class CategoryAdmin extends AbstractBillBoardAdmin
      */
     public function postUpdate(CrudInterface $category, array $previousData = null)
     {
+        /** @var Category $category */
         if ($category->getTitle() !== $previousData['title']) {
             // if old and new name does not match, write a rename log
             $this->log('Kategorie "'.$previousData['title'].'" umbenannt nach "'.$category->getTitle().'"');
@@ -158,9 +166,10 @@ class CategoryAdmin extends AbstractBillBoardAdmin
 
     /**
      * {@inheritdoc}
-     */    
+     */
     public function postRemove(CrudInterface $category)
     {
+        /** @var Category $category */
         $this->log('Kategorie "'.$category->getTitle().'" gelöscht');
-    }  
+    }
 }

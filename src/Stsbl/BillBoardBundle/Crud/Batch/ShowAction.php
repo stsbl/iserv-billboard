@@ -1,9 +1,10 @@
-<?php
+<?php declare(strict_types = 1);
 // src/Stsbl/BillBoardBundle/Crud/Batch/ShowAction.php
 namespace Stsbl\BillBoardBundle\Crud\Batch;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use IServ\CrudBundle\Crud\Batch\AbstractBatchAction;
+use IServ\CrudBundle\Doctrine\ORM\ORMObjectManager;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CrudBundle\Entity\FlashMessageBag;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -45,10 +46,12 @@ class ShowAction extends AbstractBatchAction
      */
     public function execute(ArrayCollection $entries)
     {
+        /** @var ORMObjectManager $em */
+        $em =  $this->crud->getObjectManager();
         $bag = new FlashMessageBag();
-        
+
         foreach ($entries as $entry) {
-            $qb = $this->crud->getObjectManager()->createQueryBuilder();
+            $qb = $em->createQueryBuilder();
             $user = $this->crud->getUser();
             try {
                 if ($this->isAllowedToExecute($entry, $user)) {
@@ -61,12 +64,12 @@ class ShowAction extends AbstractBatchAction
                         ->execute()
                     ;
                     
-                    $bag->addMessage('success', __("Entry is now visible: %s", (string) $entry));
+                    $bag->addMessage('success', __("Entry is now visible: %s", $entry));
                 } else {
-                    $bag->addMessage('error', __("You don't have the permission to change that entry: %s", (string) $entry));
+                    $bag->addMessage('error', __("You don't have the permission to change that entry: %s", $entry));
                 }
             } catch (\Exception $e) {
-                $bag->addMessage('error', __("Failed to make entry visible: %s", (string) $entry));
+                $bag->addMessage('error', __("Failed to make entry visible: %s", $entry));
             }
         }
         
@@ -106,20 +109,23 @@ class ShowAction extends AbstractBatchAction
     }
 
     /**
-     *
      * @param CrudInterface $entry
      * @param UserInterface $user
      * @return bool
      */
-    public function isAllowedToExecute(CrudInterface $entry, UserInterface $user) {
-        if (!$this->crud->isModerator()) {
-            if ($this->crud->getUser() !== $entry->getAuthor()) {
-                return true;
-            }
+    public function isAllowedToExecute(CrudInterface $entry, UserInterface $user)
+    {
+        /** @var Entry $entry */
+        /** @var EntryCrud $crud */
+        $crud = $this->crud;
 
-            return false;
+
+        if (!$crud->isModerator()) {
+            if ($crud->getUser() !== $entry->getAuthor()) {
+                return false;
+            }
         }
-        
+
         return true;
     }
 }

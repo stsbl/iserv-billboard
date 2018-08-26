@@ -1,23 +1,19 @@
 # src/Stsbl/BillBoardBundle/Resources/config/services.yml
 services:
-    stsbl.billboard.menu:
-        class: Stsbl\BillBoardBundle\EventListener\MenuListener # Out MenuListener Class
+    _defaults:
+        autoconfigure: true
+        autowire: true
+        public: false
+
+    Stsbl\BillBoardBundle\:
+        resource: '../../{Admin,Crud}'
+        exclude: '../../Crud/Batch'
+
+    Stsbl\BillBoardBundle\Controller\:
+        resource: '../../Controller'
+        tags: ['controller.service_arguments']
+
+    Stsbl\BillBoardBundle\EventListener\MenuListener:
         tags:
-          - { name: kernel.event_listener, event: iserv_portal.menu_main, method: onBuildMainMenu } # Tells IServ about the main menu method
-          - { name: kernel.event_listener, event: iserv_portal.menu_admin, method: onBuildAdminMenu } # Tells IServ about the admin menu method]
-    
-    stsbl.admin.billboard.category:
-        class: Stsbl\BillBoardBundle\Admin\CategoryAdmin # Our CRUD class
-        arguments: [Stsbl\BillBoardBundle\Entity\Category]  # Sets the controlled entity class
-        tags:
-            - { name: iserv.crud } # Tells IServ about our CRUD
-        calls:
-            - [ setLogger, ["@iserv.logger"]]
-   
-    stsbl.crud.billboard.entry:
-        class: Stsbl\BillBoardBundle\Crud\EntryCrud # Our CRUD class
-        arguments: [Stsbl\BillBoardBundle\Entity\Entry]  # Sets the controlled entity class
-        tags:
-            - { name: iserv.crud } # Tells IServ about our CRUD
-        calls:
-            - [ setLogger, ["@iserv.logger"]]
+        - { name: kernel.event_listener, event: iserv_portal.menu_main, method: onBuildMainMenu }
+        - { name: kernel.event_listener, event: iserv_portal.menu_admin, method: onBuildAdminMenu }

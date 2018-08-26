@@ -1,22 +1,25 @@
-<?php
+<?php declare(strict_types = 1);
 // src/Stsbl/BillBoardBundle/Controller/EntryController.php
 namespace Stsbl\BillBoardBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
-use Doctrine\ORM\NoResultException;
-use IServ\CrudBundle\Controller\CrudController;
 use IServ\CoreBundle\Event\NotificationEvent;
 use IServ\CoreBundle\Form\Type\ImageType;
+use IServ\CoreBundle\Service\Flash;
 use IServ\CoreBundle\Traits\LoggerTrait;
+use IServ\CrudBundle\Controller\StrictCrudController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Stsbl\BillBoardBundle\Controller\AdminController;
+use Stsbl\BillBoardBundle\Crud\EntryCrud;
 use Stsbl\BillBoardBundle\Entity\Entry;
 use Stsbl\BillBoardBundle\Entity\EntryImage;
 use Stsbl\BillBoardBundle\Traits\LoggerInitializationTrait;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -49,17 +52,17 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://mit.otg/licenses/MIT>
  */
-class EntryController extends CrudController
+class EntryController extends StrictCrudController
 {
     use CommentFormTrait, LoggerInitializationTrait, LoggerTrait;
-    
+
     /**
      * Overrides default addAction to pass some additional variables to the template
-     * 
+     *
      * @param Request $request
      * @return mixed
      */
-    public function addAction(Request $request) 
+    public function addAction(Request $request)
     {
         $ret = parent::addAction($request);
         
@@ -72,12 +75,12 @@ class EntryController extends CrudController
 
     /**
      * Overrides default editAction to pass some additional variables to the template
-     * 
+     *
      * @param Request $request
-     * @param integer $id
+     * @param int $id
      * @return mixed
      */
-    public function editAction(Request $request, $id) 
+    public function editAction(Request $request, $id)
     {
         $ret = parent::editAction($request, $id);
         
@@ -90,108 +93,103 @@ class EntryController extends CrudController
 
     /**
      * Overrides default showAction to pass some additional variables to the template
-     * 
+     *
      * @param Request $request
-     * @param integer $id
+     * @param int $id
      * @return mixed
      */
-    public function showAction(Request $request, $id) 
+    public function showAction(Request $request, $id)
     {
         if ($this->handleImageUploadForm($request, $id) || $this->handleDeleteConfirmForm($request)) {
             return $this->redirectToRoute('billboard_show', ['id' => $id]);
-        }   
+        }
         
         $ret = parent::showAction($request, $id);
+        /** @var Entry $entry */
+        $entry = $ret['item'];
+        /** @var EntryCrud $crud */
+        $crud = $this->crud;
         
         if (is_array($ret)) {
-            $ret['commentForm'] = $this->getCommentForm($id)->createView();
-            $ret['imageUploadForm'] = $this->getImageUploadForm($id)->createView();
+            $ret['commentForm'] = $this->getCommentForm($entry)->createView();
+            $ret['imageUploadForm'] = $this->getImageUploadForm($entry)->createView();
             $ret['imageDeleteConfirmForm'] = $this->getDeleteConfirmForm()->createView();
             $ret['commentsEnabled'] = $this->get('iserv.config')->get('BillBoardEnableComments');
-            $ret['moderator'] = $this->crud->isModerator();
-            
-            $er = $this->getDoctrine()->getRepository('StsblBillBoardBundle:Entry');
-            /* @var $entry \Stsbl\BillBoardBundle\Entity\Entry */
-            $entry = $er->find($id);
-            
+            $ret['moderator'] = $crud->isModerator();
             $ret['authorIsDeleted'] = !$entry->hasValidAuthor();
             $ret['servername'] = $this->get('iserv.config')->get('Servername');
         }
         
         return $ret;
     }
-    
+
     /**
      * Locks an opened entry
-     * 
-     * @param Request $request
-     * @param integer $id
-     * @return RedirectResponse
+     *
      * @Route("/billboard/entry/lock/{id}", name="billboard_lock")
      * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
+     *
+     * @param Entry $entry
+     * @return RedirectResponse
      */
-    public function lockAction(Request $request, $id)
+    public function lockAction(Entry $entry): RedirectResponse
     {
-        $this->initializeLogger();
-        
-        /* @var $entry \Stsbl\BillBoardBundle\Entity\Entry */
-        $entry = $this->getDoctrine()->getRepository('StsblBillBoardBundle:Entry')->find($id);
         $entry->setClosed(true);
-        
-        $em = $this->getDoctrine()->getManager();
+
+        $em = $this->getDoctrine()->getManagerForClass(Entry::class);
+
         $em->persist($entry);
         $em->flush();
         
         $this->notifyLock($entry);
-        $this->log(sprintf('Eintrag "%s" von %s für Schreibzugriffe gesperrt', (string)$entry, (string)$entry->getAuthorDisplay()));
-        $this->get('iserv.flash')->success(sprintf(_('Entry is now locked: %s'), (string)$entry));
+        $this->log(sprintf(
+            'Eintrag "%s" von %s für Schreibzugriffe gesperrt',
+            $entry,
+            $entry->getAuthorDisplay()
+        ));
+        $this->get(Flash::class)->success(sprintf(_('Entry is now locked: %s'), $entry));
         
-        return $this->redirect($this->generateUrl('billboard_show', ['id' => $id]));
+        return $this->redirect($this->generateUrl('billboard_show', ['id' => $entry->getId()]));
     }
-    
+
     /**
-     * Opens an locked entry
-     * 
-     * @param Request $request
-     * @param integer $id
-     * @return RedirectResponse
+     * Opens a locked entry
+     *
      * @Route("/billboard/entry/unlock/{id}", name="billboard_unlock")
      * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
+     *
+     * @param Entry $entry
+     * @return RedirectResponse
      */
-    public function unlockAction(Request $request, $id)
+    public function unlockAction(Entry $entry): RedirectResponse
     {
-        $this->initializeLogger();
-        
-        /* @var $entry \Stsbl\BillBoardBundle\Entity\Entry */
-        $entry = $this->getDoctrine()->getRepository('StsblBillBoardBundle:Entry')->find($id);
         $entry->setClosed(false);
         
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManagerForClass(Entry::class);
+
         $em->persist($entry);
         $em->flush();
         
         $this->notifyOpen($entry);
-        $this->log(sprintf('Eintrag "%s" von %s für Schreibzugriffe geöffnet', (string)$entry, (string)$entry->getAuthorDisplay()));
-        $this->get('iserv.flash')->success(sprintf(_('Entry is now unlocked: %s'), (string)$entry));
+        $this->log(sprintf(
+            'Eintrag "%s" von %s für Schreibzugriffe geöffnet',
+            $entry,
+            $entry->getAuthorDisplay()
+        ));
+        $this->get(Flash::class)->success(sprintf(_('Entry is now unlocked: %s'), $entry));
         
-        return $this->redirect($this->generateUrl('billboard_show', ['id' => $id]));
+        return $this->redirect($this->generateUrl('billboard_show', ['id' => $entry->getId()]));
     }
-    
+
     /**
      * Create form for image upload
-     * 
-     * @param integer $entryId
-     * @return \Symfony\Component\Form\Form
+     *
+     * @param Entry $entry
+     * @return FormInterface
      */
-    private function getImageUploadForm($entryId)
+    private function getImageUploadForm(Entry $entry): FormInterface
     {
-        $er = $this->getDoctrine()->getRepository('StsblBillBoardBundle:Entry');
-        $entry = $er->find($entryId);
-        
-        $entryImage = new EntryImage();
-        $entryImage->setAuthor($this->getUser());
-        $entryImage->setEntry($entry);
-        
+        $entryImage = EntryImage::createForEntryAndUser($entry, $this->getUser());
         $builder = $this->createFormBuilder($entryImage);
         
         $builder
@@ -215,46 +213,56 @@ class EntryController extends CrudController
     
     /**
      * Handles submitted image upload form
-     * 
+     *
      * @param Request $request
      * @param integer $entryId
-     * @return boolean
+     * @return bool
      */
     private function handleImageUploadForm(Request $request, $entryId)
     {
-        $form = $this->getImageUploadForm($entryId);
+        /** @var EntryCrud $crud */
+        $crud = $this->crud;
+        /** @var Entry $entry */
+        $entry = $crud->getObjectManager()->find($crud->getClass(), $entryId);
+
+        $form = $this->getImageUploadForm($entry);
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
             /* @var $data EntryImage */
             $data = $form->getData();
+
             $em = $this->getDoctrine()->getManager();
             
-            if (!$this->crud->isAuthor($data->getEntry())) {
+            if (!$crud->isAuthor($data->getEntry())) {
                 throw $this->createAccessDeniedException('You are not allowed to add an image to this entry.');
             }
             
             $em->persist($data);
             $em->flush();
             
-            $this->get('iserv.flash')->success(__('Image "%s" was uploaded successfully.', $data->getImage()->getFileName()));
+            $this->get(Flash::class)->success(__(
+                'Image "%s" was uploaded successfully.',
+                $data->getImage()->getFileName()
+            ));
             
             return true;
-        } else if ($form->isSubmitted()) {
-            $this->get('iserv.flash')->error((string)$form->getErrors());
+        } elseif ($form->isSubmitted()) {
+            $this->get(Flash::class)->error((string)$form->getErrors());
             
             return true;
-        } else {
-            return false;
         }
+
+
+        return false;
     }
     
     /**
      * Create confirm form for image deletion
-     * 
-     * @return \Symfony\Component\Form\Form
+     *
+     * @return FormInterface|Form
      */
-    private function getDeleteConfirmForm()
+    private function getDeleteConfirmForm(): FormInterface
     {
         /* @var $builder \Symfony\Component\Form\FormBuilder */
         $builder = $this->get('form.factory')->createNamedBuilder('image_delete_confirm');
@@ -292,24 +300,25 @@ class EntryController extends CrudController
     
     /**
      * Handles submitted image delete confirm form
-     * 
+     *
      * @param Request $request
-     * @throws NoResultException
-     * @return boolean
+     * @return bool
      */
-    private function handleDeleteConfirmForm(Request $request)
+    private function handleDeleteConfirmForm(Request $request): bool
     {
         $form = $this->getDeleteConfirmForm();
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->getClickedButton()->getName() === 'approve') {
-                $er = $this->getDoctrine()->getRepository('StsblBillBoardBundle:EntryImage');
-                /* @var $image \Stsbl\BillBoardBundle\Entity\EntryImage */
-                $image = $er->find($form->getData()['image_id']);
+                $data = $form->getData();
+                $imageId = $data['image_id'];
+
+                $imageRepo = $this->getDoctrine()->getRepository(EntryImage::class);
+                $image = $imageRepo->find($imageId);
                 
                 if ($image === null) {
-                    throw new NoResultException();
+                    throw $this->createNotFoundException(sprintf('An image with the ID %d was not found!', $imageId));
                 }
                 
                 if (!$this->crud->isAllowedToEdit($image->getEntry(), $this->getUser())) {
@@ -322,47 +331,42 @@ class EntryController extends CrudController
                 
                 // log moderative actions
                 if ($image->getAuthor() !== $this->getUser()) {
-                    $this->get('iserv.logger')->writeForModule(sprintf('Moderatives Löschen des Bildes "%s" von Beitrag "%s" von %s"', (string)$image->getImage(), (string)$image->getEntry(), (string)$image->getAuthorDisplay()), 'Bill-Board');
+                    $this->log(sprintf(
+                        'Moderatives Löschen des Bildes "%s" von Beitrag "%s" von %s"',
+                        $image->getImage(),
+                        $image->getEntry(),
+                        $image->getAuthorDisplay()
+                    ));
                 }
                 
-                $this->get('iserv.flash')->success(__('Image "%s" was deleted successfully.', $image->getImage()->getFileName()));
+                $this->get(Flash::class)->success(__(
+                    'Image "%s" was deleted successfully.',
+                    $image->getmage()->getFileName()
+                ));
                 
                 return true;
             } else {
                 return false;
             }
-        } else if ($form->isSubmitted()) {
-            $this->get('iserv.flash')->error((string)$form->getErrors());
+        } elseif ($form->isSubmitted()) {
+            $this->get(Flash::class)->error((string)$form->getErrors());
             
             return true;
-        } else {
-            return false;
         }
-    }
 
-    /**
-     * Stub for old typo
-     *
-     * @param Entry $entry
-     * @deprecated
-     */
-    private function notifiyLock(Entry $entry)
-    {
-        @trigger_error('The method notifiyLock is deprecated and will removed.', E_USER_DEPRECATED);
-
-        $this->notifyLock($entry);
+        return false;
     }
     
     /**
      * Notifies the entry author that his post is locked
-     * 
+     *
      * @param Entry $entry
      */
-    private function notifyLock(Entry $entry)
+    private function notifyLock(Entry $entry)/*: void*/
     {
         $author = $entry->getAuthor();
         
-        if (is_null($author)) {
+        if (null === $author) {
             // no notification, if there is no author (e.g. he is deleted)
             return;
         }
@@ -384,28 +388,15 @@ class EntryController extends CrudController
     }
 
     /**
-     * Stub for old typo
+     * Notifies the entry author that his post is opened
      *
      * @param Entry $entry
-     * @deprecated
      */
-    private function notifiyOpen(Entry $entry)
-    {
-        @trigger_error('The method notifiyOpen is deprecated and will removed.', E_USER_DEPRECATED);
-
-        $this->notifyOpen($entry);
-    }
-
-    /**
-     * Notifies the entry author that his post is opened
-     * 
-     * @param Entry $entry
-     */
-    private function notifyOpen(Entry $entry)
+    private function notifyOpen(Entry $entry)/*: void*/
     {
         $author = $entry->getAuthor();
         
-        if (is_null($author)) {
+        if (null === $author) {
             // no notification, if there is no author (e.g. he is deleted)
             return;
         }
@@ -424,5 +415,18 @@ class EntryController extends CrudController
             'pencil',
             ['billboard_show', ['id' => $entry->getId()]]
         ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        $deps = parent::getSubscribedServices();
+
+        $deps['event_dispatcher'] = EventDispatcherInterface::class;
+        $deps[] = Flash::class;
+
+        return $deps;
     }
 }

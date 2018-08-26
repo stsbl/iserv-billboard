@@ -1,11 +1,14 @@
-<?php
+<?php declare(strict_types = 1);
 // src/Stsbl/BillBoardBundle/Crud/Batch/ShowAction.php
 namespace Stsbl\BillBoardBundle\Crud\Batch;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use IServ\CrudBundle\Crud\Batch\AbstractBatchAction;
+use IServ\CrudBundle\Doctrine\ORM\ORMObjectManager;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CrudBundle\Entity\FlashMessageBag;
+use Stsbl\BillBoardBundle\Crud\EntryCrud;
+use Stsbl\BillBoardBundle\Entity\Entry;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /*
@@ -45,10 +48,12 @@ class HideAction extends AbstractBatchAction
      */
     public function execute(ArrayCollection $entries)
     {
+        /** @var ORMObjectManager $em */
+        $em =  $this->crud->getObjectManager();
         $bag = new FlashMessageBag();
         
         foreach ($entries as $entry) {
-            $qb = $this->crud->getObjectManager()->createQueryBuilder();
+            $qb = $em->createQueryBuilder();
             $user = $this->crud->getUser();
             try {
                 if ($this->isAllowedToExecute($entry, $user)) {
@@ -61,12 +66,12 @@ class HideAction extends AbstractBatchAction
                         ->execute()
                     ;
                     
-                    $bag->addMessage('success', __("Entry is now hidden: %s", (string) $entry));
+                    $bag->addMessage('success', __("Entry is now hidden: %s", $entry));
                 } else {
-                    $bag->addMessage('error', __("You don't have the permission to change that entry: %s", (string) $entry));
+                    $bag->addMessage('error', __("You don't have the permission to change that entry: %s", $entry));
                 }
             } catch (\Exception $e) {
-                $bag->addMessage('error', __("Failed to hide entry: %s", (string) $entry));
+                $bag->addMessage('error', __("Failed to hide entry: %s", $entry));
             }
         }
         
@@ -112,8 +117,13 @@ class HideAction extends AbstractBatchAction
      */
     public function isAllowedToExecute(CrudInterface $entry, UserInterface $user)
     {
-        if (!$this->crud->isModerator()) {
-            if ($this->crud->getUser() !== $entry->getAuthor()) {
+        /** @var Entry $entry */
+        /** @var EntryCrud $crud */
+        $crud = $this->crud;
+
+
+        if (!$crud->isModerator()) {
+            if ($crud->getUser() !== $entry->getAuthor()) {
                 return false;
             }
         }
