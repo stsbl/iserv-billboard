@@ -1,8 +1,9 @@
-<?php
+<?php declare(strict_types = 1);
 // src/Stsbl/BillBoardBundle/Entity/Image.php
 namespace Stsbl\BillBoardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use IServ\CoreBundle\Util\Date;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CoreBundle\Entity\FileImage;
 use IServ\CoreBundle\Entity\User;
@@ -46,21 +47,21 @@ class EntryImage implements CrudInterface
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * 
+     *
      * @var int
      */
     private $id;
     
     /**
      * @ORM\Column(type="file_image",  nullable=true)
-     * 
+     *
      * @var FileImage
      */
     private $image;
     
     /**
-     * @ORM\Column(name="description",type="text",nullable=true)
-     * 
+     * @ORM\Column(name="description", type="text", nullable=true)
+     *
      * @var string
      */
     private $description;
@@ -75,14 +76,14 @@ class EntryImage implements CrudInterface
     
     /**
      * @ORM\Column(name="time",type="datetime",nullable=false)
-     * 
+     *
      * @var \DateTime
      */
     private $time;
     
     /**
      * @ORM\Column(name="updated_at",type="datetime",nullable=false)
-     * 
+     *
      * @var \DateTime
      */
     private $updatedAt;
@@ -100,18 +101,18 @@ class EntryImage implements CrudInterface
      *
      * @ORM\PrePersist
      */
-    public function onCreate()
+    public function onCreate()/*: void*/
     {
-        $this->setTime(new \DateTime("now"));
+        $this->setTime(Date::now());
         $this->updateLastUpdatedTime();
     }
     
     /**
      * Lifecycle callback to set the update date
-     * 
+     *
      * @ORM\PreUpdate
      */
-    public function onUpdate()
+    public function onUpdate()/*: void*/
     {
         $this->updateLastUpdatedTime();
     }
@@ -119,25 +120,21 @@ class EntryImage implements CrudInterface
     /**
      * Updates last updated time to 'now'
      */
-    public function updateLastUpdatedTime()
+    public function updateLastUpdatedTime()/*: void*/
     {
-        $this->setUpdatedAt(new \DateTime('now'));
+        $this->setUpdatedAt(Date::now());
     }
     
     /**
-     * Returns a human readable string
-     * 
-     * @return string
+     * {@inheritdoc}
      */
     public function __toString()
     {
-        return $this->getImage()->getFileName() ? (string)$this->getImage()->getFileName() : '';
+        return $this->getImage()->getFileName() ? $this->getImage()->getFileName() : '';
     }
 
     /**
-     * Get id
-     * 
-     * @return int
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -145,73 +142,58 @@ class EntryImage implements CrudInterface
     }
     
     /**
-     * Get image
-     * 
      * @return FileImage
      */
-    public function getImage()
+    public function getImage()/*: ?FileImage*/
     {
         return $this->image;
     }
     
     /**
-     * Get description
-     * 
      * @return string
      */
-    public function getDescription()
+    public function getDescription()/*: ?string*/
     {
         return $this->description;
     }
     
     /**
-     * Get author
-     * 
      * @return User
      */
-    public function getAuthor()
+    public function getAuthor()/*: ?User*/
     {
         return $this->author;
     }
     
     /**
-     * Get time
-     * 
      * @return \DateTime
      */
-    public function getTime()
+    public function getTime()/*: ?\DateTime*/
     {
         return $this->time;
     }
     
     /**
-     * Get updatedAt
-     * 
      * @return \DateTime
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt()/*: ?\DateTime*/
     {
         return $this->updatedAt;
     }
     
     /**
-     * Get entry
-     * 
      * @return Entry
      */
-    public function getEntry()
+    public function getEntry()/*: ?Entry*/
     {
         return $this->entry;
     }
     
     /**
-     * Set image
-     * 
      * @param FileImage $image
-     * 
-     * @return Image
+     * @return $this
      */
-    public function setImage(FileImage $image)
+    public function setImage(FileImage $image = null): self
     {
         $this->image = $image;
         
@@ -219,13 +201,10 @@ class EntryImage implements CrudInterface
     }
     
     /**
-     * Set description
-     * 
      * @param string $description
-     * 
-     * @return Image
+     * @return $this
      */
-    public function setDescription($description)
+    public function setDescription(string $description = null): self
     {
         $this->description = $description;
         
@@ -233,13 +212,10 @@ class EntryImage implements CrudInterface
     }
     
     /**
-     * Set author
-     * 
      * @param User $author
-     * 
-     * @return Image
+     * @return $this
      */
-    public function setAuthor(User $author)
+    public function setAuthor(User $author = null): self
     {
         $this->author = $author;
         
@@ -247,13 +223,10 @@ class EntryImage implements CrudInterface
     }
 
     /**
-     * Set time
-     * 
      * @param \DateTime $time
-     * 
-     * @return Image
+     * @return $this
      */
-    public function setTime(\DateTime $time = null)
+    public function setTime(\DateTime $time = null): self
     {
         $this->time = $time;
         
@@ -261,13 +234,10 @@ class EntryImage implements CrudInterface
     }
     
     /**
-     * Set updatedAt
-     * 
      * @param \DateTime $updatedAt
-     * 
-     * @return Image
+     * @return $this
      */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
+    public function setUpdatedAt(\DateTime $updatedAt = null): self
     {
         $this->updatedAt = $updatedAt;
         
@@ -275,13 +245,10 @@ class EntryImage implements CrudInterface
     }
     
     /**
-     * Set entry
-     * 
      * @param Entry $entry
-     * 
-     * @return Image
+     * @return $this
      */
-    public function setEntry(Entry $entry)
+    public function setEntry(Entry $entry = null): self
     {
         $this->entry = $entry;
         
@@ -289,23 +256,22 @@ class EntryImage implements CrudInterface
     }
 
     /**
-     * Checks if the author is valid. i.e. he isn't deleted
-     * 
-     * @return boolean
+     * Checks if the author is valid. i.e. he isn't deleted.
+     * @return bool
      */
-    public function hasValidAuthor()
+    public function hasValidAuthor(): bool
     {
-        return $this->author != null;
+        return $this->author !== null;
     }
 
     /**
-     * Returns a displayable author. Performs an exists check
-     * 
-     * @return string|User
+     * Returns a displayable author. Performs an exists check.
+     *
+     * @return string
      */
-    public function getAuthorDisplay()
+    public function getAuthorDisplay(): string
     {
-        return $this->hasValidAuthor() ? $this->getAuthor() : '?';
+        return $this->hasValidAuthor() ? (string)$this->getAuthor() : '?';
     }
 
     /**

@@ -6,9 +6,7 @@ use IServ\CoreBundle\Controller\AbstractPageController;
 use IServ\CoreBundle\Event\NotificationEvent;
 use IServ\CoreBundle\Service\Config;
 use IServ\CoreBundle\Service\Flash;
-use IServ\CoreBundle\Service\Logger;
 use IServ\CoreBundle\Traits\LoggerTrait;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\BillBoardBundle\Entity\Entry;
@@ -49,6 +47,8 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://mit.otg/licenses/MIT>
+ *
+ * @Route("/billboard")
  */
 class CommentController extends AbstractPageController
 {
@@ -57,7 +57,7 @@ class CommentController extends AbstractPageController
     /**
      * Adds a comment
      *
-     * @Route("/billboard/entry/{entry}/comment/add", name="billboard_comment_add", methods={"POST"})
+     * @Route("/entry/{entry}/comment/add", name="billboard_comment_add", methods={"POST"})
      * @Security("is_granted('PRIV_BILLBOARD_CREATE') or
             is_granted('PRIV_BILLBOARD_MODERATE') or
             is_granted('PRIV_BILLBOARD_MANAGE')
@@ -76,11 +76,11 @@ class CommentController extends AbstractPageController
 
         $manager = $this->getDoctrine()->getManagerForClass(EntryComment::class);
 
-        if (!$entry->getVisible() && $this->getUser() !== $entry->getAuthor() && !$this->isAllowedToDelete()) {
+        if (!$entry->isVisible() && $this->getUser() !== $entry->getAuthor() && !$this->isAllowedToDelete()) {
             throw $this->createAccessDeniedException('You don\'t have the permission to add a comment to this entry.');
         }
 
-        if ($entry->getClosed() && !$this->isAllowedToDelete()) {
+        if ($entry->isClosed() && !$this->isAllowedToDelete()) {
             throw $this->createAccessDeniedException(
                 'The entry is currently locked for write access. You are not allowed to add a new comment.'
             );
@@ -113,9 +113,8 @@ class CommentController extends AbstractPageController
     /**
      * Deletes a comment
      *
-     * @Route("/billboard/comment/delete/{id}", name="billboard_comment_delete", methods={"POST"})
+     * @Route("/comment/delete/{id}", name="billboard_comment_delete", methods={"POST"})
      * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
-     * @Method("POST")
      *
      * @param Request $request
      * @param EntryComment $comment
@@ -153,7 +152,7 @@ class CommentController extends AbstractPageController
     /**
      * Confirms the deletion of a comment
      *
-     * @Route("/billboard/comment/delete/{id}/confirm", name="billboard_comment_delete_confirm")
+     * @Route("/comment/delete/{id}/confirm", name="billboard_comment_delete_confirm")
      * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
      * @Template()
      *

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 // src/Stsbl/BillBoardBundle/DependencyInjection/Compiler/NotificationCompilerPass.php
 namespace Stsbl\BillBoardBundle\DependencyInjection\Compiler;
 
@@ -15,10 +15,10 @@ class NotificationCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        // Replace event dispatcher with exception aware one
         if ($container->hasDefinition('iserv.notification_manager')) {
-            // Add t10n to messages.php for label
-            $container->getDefinition('iserv.notification_manager')->addMethodCall('addType', ['billboard', 'Bill-Board']);
+            $container->getDefinition('iserv.notification_manager')
+                ->addMethodCall('addType', ['billboard', 'Bill-Board'])
+            ;
         }
     }
 }

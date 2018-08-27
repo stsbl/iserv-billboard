@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 // src/Stsbl/BillBoardBundle/Entity/Category.php
 namespace Stsbl\BillBoardBundle\Entity;
 
@@ -31,10 +31,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 
 /**
- * BillBoardBundle:Category
- *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
+ *
  * @ORM\Entity(repositoryClass="CategoryRepository")
  * @ORM\Table(name="billboard_category")
  */
@@ -44,41 +43,37 @@ class Category implements CrudInterface
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * 
+     *
      * @var int
      */
     private $id;
     
     /**
-     * @ORM\Column(name="title",type="text",length=255)
+     * @ORM\Column(name="title", type="text")
      * @Assert\NotBlank()
-     * 
+     *
      * @var string
      */
     private $title;
 
     /**
-     * @ORM\Column(name="description",type="text")
+     * @ORM\Column(name="description", type="text")
      * @Assert\NotBlank()
-     * 
+     *
      * @var string
      */
     private $description;
     
     /**
-     * Returns a human readable string
-     * 
-     * @return string
+     * {@inheritdoc}
      */
     public function __toString()
     {
-        return (string)$this->title;
+        return $this->title;
     }
 
     /**
-     * Get id
-     * 
-     * @return int
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -86,33 +81,26 @@ class Category implements CrudInterface
     }
     
     /**
-     * Get title
-     * 
      * @return string
      */
-    public function getTitle()
+    public function getTitle()/*: ?string*/
     {
         return $this->title;
     }
 
     /**
-     * Get description
-     * 
      * @return string
      */
-    public function getDescription()
+    public function getDescription()/*: ?string*/
     {
         return $this->description;
     }
 
     /**
-     * Set title
-     * 
      * @param string $title
-     * 
-     * @return Category
+     * @return $this
      */
-    public function setTitle($title)
+    public function setTitle(string $title = null): self
     {
         $this->title = $title;
         
@@ -120,13 +108,10 @@ class Category implements CrudInterface
     }
 
     /**
-     * Set description
-     *
      * @param string $description
-     *
-     * @return Category
+     * @return $this
      */
-    public function setDescription($description)
+    public function setDescription(string $description = null): self
     {
         $this->description = $description;
 

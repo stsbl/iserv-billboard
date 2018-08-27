@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 // src/Stsbl/BillBoardBundle/StsblBillBoardBundle.php
 namespace Stsbl\BillBoardBundle;
 

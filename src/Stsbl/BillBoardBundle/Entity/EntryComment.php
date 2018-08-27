@@ -131,7 +131,7 @@ class EntryComment implements CrudInterface
     }
 
     /**
-     * Returns a displayable author. Performs an exists check
+     * Returns a displayable author. Performs an exists check.
      *
      * @return string
      */
@@ -224,7 +224,7 @@ class EntryComment implements CrudInterface
     }
     
     /**
-     * Checks if the author is valid. i.e. he isn't deleted
+     * Checks if the author is valid. i.e. he isn't deleted.
      *
      * @return bool
      */

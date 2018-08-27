@@ -342,7 +342,7 @@ class EntryCrud extends AbstractCrud
         $ret = parent::getShowActions($item);
         
         if ($this->isModerator()) {
-            if ($item->getClosed()) {
+            if ($item->isClosed()) {
                 $ret['unlock'] = [$this->getRouter()->generate(
                     'billboard_unlock',
                     ['id' => $item->getId()]
@@ -410,7 +410,7 @@ class EntryCrud extends AbstractCrud
         }
         
         // only allow moderators to edit locked entries
-        if ($object->getClosed() && !$this->isModerator()) {
+        if ($object->isClosed() && !$this->isModerator()) {
             return false;
         }
         
@@ -463,11 +463,11 @@ class EntryCrud extends AbstractCrud
             return true;
         }
         
-        if ($object->getVisible() === false && $user === $object->getAuthor()) {
+        if ($object->isVisible() === false && $user === $object->getAuthor()) {
             return true;
         }
         
-        if ($object->getVisible() === true) {
+        if ($object->isVisible() === true) {
             return true;
         }
         

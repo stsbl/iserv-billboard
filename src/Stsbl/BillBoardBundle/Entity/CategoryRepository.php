@@ -1,7 +1,8 @@
-<?php
+<?php declare(strict_types = 1);
 // src/Stsbl/BillBoardBundle/Entity/CategoryRepository.php
 namespace Stsbl\BillBoardBundle\Entity;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use IServ\CrudBundle\Doctrine\ORM\EntitySpecificationRepository;
 
@@ -37,22 +38,26 @@ class CategoryRepository extends EntitySpecificationRepository
 {
     /**
      * Checks if there's at least one category
-     * 
+     *
      * @return bool
      */
-     public function exists()
-     {
-	$qb = $this->createQueryBuilder('c');
-	$qb
+    public function exists()
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        $qb
             ->select('1')
-            ->setMaxResults(1);
+            ->setMaxResults(1)
         ;
 
         try {
             $qb->getQuery()->getSingleScalarResult();
+
             return true;
-	} catch (NoResultException $e) {
+        } catch (NoResultException $e) {
             return false;
-	}
+        } catch (NonUniqueResultException $e) {
+            return true;
+        }
     }
 }

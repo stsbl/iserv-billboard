@@ -1,9 +1,11 @@
-<?php
+<?php declare(strict_types = 1);
 // src/Stsbl/BillBoardBundle/Entity/Entry.php
 namespace Stsbl\BillBoardBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use IServ\CoreBundle\Util\Date;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CoreBundle\Entity\User;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -33,10 +35,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 
 /**
- * BillBoardBundle:Entry
- *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
+ *
  * @ORM\Entity
  * @ORM\Table(name="billboard")
  * @ORM\HasLifecycleCallbacks
@@ -47,37 +48,37 @@ class Entry implements CrudInterface
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * 
+     *
      * @var int
      */
     private $id;
     
     /**
-     * @ORM\Column(name="title",type="text",length=255)
+     * @ORM\Column(name="title", type="text")
      * @Assert\NotBlank()
-     * 
+     *
      * @var string
      */
     private $title;
     
     /**
-     * @ORM\Column(name="description",type="text")
+     * @ORM\Column(name="description", type="text")
      * @Assert\NotBlank()
-     * 
+     *
      * @var string
      */
     private $description;
     
     /**
-     * @ORM\Column(name="time",type="datetime",nullable=false)
-     * 
+     * @ORM\Column(name="time", type="datetime", nullable=false)
+     *
      * @var \DateTime
      */
     private $time;
     
     /**
      * @ORM\Column(name="updated_at",type="datetime",nullable=false)
-     * 
+     *
      * @var \DateTime
      */
     private $updatedAt;
@@ -101,29 +102,29 @@ class Entry implements CrudInterface
     
     /**
      * @ORM\Column(name="visible", type="boolean")
-     * 
-     * @var boolean
-     */ 
-    private $visible;
+     *
+     * @var bool
+     */
+    private $visible = true;
     
     /**
      * @ORM\Column(name="closed", type="boolean")
-     * 
-     * @var boolean
+     *
+     * @var bool
      */
-    private $closed;
+    private $closed = false;
     
     /**
      * @ORM\OneToMany(targetEntity="EntryImage", mappedBy="entry")
      *
-     * @var ArrayCollection
+     * @var ArrayCollection|EntryImage[]
      */
     private $images;
     
     /**
      * @ORM\OneToMany(targetEntity="EntryComment", mappedBy="entry")
-     * 
-     * @var ArrayCollection
+     *
+     * @var ArrayCollection|EntryComment[]
      */
     private $comments;
 
@@ -141,18 +142,18 @@ class Entry implements CrudInterface
      *
      * @ORM\PrePersist
      */
-    public function onCreate()
+    public function onCreate()/*: void*/
     {
-        $this->setTime(new \DateTime("now"));
+        $this->setTime(Date::now());
         $this->updateLastUpdatedTime();
     }
     
     /**
      * Lifecycle callback to set the update date
-     * 
+     *
      * @ORM\PreUpdate
      */
-    public function onUpdate()
+    public function onUpdate()/*: void*/
     {
         $this->updateLastUpdatedTime();
     }
@@ -160,25 +161,21 @@ class Entry implements CrudInterface
     /**
      * Updates last updated time to 'now'
      */
-    public function updateLastUpdatedTime()
+    public function updateLastUpdatedTime()/*: void*/
     {
-        $this->setUpdatedAt(new \DateTime('now'));
+        $this->setUpdatedAt(Date::now());
     }
     
     /**
-     * Returns a human readable string
-     * 
-     * @return string
+     * {@inheritdoc}
      */
     public function __toString()
     {
-        return (string)$this->title;
+        return $this->title;
     }
     
     /**
-     * Get id
-     * 
-     * @return int
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -186,89 +183,71 @@ class Entry implements CrudInterface
     }
     
     /**
-     * Get title
-     * 
      * @return string
      */
-    public function getTitle()
+    public function getTitle()/*: ?string*/
     {
         return $this->title;
     }
     
     /**
-     * Get description
-     * 
      * @return string
      */
-    public function getDescription()
+    public function getDescription()/*: ?string*/
     {
         return $this->description;
     }
     
     /**
-     * Get time
-     * 
      * @return \DateTime
      */
-    public function getTime()
+    public function getTime()/*: ?\DateTime*/
     {
         return $this->time;
     }
     
     /**
-     * Get updatedAt
-     * 
      * @return \DateTime
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt()/*: ?\DateTime*/
     {
         return $this->updatedAt;
     }
     
     /**
-     * Get category
-     * 
      * @return Category
      */
-    public function getCategory()
+    public function getCategory()/*: ?Category*/
     {
         return $this->category;
     }
     
     /**
-     * Get author
-     * 
      * @return User
      */
-    public function getAuthor()
+    public function getAuthor()/*: ?User*/
     {
         return $this->author;
     }
     
     /**
-     * Get visible
-     * 
-     * @return boolean
+     * @return bool
      */
-    public function getVisible()
+    public function isVisible(): bool
     {
         return $this->visible;
     }
     
     /**
-     * Get images
-     * 
-     * @return ArrayCollection
+     * @return ArrayCollection|EntryImage[]
      */
-    public function getImages()
+    public function getImages(): Collection
     {
         return $this->images;
     }
     
     /**
-     * Get comments
-     * 
-     * @return ArrayCollection
+     * @return ArrayCollection|EntryComment[]
      */
     public function getComments()
     {
@@ -276,13 +255,10 @@ class Entry implements CrudInterface
     }
     
     /**
-     * Set title
-     * 
      * @param string $title
-     * 
-     * @return Entry
+     * @return $this
      */
-    public function setTitle($title)
+    public function setTitle(string $title = null): self
     {
         $this->title = $title;
         
@@ -290,13 +266,10 @@ class Entry implements CrudInterface
     }
     
     /**
-     * Set description
-     * 
      * @param string $description
-     * 
-     * @return Entry
+     * @return $this
      */
-    public function setDescription($description)
+    public function setDescription(string $description = null): self
     {
         $this->description = $description;
         
@@ -304,13 +277,10 @@ class Entry implements CrudInterface
     }
     
     /**
-     * Set time
-     * 
      * @param \DateTime $time
-     * 
-     * @return Entry
+     * @return $this
      */
-    public function setTime(\DateTime $time = null)
+    public function setTime(\DateTime $time = null): self
     {
         $this->time = $time;
         
@@ -318,13 +288,10 @@ class Entry implements CrudInterface
     }
     
     /**
-     * Set updatedAt
-     * 
      * @param \DateTime $updatedAt
-     * 
-     * @return Entry
+     * @return $this
      */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
+    public function setUpdatedAt(\DateTime $updatedAt = null): self
     {
         $this->updatedAt = $updatedAt;
         
@@ -332,13 +299,10 @@ class Entry implements CrudInterface
     }
     
     /**
-     * Set category
-     * 
      * @param Category $category
-     * 
-     * @return Entry
+     * @return $this
      */
-    public function setCategory(Category $category = null)
+    public function setCategory(Category $category = null): self
     {
         $this->category = $category;
         
@@ -346,13 +310,10 @@ class Entry implements CrudInterface
     }
     
     /**
-     * Set author
-     * 
      * @param User $author
-     * 
-     * @return Entry
+     * @return $this
      */
-    public function setAuthor(User $author = null)
+    public function setAuthor(User $author = null): self
     {
         $this->author = $author;
         
@@ -360,76 +321,41 @@ class Entry implements CrudInterface
     }
     
     /**
-     * Set visible
-     * 
-     * @param boolean $visible
-     * 
-     * @return Entry
+     * @param bool $visible
+     * @return $this
      */
-    public function setVisible($visible)
+    public function setVisible(bool $visible): self
     {
         $this->visible = $visible;
         
         return $this;
     }
-    
-    /**
-     * Set images
-     * 
-     * @param ArrayCollection $images
-     * 
-     * @return Entry
-     */
-    public function setImages(ArrayCollection $images)
-    {
-        $this->images = $images;
-        
-        return $this;
-    }
-    
-    /**
-     * Set comments
-     * 
-     * @param ArrayCollection $comments
-     * 
-     * @return Entry
-     */
-    public function setComments(ArrayCollection $comments)
-    {
-        $this->comments = $comments;
-        
-        return $this;
-    }
-
 
     /**
-     * Checks if the author is valid. i.e. he isn't deleted
-     * 
-     * @return boolean
-     */
-    public function hasValidAuthor()
-    {
-        return $this->author != null;
-    }
-
-    /**
-     * Returns a displayable author. Performs an exists check
-     * 
-     * @return string|User
-     */
-    public function getAuthorDisplay()
-    {
-        return $this->hasValidAuthor() ? $this->getAuthor() : '?';
-    }
-
-    /**
-     * Set closed
+     * Checks if the author is valid. i.e. he isn't deleted.
      *
-     * @param boolean $closed
-     *
-     * @return Entry
+     * @return bool
      */
-    public function setClosed($closed)
+    public function hasValidAuthor(): bool
+    {
+        return $this->author !== null;
+    }
+
+    /**
+     * Returns a displayable author. Performs an exists check.
+     *
+     * @return string
+     */
+    public function getAuthorDisplay(): string
+    {
+        return $this->hasValidAuthor() ? (string)$this->getAuthor() : '?';
+    }
+
+    /**
+     * @param bool $closed
+     * @return $this
+     */
+    public function setClosed(bool $closed): self
     {
         $this->closed = $closed;
 
@@ -437,23 +363,18 @@ class Entry implements CrudInterface
     }
 
     /**
-     * Get closed
-     *
-     * @return boolean
+     * @return bool
      */
-    public function getClosed()
+    public function isClosed(): bool
     {
         return $this->closed;
     }
 
     /**
-     * Add image
-     *
      * @param EntryImage $image
-     *
-     * @return Entry
+     * @return $this
      */
-    public function addImage(EntryImage $image)
+    public function addImage(EntryImage $image): self
     {
         $this->images[] = $image;
 
@@ -461,23 +382,30 @@ class Entry implements CrudInterface
     }
 
     /**
-     * Remove image
-     *
      * @param EntryImage $image
+     * @return $this
      */
-    public function removeImage(EntryImage $image)
+    public function removeImage(EntryImage $image): self
     {
         $this->images->removeElement($image);
+
+        return $this;
     }
 
     /**
-     * Add comment
-     *
-     * @param EntryComment $comment
-     *
-     * @return Entry
+     * @param EntryImage $image
+     * @return bool
      */
-    public function addComment(EntryComment $comment)
+    public function hasImage(EntryImage $image): bool
+    {
+        return $this->images->contains($image);
+    }
+
+    /**
+     * @param EntryComment $comment
+     * @return $this
+     */
+    public function addComment(EntryComment $comment): self
     {
         $this->comments[] = $comment;
 
@@ -485,12 +413,23 @@ class Entry implements CrudInterface
     }
 
     /**
-     * Remove comment
-     *
      * @param EntryComment $comment
+     * @return $this
      */
-    public function removeComment(EntryComment $comment)
+    public function removeComment(EntryComment $comment): self
     {
         $this->comments->removeElement($comment);
+
+        return $this;
     }
+
+    /**
+     * @param EntryComment $comment
+     * @return bool
+     */
+    public function hasComment(EntryComment $comment): bool
+    {
+        return $this->comments->contains($comment);
+    }
+
 }

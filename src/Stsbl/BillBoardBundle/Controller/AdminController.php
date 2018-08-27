@@ -46,6 +46,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://mit.otg/licenses/MIT>
+ *
  * @Route("/billboard/manage")
  */
 class AdminController extends AbstractPageController

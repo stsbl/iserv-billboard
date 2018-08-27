@@ -51,6 +51,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 /**
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://mit.otg/licenses/MIT>
+ *
+ * @Route("/billboard")
  */
 class EntryController extends StrictCrudController
 {
@@ -126,7 +128,7 @@ class EntryController extends StrictCrudController
     /**
      * Locks an opened entry
      *
-     * @Route("/billboard/entry/lock/{id}", name="billboard_lock")
+     * @Route("/entry/lock/{id}", name="billboard_lock")
      * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
      *
      * @param Entry $entry
@@ -155,7 +157,7 @@ class EntryController extends StrictCrudController
     /**
      * Opens a locked entry
      *
-     * @Route("/billboard/entry/unlock/{id}", name="billboard_unlock")
+     * @Route("/entry/unlock/{id}", name="billboard_unlock")
      * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
      *
      * @param Entry $entry
