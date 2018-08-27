@@ -65,7 +65,7 @@ trait CommentFormTrait
      * @param array $options
      * @return FormBuilderInterface
      */
-    abstract protected function createFormBuilder($data = null, array $options = array());
+    abstract protected function createFormBuilder($data = null, array $options = []);
 
     /**
      * Get comment form for entry with id $id.
