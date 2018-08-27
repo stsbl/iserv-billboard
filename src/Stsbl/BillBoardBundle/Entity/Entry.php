@@ -3,11 +3,10 @@
 namespace Stsbl\BillBoardBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use IServ\CoreBundle\Entity\User;
 use IServ\CoreBundle\Util\Date;
 use IServ\CrudBundle\Entity\CrudInterface;
-use IServ\CoreBundle\Entity\User;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /*
@@ -241,7 +240,7 @@ class Entry implements CrudInterface
     /**
      * @return ArrayCollection|EntryImage[]
      */
-    public function getImages(): Collection
+    public function getImages()
     {
         return $this->images;
     }

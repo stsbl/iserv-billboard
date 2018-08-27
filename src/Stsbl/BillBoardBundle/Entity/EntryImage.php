@@ -3,11 +3,10 @@
 namespace Stsbl\BillBoardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use IServ\CoreBundle\Util\Date;
-use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CoreBundle\Entity\FileImage;
 use IServ\CoreBundle\Entity\User;
-use Stsbl\BillBoardBundle\Entity\Entry;
+use IServ\CoreBundle\Util\Date;
+use IServ\CrudBundle\Entity\CrudInterface;
 
 /*
  * The MIT License

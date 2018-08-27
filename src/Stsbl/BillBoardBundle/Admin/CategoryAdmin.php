@@ -2,7 +2,6 @@
 // src/Stsbl/BillBoardBundle/Crud/CategoryListCrud.php
 namespace Stsbl\BillBoardBundle\Admin;
 
-use IServ\CoreBundle\Service\Logger;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CrudBundle\Mapper\FormMapper;

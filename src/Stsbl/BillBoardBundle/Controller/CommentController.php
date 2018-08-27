@@ -105,7 +105,7 @@ class CommentController extends AbstractPageController
         // trigger notification event
         $this->notifyAuthor($entry, $data);
 
-        $this->get(Flash::class)->success(__('Comment to entry "%s" successful added.', (string)$entry));
+        $this->get(Flash::class)->success(__('Comment to entry "%s" successful added.', $entry));
 
         return $this->redirect($this->generateUrl('billboard_show', ['id' => $entry->getId()]));
     }
@@ -216,7 +216,7 @@ class CommentController extends AbstractPageController
         $dispatcher->dispatch(NotificationEvent::NAME, new NotificationEvent(
             $author,
             'billboard',
-            ['New comment on your post: %s commented on %s', $this->getUser(), $entry],
+            ['New comment on your post: %s commented on %s', (string)$this->getUser(), (string)$entry],
             'comments',
             ['billboard_show', ['id' => $entry->getId()]]
         ));

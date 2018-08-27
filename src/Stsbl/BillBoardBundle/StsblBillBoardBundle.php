@@ -2,9 +2,9 @@
 // src/Stsbl/BillBoardBundle/StsblBillBoardBundle.php
 namespace Stsbl\BillBoardBundle;
 
+use IServ\CoreBundle\Routing\AutoloadRoutingBundleInterface;
 use Stsbl\BillBoardBundle\DependencyInjection\Compiler\NotificationCompilerPass;
 use Stsbl\BillBoardBundle\DependencyInjection\StsblBillBoardExtension;
-use IServ\CoreBundle\Routing\AutoloadRoutingBundleInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

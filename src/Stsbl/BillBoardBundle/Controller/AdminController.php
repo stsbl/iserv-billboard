@@ -4,7 +4,6 @@ namespace Stsbl\BillBoardBundle\Controller;
 
 use IServ\CoreBundle\Controller\AbstractPageController;
 use IServ\CoreBundle\Service\Flash;
-use IServ\CoreBundle\Service\Logger;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

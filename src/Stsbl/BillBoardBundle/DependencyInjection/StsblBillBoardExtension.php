@@ -3,7 +3,6 @@
 namespace Stsbl\BillBoardBundle\DependencyInjection;
 
 use IServ\CoreBundle\DependencyInjection\IServBaseExtension;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /*
  * The MIT License

@@ -2,19 +2,17 @@
 // src/Stsbl/BillBoardBundle/Crud/EntryCrud.php
 namespace Stsbl\BillBoardBundle\Crud;
 
-use Doctrine\ORM\QueryBuilder;
-use IServ\CoreBundle\Service\Logger;
-use IServ\CrudBundle\Crud\AbstractCrud;
-use IServ\CrudBundle\Doctrine\ORM\ORMObjectManager;
-use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CoreBundle\Form\Type\BooleanType;
 use IServ\CoreBundle\Form\Type\PurifiedTextareaType;
 use IServ\CoreBundle\Traits\LoggerTrait;
+use IServ\CrudBundle\Crud\AbstractCrud;
+use IServ\CrudBundle\Doctrine\ORM\ORMObjectManager;
+use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CrudBundle\Mapper\FormMapper;
 use IServ\CrudBundle\Mapper\ListMapper;
 use IServ\CrudBundle\Mapper\ShowMapper;
-use IServ\CrudBundle\Table\ListHandler;
 use IServ\CrudBundle\Table\Filter;
+use IServ\CrudBundle\Table\ListHandler;
 use Stsbl\BillBoardBundle\Crud\Batch\HideAction;
 use Stsbl\BillBoardBundle\Crud\Batch\ShowAction;
 use Stsbl\BillBoardBundle\Entity\Category;
@@ -60,7 +58,7 @@ class EntryCrud extends AbstractCrud
 
     public function __construct()
     {
-        parent::__construct(Category::class);
+        parent::__construct(Entry::class);
     }
 
     /**
