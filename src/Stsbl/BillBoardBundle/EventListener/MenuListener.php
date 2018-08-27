@@ -50,14 +50,14 @@ class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterf
             || $event->getAuthorizationChecker()->isGranted(Privilege::BILLBOARD_MANAGE)
         ) {
             $menu = $event->getMenu(self::COMMUNICATION);
-            $item = $menu->addChild('billboard', array(
+            $item = $menu->addChild('billboard', [
                 'route' => 'billboard_index',
                 'label' => _('Bill-Board'),
-                'extras' => array(
+                'extras' => [
                   'icon' => 'billboard-empty',
                   'icon_style' => 'fugue',
-                ),
-            ));
+                ],
+            ]);
             $item->setExtra('orderNumber', 20);
         }
     }
@@ -73,17 +73,17 @@ class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterf
             $block = $menu->addChild(_('Bill-Board'));
             $block->setExtra('orderNumber', 30);
 
-            $item = $block->addChild('billboard_admin', array(
+            $item = $block->addChild('billboard_admin', [
                 'route' => 'manage_billboard',
                 'label' => _('Bill-Board'),
-            ));
+            ]);
             $item->setExtra('icon', 'billboard-empty');
             $item->setExtra('icon_style', 'fugue');
             
-            $item = $block->addChild('billboard_category', array(
+            $item = $block->addChild('billboard_category', [
                 'route' => 'manage_billboard_category_index',
                 'label' => _('Categories'),
-            ));
+            ]);
             $item->setExtra('icon', 'category');
             $item->setExtra('icon_style', 'fugue');
         }

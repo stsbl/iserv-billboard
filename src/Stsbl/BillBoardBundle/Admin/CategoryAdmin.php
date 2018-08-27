@@ -101,8 +101,8 @@ class CategoryAdmin extends AbstractBillBoardAdmin
     public function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('title', null, array('label' => _('Title')))
-            ->add('description', null, array('label' => _('Description'), 'responsive' => 'desktop'))
+            ->addIdentifier('title', null, ['label' => _('Title')])
+            ->add('description', null, ['label' => _('Description'), 'responsive' => 'desktop'])
         ;
     }
 
@@ -112,8 +112,8 @@ class CategoryAdmin extends AbstractBillBoardAdmin
     public function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('title', null, array('label' => _('Title')))
-            ->add('description', null, array('label' => _('Description')))
+            ->add('title', null, ['label' => _('Title')])
+            ->add('description', null, ['label' => _('Description')])
         ;
     }
 
@@ -123,8 +123,8 @@ class CategoryAdmin extends AbstractBillBoardAdmin
     public function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('title', null, array('label' => _('Title')))
-            ->add('description', null, array('label' => _('Description')))
+            ->add('title', null, ['label' => _('Title')])
+            ->add('description', null, ['label' => _('Description')])
         ;
     }
 

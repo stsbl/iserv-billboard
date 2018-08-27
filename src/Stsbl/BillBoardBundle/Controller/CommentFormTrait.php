@@ -111,7 +111,7 @@ trait CommentFormTrait
                 return $entry->getId();
             },
             function (int $entryId = null): Entry {
-                if (null == $entryId) {
+                if (null === $entryId) {
                     return null;
                 }
 
@@ -137,16 +137,16 @@ trait CommentFormTrait
         ;
         
         $builder->get('actions')
-            ->add('approve', SubmitType::class, array(
+            ->add('approve', SubmitType::class, [
                 'label' => _('Yes'),
                 'buttonClass' => 'btn-danger',
                 'icon' => 'ok'
-            ))
-            ->add('cancel', SubmitType::class, array(
+            ])
+            ->add('cancel', SubmitType::class, [
                 'label' => _('No'),
                 'buttonClass' => 'btn-default',
                 'icon' => 'remove'
-            ))
+            ])
         ;
       
         return $builder->getForm();

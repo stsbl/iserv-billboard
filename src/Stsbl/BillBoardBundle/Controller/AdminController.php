@@ -158,21 +158,21 @@ class AdminController extends AbstractPageController
         
         $builder
             ->setAction($this->generateUrl('manage_billboard_update_rules'))
-            ->add('rules', TextareaType::class, array(
+            ->add('rules', TextareaType::class, [
                 'label' => false,
                 'data' => self::getCurrentRules(),
-                'attr' => array(
+                'attr' => [
                     'rows' => 10,
                     'help_text' => _('Here you can enter rules, which are shown at the form for adding an entry to '.
                         'the bill-board.')
-                ),
+                ],
                 'required' => false
-            ))
-            ->add('submit', SubmitType::class, array(
+            ])
+            ->add('submit', SubmitType::class, [
                 'label' => _('Save'),
                 'buttonClass' => 'btn-success',
                 'icon' => 'ok'
-            ))
+            ])
         ;
         
         return $builder->getForm();

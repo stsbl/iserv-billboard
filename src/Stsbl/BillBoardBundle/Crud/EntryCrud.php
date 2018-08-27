@@ -279,7 +279,7 @@ class EntryCrud extends AbstractCrud
         $authorFilter = new Filter\ListExpressionFilter(_('Entries I created'), 'parent.author = :user and parent.visible = true');
         $authorFilter
             ->setName('created_entries')
-            ->setParameters(array('user' => $this->getUser()))
+            ->setParameters(['user' => $this->getUser()])
             ->setListMapperUpdater(function () use ($listHandler) {
                 $listHandler->disableBatchAction('show');
             })
@@ -291,7 +291,7 @@ class EntryCrud extends AbstractCrud
         ));
         $hiddenFilter
             ->setName('my_hidden_entries')
-            ->setParameters(array('user' => $this->getUser()))
+            ->setParameters(['user' => $this->getUser()])
             ->setListMapperUpdater(function () use ($listHandler) {
                 $listHandler->disableBatchAction('hide');
             })
@@ -311,7 +311,7 @@ class EntryCrud extends AbstractCrud
             ));
             $hiddenAllFilter
                 ->setName('hidden_entries_other_users')
-                ->setParameters(array('user' => $this->getUser()))
+                ->setParameters(['user' => $this->getUser()])
                 ->setListMapperUpdater(function () use ($listHandler) {
                     $listHandler->disableBatchAction('hide');
                 })
@@ -389,7 +389,11 @@ class EntryCrud extends AbstractCrud
         
         // only add category, if user has management privilege
         if ($this->isGranted(Privilege::BILLBOARD_MANAGE)) {
-            $links['categories'] = array($this->getRouter()->generate('manage_billboard_category_index'), _('Categories'), 'tags');
+            $links['categories'] = [
+                $this->getRouter()->generate('manage_billboard_category_index'),
+                _('Categories'),
+                'tags'
+            ];
         }
         
         return $links;
