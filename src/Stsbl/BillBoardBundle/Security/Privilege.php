@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 // src/Stsbl/BillBoardBundle/Security/Privilege.php
 namespace Stsbl\BillBoardBundle\Security;
 
