@@ -1,3 +1,13 @@
+stsbl-iserv-billboard (18.09.12-1) experimental; urgency=medium
+
+  * Updated copyright
+  * Updated packaging
+  * Moved assets to webpack
+  * Updated controllers and services for Symfony 4
+  * Updated build rules for webpack support
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Wed, 12 Sep 2018 01:06:03 +0200
+
 stsbl-iserv-billboard (17.09.28-0) experimental; urgency=medium
 
   * Use mailto twig filter in show template.
