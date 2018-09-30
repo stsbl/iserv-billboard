@@ -1,0 +1,24 @@
+Test "billboard: fix closed in billboard"
+    grep -q ^60billboard_fix_legacy_entries_closed$ /var/lib/iserv/config/update.log
+    ---
+    # No action required if hosts table is not created yet
+    ! (psql -Atc '\dt billboard' iserv postgres | grep -q "^public") &&
+        echo 60billboard_fix_legacy_entries_closed >> /var/lib/iserv/config/update.log &&
+        exit 0
+    psql -v ON_ERROR_STOP=1 -c \
+        "UPDATE billboard SET closed = false WHERE closed IS NULL" \
+        iserv postgres &&
+        echo 60billboard_fix_legacy_entries_closed >> /var/lib/iserv/config/update.log
+
+Test "billboard: fix visible in billboard"
+    grep -q ^60billboard_fix_legacy_entries_visible$ /var/lib/iserv/config/update.log
+    ---
+    # No action required if hosts table is not created yet
+    ! (psql -Atc '\dt billboard' iserv postgres | grep -q "^public") &&
+        echo 60billboard_fix_legacy_entries_visible >> /var/lib/iserv/config/update.log &&
+        exit 0
+    psql -v ON_ERROR_STOP=1 -c \
+        "UPDATE billboard SET visible = true WHERE visible IS NULL" \
+        iserv postgres &&
+        echo 60billboard_fix_legacy_entries_visible >> /var/lib/iserv/config/update.log
+
