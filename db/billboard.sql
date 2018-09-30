@@ -13,16 +13,16 @@ CREATE TABLE billboard (
     id          SERIAL              PRIMARY KEY,
     title       VARCHAR(255),
     description TEXT,
-    time        TIMESTAMPTZ(0) NOT NULL,
-    updated_at  TIMESTAMPTZ(0) NOT NULL DEFAULT now(),
+    time        TIMESTAMPTZ(0)  NOT NULL,
+    updated_at  TIMESTAMPTZ(0)  NOT NULL DEFAULT now(),
     category    INT     REFERENCES billboard_category(id)
                         ON DELETE SET NULL
                         ON UPDATE CASCADE,
     author      VARCHAR(255) REFERENCES users(act)
                              ON DELETE SET NULL
                              ON UPDATE CASCADE,
-    visible     BOOLEAN,
-    closed      BOOLEAN
+    visible     BOOLEAN         NOT NULL DEFAULT true,
+    closed      BOOLEAN         NOT NULL DEFAULT false
 );
 
 CREATE TABLE billboard_images (
