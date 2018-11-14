@@ -1,0 +1,224 @@
+{# src/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.thtml.twig #}
+{% extends 'IServCrudBundle:Crud:show.html.twig' %}
+
+{% block content %}
+    <h1>{{ item.title }}</h1>
+    {% block crud_form_actions %}
+        {{ parent() }}
+    {% endblock %}
+    
+    {% block crud_show %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <p class="text-secondary">
+                    <span title="{{ _('Created') }}">{{ icon('calendar') }} {{ item.time|ldate }}</span> | 
+                    <span title="{{ _('Last refresh') }}">{{ icon('refresh') }} {{ item.updatedAt|ldate }}</span> | 
+                    <span title="{{ _('Author') }}">
+                        {{ icon('user') }}
+                        {% if not authorIsDeleted %}
+                            <a>{{ item.author|mailto({'addressee': item.author, 'subject': __('Entry "%s" on the billboard', item.title)}) }}</a>
+                        {% else %}
+                            {{ item.authorDisplay }}
+                        {% endif %}
+                    </span> | 
+                    <span title="{{ _('Category') }}">{{ icon('tag') }} {{ item.category }}</span> | 
+                    <span title="{{ _('Visibility') }}">
+                        {% if item.visible %}
+                            {{ icon('eye-open') }} {{ _('Visible') }}
+                        {% else %}
+                            {{ icon('eye-close') }} {{ _('Hidden') }}
+                        {% endif %}
+                    </span>
+                    {% if item.closed %}
+                        | <span title="{{ _('This entry is closed for any write access.') }}">{{ icon('lock') }} {{ _p('billboard', 'Closed') }}</span>
+                    {% endif %}
+                </p>
+
+                <p>
+                    {{ item.description|raw|linkify }}
+                </p>
+            </div>
+        </div>
+    {% endblock crud_show %}
+    {% block entry_images %}
+        {% if item.images|length > 0 or admin.isAuthor(item) %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ _('Images') }}</h3>
+                </div>
+                <div class="panel-body">
+                    {% set thumbsize = thumbsize|default(80) %}
+                    {% set images = item.images %}
+                    {% if images is iterable and images|length > 0 %}
+                        {% for ent in images %}
+                            {% spaceless %}
+                                <div class="billboard-image-container">
+                                {% set imageRoute = admin.getRoute('fileimage_images')|default('fileimage') %}
+                                <a data-toggle="modal-image" href="{{ path(imageRoute, {'id': ent.id, 'entity_id': item.id}) }}">
+                                    <img src="{{ path(imageRoute, {'id': ent.id, 'entity_id': item.id, 'width': thumbsize, 'height': thumbsize}) }}"
+                                    alt="{{ ent }}" class="img-thumbnail" width="{{ thumbsize }}" height="{{ thumbsize }}"/>
+                                </a>
+                                <br />
+                                {% if ent.description|length > 0 %}
+                                    <span class="text-muted text-secondary"><strong>{{ _('Description')}}:</strong><br />{{ ent.description }}</span>
+                                {% endif %}
+                                
+                                {% if admin.isAllowedToEdit(item, app.user) %}
+                                    <br />
+                                    <a href="#delete-image" id="billboard-delete-image-{{ ent.id }}" data-id="#billboard-delete-image-{{ ent.id }}" data-image-name="{{ ent.image.fileName }}" data-image-entry-title="{{ ent.entry.title }}" data-image-id="{{ ent.id }}" data-toggle="modal" data-target="#image-delete-confirm-container" class="billboard-delete-image btn btn-xs btn-default">{{ icon('remove-circle') }}{{ _('Delete') }}</a>
+                                {% endif %}
+                                </div>
+                            {% endspaceless %}
+                        {% endfor %}
+                    {% elseif images is iterable and images|length == 0 %}
+                        {% if item.closed and not admin.isModerator(app.user) %}
+                            <span class="text-muted">{{ _('You can not add further images to this entry, because it is closed.') }}</span>
+                        {% else %}
+                            <span class="text-muted">{{  _('This entry currently has no images. To add one, click "Add image" below.') }}</span>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="panel-footer">
+                    {% if admin.isAuthor(item) and (not item.closed or admin.isModerator(app.user)) %}
+                        <div class="billboard-clear-both"></div>
+                        <a href="#billboard-add-image" id="billboard-add-image" data-id="billboard-add-image" data-toggle="modal" data-target="#image-upload-container" class="btn-default btn">{{ icon('plus') }}{{ _('Add image') }}</a>
+                    {% endif %}
+                </div>    
+            </div>
+        {% endif %}
+    {% endblock %}
+    
+    {% block entry_comments %}
+        <h2>{{ _p('billboard', 'Comments') }}</h2>
+        {% if item.comments is empty %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{ _('Currently no comments.') }}
+                </div>
+            </div>
+        {% else %}
+            {% for comment in item.comments %}
+                <div id="billboard-comment-{{ comment.id }}" class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>{{ comment.title }}</strong> {{ ' ' ~ _("by") ~ ' ' }} {{ icon('user') }}  {{ __("%s at %s", comment.authorDisplay, comment.time|ldatetime) }} <br />
+                    </div>
+                    <div class="panel-body">
+                        {{ comment.content|linkify }}
+                    </div>
+                    {% if admin.isModerator(app.user) %}
+                        <div class="panel-footer">
+                            <a class="btn btn-default" href="{{ path('billboard_comment_delete_confirm', {'id': comment.id}) }}">{{ icon('remove-circle') }}{{ _('Delete') }}</a>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endblock %} 
+    {% block entry_add_comment %}
+        {% if admin.isAllowedToAdd(app.user) %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ _('Add a comment') }}</h3>
+                </div>
+                <div class="panel-body">
+                    {% if not admin.isModerator(app.user) and item.closed %}
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                {{ _('This entry is locked, therefor the creation of comments is not longer possible.') }}
+                            </div>
+                        </div>
+                    {% elseif commentsEnabled and admin.isAllowedToAdd(app.user) %}
+                        {{ form(commentForm, {'style': null}) }}
+                    {% else %}
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                {{ _('The adding of new comments was disabled by your administrator.') }}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    {% endblock  %}
+    {% block entry_modal_image_upload %}
+    {% if admin.isAuthor(item) and (not item.closed or admin.isModerator(app.user)) %}
+    <div id="image-upload-container" class="modal fade in" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{{ _('Add a new image to this entry') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{ _("Upload a new image.") }}</p>
+                    {{ form(imageUploadForm, { 'style': 'inline', 'attr': { 'id': 'image-upload' } }) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ icon('remove') }} {{ _('Close') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endblock %}
+    {% block entry_modal_image_delete_confirm %}
+        {% if admin.isAllowedToEdit(item, app.user) %}
+            <div id="image-delete-confirm-container" class="modal fade in" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">{{ _('Delete image') }}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p id="image-delete-confirm-question">{{ _p("billboard", "Do you really want to delete the image?") }}</p>
+                            {{ form(imageDeleteConfirmForm, { 'style': 'inline', 'attr': { 'id': 'image-delete-confirm' } }) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endblock %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% if app.environment != 'prod' %}
+        <!-- {{ _self }} => billboard.less -->
+    {% endif %}
+    <link rel="stylesheet" href="{{ asset('less/billboard.less', 'stsbl_bill_board') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent () }}
+    
+    {% if app.environment != 'prod' %}
+	<!-- {{ _self }} => components/tinymce-dist/tinymce.js -->
+    {% endif %}
+    <script type="text/javascript" src="{{ asset('components/tinymce-dist/tinymce.js') }}"></script>
+    
+    {% if app.environment != 'prod' %}
+	<!-- {{ _self }} => components/tinymce-dist/jquery.tinymce.min.js -->
+    {% endif %}
+    <script type="text/javascript" src="{{ asset('components/tinymce-dist/jquery.tinymce.min.js') }}"></script>
+ 
+    {% if app.request.locale == 'de_DE' %}
+        {% if app.environment != 'prod' %}
+            <!-- {{ _self }} => components/tinymce-i10n/langs/de.js -->
+        {% endif %}
+        <script type="text/javascript" src="{{ asset('components/tinymce-i10n/langs/de.js') }}"></script>
+    {% endif %}
+
+    {% if app.environment != 'prod' %}
+        <!-- {{ _self }} => billboard_image.js -->
+    {% endif %}
+    <script src="{{ asset('js/billboard_image.js', 'stsbl_bill_board') }}"></script>
+
+    {% if app.environment != 'prod' %}
+    <!-- {{ _self }} => billboard_common.js -->
+    {% endif %}}
+    <script src="{{ asset('js/billboard_common.js', 'stsbl_bill_board') }}"></script>
+{% endblock %}

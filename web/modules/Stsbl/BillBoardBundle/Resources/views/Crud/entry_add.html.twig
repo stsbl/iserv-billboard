@@ -1,0 +1,49 @@
+{# src/Stsbl/BillBoardBundle/Resources/views/Crud/entry_add.thtml.twig #}
+{% extends 'IServCrudBundle:Crud:add.html.twig' %}
+
+{% block content %}
+    {% if fields is empty %}
+        <div class="alert alert-warning">
+            {{ _("There are no bill-board categories configured yet. Please contact your administrator.") }}
+        </div>
+    {% else %}
+        {% if rules is not empty %}
+            <div class="alert alert-info">
+                <p><strong> {{ _("Rules for posting on the Bill-Board:") }}</strong></p>
+                <p>{{ rules | nl2br }}</p>
+            </div>
+        {% endif %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    {% if app.environment != 'prod' %}
+	<!-- {{ _self }} => components/tinymce-dist/tinymce.js -->
+    {% endif %}
+    <script type="text/javascript" src="{{ asset('components/tinymce-dist/tinymce.js') }}"></script>
+    
+    {% if app.environment != 'prod' %}
+	<!-- {{ _self }} => components/tinymce-dist/jquery.tinymce.min.js -->
+    {% endif %}
+    <script type="text/javascript" src="{{ asset('components/tinymce-dist/jquery.tinymce.min.js') }}"></script>
+ 
+    {% if app.request.locale == 'de_DE' %}
+        {% if app.environment != 'prod' %}
+            <!-- {{ _self }} => components/tinymce-i10n/langs/de.js -->
+        {% endif %}
+        <script type="text/javascript" src="{{ asset('components/tinymce-i10n/langs/de.js') }}"></script>
+    {% endif %}
+    
+    {% if app.environment != 'prod' %}
+	<!-- {{ _self }} => billboard_editor.js -->
+    {% endif %}
+    <script src="{{ asset('js/billboard_editor.js', 'stsbl_bill_board') }}"></script>
+    
+    {% if app.environment != 'prod' %}
+	<!-- {{ _self }} => billboard_common.js -->
+    {% endif %}}
+    <script src="{{ asset('js/billboard_common.js', 'stsbl_bill_board') }}"></script>
+{% endblock %}

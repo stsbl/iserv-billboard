@@ -1,0 +1,12 @@
+{# src/Stsbl/BillBoardBundle/Resources/views/Crud/entry_index.html.twig #}
+{% extends 'IServCrudBundle:Crud:index.html.twig' %}
+{% import 'IServCrudBundle::macros.html.twig' as m %}
+
+{% block content %}
+    {% if is_granted('PRIV_BILLBOARD_MANAGE') %}
+        <div class="btn-toolbar pull-right">
+            {{ m.linkButton(path('manage_billboard'), _('Manage'), 'cog', 'btn-link') }}
+        </div>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}

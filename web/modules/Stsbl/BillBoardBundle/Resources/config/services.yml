@@ -1,0 +1,19 @@
+# src/Stsbl/BillBoardBundle/Resources/config/services.yml
+services:
+    _defaults:
+        autoconfigure: true
+        autowire: true
+        public: false
+
+    Stsbl\BillBoardBundle\:
+        resource: '../../{Admin,Crud}'
+        exclude: '../../Crud/Batch'
+
+    Stsbl\BillBoardBundle\Controller\:
+        resource: '../../Controller'
+        tags: ['controller.service_arguments']
+
+    Stsbl\BillBoardBundle\EventListener\MenuListener:
+        tags:
+        - { name: kernel.event_listener, event: iserv_portal.menu_main, method: onBuildMainMenu }
+        - { name: kernel.event_listener, event: iserv_portal.menu_admin, method: onBuildAdminMenu }

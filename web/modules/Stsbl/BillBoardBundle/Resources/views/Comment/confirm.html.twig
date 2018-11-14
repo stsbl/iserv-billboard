@@ -1,0 +1,16 @@
+{# src/Stsbl/BillBoardBundle/Resources/views/Comment/confirm.html.twig #}
+{% extends "IServCoreBundle::page.html.twig" %}
+
+{% block page_title _('Delete comment') %}
+
+{%block content %}
+    <h1>{{ _('Delete comment') }}</h1>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"> {{ __('Do you really want to delete the comment "%s" by %s?', comment.title, comment.authorDisplay) }} </h3>
+        </div>
+        <div class="panel-body">
+            {{ form(delete_confirm_form) }}
+        </div>
+    </div>
+{% endblock %}
