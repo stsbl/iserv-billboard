@@ -1,3 +1,9 @@
+stsbl-iserv-billboard (18.11.25-1) experimental; urgency=medium
+
+  * Adapted module structure to web application move
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Sun, 25 Nov 2018 22:52:48 +0100
+
 stsbl-iserv-billboard (18.09.30-3) experimental; urgency=medium
 
   * Upgrade legacy columns with null value in billboard table
