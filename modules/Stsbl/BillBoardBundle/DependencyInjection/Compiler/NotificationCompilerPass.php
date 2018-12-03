@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/BillBoardBundle/DependencyInjection/Compiler/NotificationCompilerPass.php
+
 namespace Stsbl\BillBoardBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

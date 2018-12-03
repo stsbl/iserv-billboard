@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/BillBoardBundle/Controller/EntryController.php
+
 namespace Stsbl\BillBoardBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
@@ -22,6 +22,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /*
@@ -59,10 +60,11 @@ class EntryController extends StrictCrudController
     use CommentFormTrait, LoggerInitializationTrait, LoggerTrait;
 
     /**
+     * {@inheritdoc}
+     *
      * Overrides default addAction to pass some additional variables to the template
      *
-     * @param Request $request
-     * @return mixed
+     * @return Response|array
      */
     public function addAction(Request $request)
     {
@@ -76,11 +78,11 @@ class EntryController extends StrictCrudController
     }
 
     /**
+     * {@inheritdoc}
+     *
      * Overrides default editAction to pass some additional variables to the template
      *
-     * @param Request $request
-     * @param int $id
-     * @return mixed
+     * @return Response|array
      */
     public function editAction(Request $request, $id)
     {
@@ -94,15 +96,15 @@ class EntryController extends StrictCrudController
     }
 
     /**
+     * {@inheritdoc}
+     *
      * Overrides default showAction to pass some additional variables to the template
      *
-     * @param Request $request
-     * @param int $id
-     * @return mixed
+     * @return Response|array
      */
     public function showAction(Request $request, $id)
     {
-        if ($this->handleImageUploadForm($request, $id) || $this->handleDeleteConfirmForm($request)) {
+        if ($this->handleImageUploadForm($request, (int)$id) || $this->handleDeleteConfirmForm($request)) {
             return $this->redirectToRoute('billboard_show', ['id' => $id]);
         }
         
@@ -130,9 +132,6 @@ class EntryController extends StrictCrudController
      *
      * @Route("/entry/lock/{id}", name="billboard_lock")
      * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
-     *
-     * @param Entry $entry
-     * @return RedirectResponse
      */
     public function lockAction(Entry $entry): RedirectResponse
     {
@@ -159,9 +158,6 @@ class EntryController extends StrictCrudController
      *
      * @Route("/entry/unlock/{id}", name="billboard_unlock")
      * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
-     *
-     * @param Entry $entry
-     * @return RedirectResponse
      */
     public function unlockAction(Entry $entry): RedirectResponse
     {
@@ -185,9 +181,6 @@ class EntryController extends StrictCrudController
 
     /**
      * Create form for image upload
-     *
-     * @param Entry $entry
-     * @return FormInterface
      */
     private function getImageUploadForm(Entry $entry): FormInterface
     {
@@ -215,12 +208,8 @@ class EntryController extends StrictCrudController
     
     /**
      * Handles submitted image upload form
-     *
-     * @param Request $request
-     * @param integer $entryId
-     * @return bool
      */
-    private function handleImageUploadForm(Request $request, $entryId)
+    private function handleImageUploadForm(Request $request, int $entryId): bool
     {
         /** @var EntryCrud $crud */
         $crud = $this->crud;
@@ -361,10 +350,8 @@ class EntryController extends StrictCrudController
     
     /**
      * Notifies the entry author that his post is locked
-     *
-     * @param Entry $entry
      */
-    private function notifyLock(Entry $entry)/*: void*/
+    private function notifyLock(Entry $entry): void
     {
         $author = $entry->getAuthor();
         
@@ -391,10 +378,8 @@ class EntryController extends StrictCrudController
 
     /**
      * Notifies the entry author that his post is opened
-     *
-     * @param Entry $entry
      */
-    private function notifyOpen(Entry $entry)/*: void*/
+    private function notifyOpen(Entry $entry): void
     {
         $author = $entry->getAuthor();
         
@@ -422,7 +407,7 @@ class EntryController extends StrictCrudController
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedServices()
+    public static function getSubscribedServices(): array
     {
         $deps = parent::getSubscribedServices();
 

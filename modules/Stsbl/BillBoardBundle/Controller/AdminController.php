@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/BillBoardBundle/Controller/AdminController.php
+
 namespace Stsbl\BillBoardBundle\Controller;
 
 use IServ\CoreBundle\Controller\AbstractPageController;
@@ -52,17 +52,16 @@ class AdminController extends AbstractPageController
 {
     use LoggerTrait, LoggerInitializationTrait;
     
-    const CONFIG_DIR = '/var/lib/stsbl/billboard/cfg/';
-    const FILE_RULES = 'rules.cfg';
+    private const CONFIG_DIR = '/var/lib/stsbl/billboard/cfg/';
+    private const FILE_RULES = 'rules.cfg';
 
     /**
      * Rules configuration page
      *
      * @Route("", name="manage_billboard")
-     * @Template("@StsblBillBoard/Admin/index.html.twig")
-     * @return array
+     * @Template()
      */
-    public function indexAction()
+    public function indexAction(): array
     {
         $this->denyAccessUnlessMangePrivilegeIsGranted();
         
@@ -77,10 +76,10 @@ class AdminController extends AbstractPageController
         
         // changing extended template depending on you know already ;)
         if ($this->isAdmin()) {
-            $bundle = 'IServAdminBundle';
+            $bundle = '@IServAdmin';
             $isAdmin = true;
         } else {
-            $bundle = 'IServCoreBundle';
+            $bundle = '@IServCore';
             $isAdmin = false;
         }
         
@@ -95,10 +94,8 @@ class AdminController extends AbstractPageController
      * Write new rules text to file
      *
      * @Route("/update/rules", name="manage_billboard_update_rules")
-     * @param Request $request
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function updateRulesAction(Request $request)
+    public function updateRulesAction(Request $request): RedirectResponse
     {
         $this->denyAccessUnlessMangePrivilegeIsGranted();
         
@@ -118,10 +115,7 @@ class AdminController extends AbstractPageController
     
     
     /**
-     * Returns the current bill-board rules
-     * returns the default rules, if no rules text is set
-     *
-     * @return string
+     * Returns the current bill-board rules returns the default rules, if no rules text is set.
      */
     public static function getCurrentRules(): string
     {
@@ -133,10 +127,7 @@ class AdminController extends AbstractPageController
     }
     
     /**
-     * Returns the translated default bill-board rules.
-     * Used when no custom rules text is set
-     *
-     * @return string
+     * Returns the translated default bill-board rules. Used when no custom rules text is set
      */
     public static function getDefaultRules(): string
     {
@@ -147,9 +138,7 @@ class AdminController extends AbstractPageController
     }
 
     /**
-     * Returns a Form to set the rules text
-     *
-     * @return FormInterface
+     * Returns a Form to set the rules text.
      */
     private function getRulesForm(): FormInterface
     {
@@ -178,12 +167,7 @@ class AdminController extends AbstractPageController
     }
 
     /**
-     * Write $content to given file inside given folder
-     * and creates file and folders if necessary
-     * @param  string $content  content to write
-     * @param  string $filename file to write to
-     * @param  string $folder   folder the file is inside of
-     * @return RedirectResponse redirect to admin page
+     * Write $content to given file inside given folder and creates file and folders if necessary.
      */
     private function updateFile(string $content, string $filename, string $folder = self::CONFIG_DIR): RedirectResponse
     {
@@ -214,9 +198,9 @@ class AdminController extends AbstractPageController
     }
     
     /**
-     * Checks if the user has the manage privilege
+     * Checks if the user has the manage privilege.
      */
-    private function denyAccessUnlessMangePrivilegeIsGranted()/*: void*/
+    private function denyAccessUnlessMangePrivilegeIsGranted(): void
     {
         // check privilege
         $this->denyAccessUnlessGranted(
@@ -227,9 +211,7 @@ class AdminController extends AbstractPageController
     }
     
     /**
-     * Checks if user is authenticated admin
-     *
-     * @return bool
+     * Checks if user is authenticated admin.
      */
     private function isAdmin(): bool
     {
@@ -239,7 +221,7 @@ class AdminController extends AbstractPageController
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedServices()
+    public static function getSubscribedServices(): array
     {
         $deps = parent::getSubscribedServices();
         $deps[] = Flash::class;

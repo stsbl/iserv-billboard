@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/BillBoardBundle/EventListener/MenuListener.php
+
 namespace Stsbl\BillBoardBundle\EventListener;
 
 use IServ\AdminBundle\EventListener\AdminMenuListenerInterface;
@@ -38,10 +38,7 @@ use Stsbl\BillBoardBundle\Security\Privilege;
 
 class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterface
 {
-    /**
-     * @param MenuEvent $event
-     */
-    public function onBuildMainMenu(MenuEvent $event)
+    public function onBuildMainMenu(MenuEvent $event): void
     {
         // check if user is privileged
         if ($event->getAuthorizationChecker()->isGranted(Privilege::BILLBOARD)
@@ -61,11 +58,8 @@ class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterf
             $item->setExtra('orderNumber', 20);
         }
     }
-    
-    /**
-     * @param MenuEvent $event
-     */
-    public function onBuildAdminMenu(MenuEvent $event)
+
+    public function onBuildAdminMenu(MenuEvent $event): void
     {
         // check if user is privileged
         if ($event->getAuthorizationChecker()->isGranted(Privilege::BILLBOARD_MANAGE)) {

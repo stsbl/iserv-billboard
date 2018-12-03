@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/BillBoardBundle/Crud/Batch/ShowAction.php
+
 namespace Stsbl\BillBoardBundle\Crud\Batch;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -46,7 +46,7 @@ class HideAction extends AbstractBatchAction
     /**
      * {@inheritdoc}
      */
-    public function execute(ArrayCollection $entries)
+    public function execute(ArrayCollection $entries): FlashMessageBag
     {
         /** @var ORMObjectManager $em */
         $em =  $this->crud->getObjectManager();
@@ -81,7 +81,7 @@ class HideAction extends AbstractBatchAction
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'hide';
     }
@@ -89,7 +89,7 @@ class HideAction extends AbstractBatchAction
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return _('Hide');
     }
@@ -97,7 +97,7 @@ class HideAction extends AbstractBatchAction
     /**
      * {@inheritdoc}
      */
-    public function getListIcon()
+    public function getListIcon(): string
     {
         return 'eye-close';
     }
@@ -105,17 +105,15 @@ class HideAction extends AbstractBatchAction
     /**
      * {@inheritdoc}
      */
-    public function requiresConfirmation()
+    public function requiresConfirmation(): bool
     {
         return false;
     }
 
     /**
-     * @param CrudInterface $entry
-     * @param UserInterface $user
-     * @return bool
+     * {@inheritdoc}
      */
-    public function isAllowedToExecute(CrudInterface $entry, UserInterface $user)
+    public function isAllowedToExecute(CrudInterface $entry, UserInterface $user): bool
     {
         /** @var Entry $entry */
         /** @var EntryCrud $crud */

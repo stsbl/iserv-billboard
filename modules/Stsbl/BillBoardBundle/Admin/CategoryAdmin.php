@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/BillBoardBundle/Crud/CategoryListCrud.php
+
 namespace Stsbl\BillBoardBundle\Admin;
 
 use IServ\CoreBundle\Traits\LoggerTrait;
@@ -45,7 +45,6 @@ class CategoryAdmin extends AbstractBillBoardAdmin
 {
     use LoggerTrait, LoggerInitializationTrait;
 
-
     public function __construct()
     {
         parent::__construct(Category::class);
@@ -54,15 +53,7 @@ class CategoryAdmin extends AbstractBillBoardAdmin
     /**
      * {@inheritdoc}
      */
-    public function isAuthorized()
-    {
-        return $this->isGranted(Privilege::BILLBOARD_MANAGE);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 
@@ -73,11 +64,19 @@ class CategoryAdmin extends AbstractBillBoardAdmin
     }
 
     /**
-     * billboard/manage/category is nicer than billboard/manage/billboard_category
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getRouteIdentifier()
+    public function isAuthorized(): bool
+    {
+        return $this->isGranted(Privilege::BILLBOARD_MANAGE);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * billboard/manage/category is nicer than billboard/manage/billboard_category
+     */
+    public function getRouteIdentifier(): string
     {
         return 'category';
     }
@@ -85,7 +84,7 @@ class CategoryAdmin extends AbstractBillBoardAdmin
     /**
      * {@inheritdoc}
      */
-    public function prepareBreadcrumbs()
+    public function prepareBreadcrumbs(): array
     {
         if ($this->isAdmin()) {
             return [_('Bill-Board') => $this->router->generate('manage_billboard')];
@@ -97,7 +96,7 @@ class CategoryAdmin extends AbstractBillBoardAdmin
     /**
      * {@inheritdoc}
      */
-    public function configureListFields(ListMapper $listMapper)
+    public function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('title', null, ['label' => _('Title')])
@@ -108,7 +107,7 @@ class CategoryAdmin extends AbstractBillBoardAdmin
     /**
      * {@inheritdoc}
      */
-    public function configureShowFields(ShowMapper $showMapper)
+    public function configureShowFields(ShowMapper $showMapper): void
     {
         $showMapper
             ->add('title', null, ['label' => _('Title')])
@@ -119,7 +118,7 @@ class CategoryAdmin extends AbstractBillBoardAdmin
     /**
      * {@inheritdoc}
      */
-    public function configureFormFields(FormMapper $formMapper)
+    public function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->add('title', null, ['label' => _('Title')])
@@ -130,7 +129,7 @@ class CategoryAdmin extends AbstractBillBoardAdmin
     /**
      * {@inheritdoc}
      */
-    protected function getRoutePattern($action, $id, $entityBased = true)
+    protected function getRoutePattern($action, $id, $entityBased = true): string
     {
         // nicer plural categories instead of categorys
         if ('index' === $action) {
@@ -143,7 +142,7 @@ class CategoryAdmin extends AbstractBillBoardAdmin
     /**
      * {@inheritdoc}
      */
-    public function postPersist(CrudInterface $category)
+    public function postPersist(CrudInterface $category): void
     {
         /** @var Category $category */
         $this->log('Kategorie "'.$category->getTitle().'" hinzugefügt');
@@ -152,7 +151,7 @@ class CategoryAdmin extends AbstractBillBoardAdmin
     /**
      * {@inheritdoc}
      */
-    public function postUpdate(CrudInterface $category, array $previousData = null)
+    public function postUpdate(CrudInterface $category, array $previousData = null): void
     {
         /** @var Category $category */
         if ($category->getTitle() !== $previousData['title']) {
@@ -166,7 +165,7 @@ class CategoryAdmin extends AbstractBillBoardAdmin
     /**
      * {@inheritdoc}
      */
-    public function postRemove(CrudInterface $category)
+    public function postRemove(CrudInterface $category): void
     {
         /** @var Category $category */
         $this->log('Kategorie "'.$category->getTitle().'" gelöscht');

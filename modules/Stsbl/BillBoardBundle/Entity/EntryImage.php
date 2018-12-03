@@ -1,10 +1,10 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/BillBoardBundle/Entity/Image.php
+
 namespace Stsbl\BillBoardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use IServ\CoreBundle\Entity\FileImage;
 use IServ\CoreBundle\Entity\User;
+use IServ\CoreBundle\Model\FileImage;
 use IServ\CoreBundle\Util\Date;
 use IServ\CrudBundle\Entity\CrudInterface;
 
@@ -139,57 +139,38 @@ class EntryImage implements CrudInterface
     {
         return $this->id;
     }
-    
-    /**
-     * @return FileImage
-     */
-    public function getImage()/*: ?FileImage*/
+
+    public function getImage(): ?FileImage
     {
         return $this->image;
     }
-    
-    /**
-     * @return string
-     */
-    public function getDescription()/*: ?string*/
+
+    public function getDescription(): ?string
     {
         return $this->description;
     }
-    
-    /**
-     * @return User
-     */
-    public function getAuthor()/*: ?User*/
+
+    public function getAuthor(): ?User
     {
         return $this->author;
     }
-    
-    /**
-     * @return \DateTime
-     */
-    public function getTime()/*: ?\DateTime*/
+
+    public function getTime(): ?\DateTime
     {
         return $this->time;
     }
-    
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt()/*: ?\DateTime*/
+
+    public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
     }
-    
-    /**
-     * @return Entry
-     */
-    public function getEntry()/*: ?Entry*/
+
+    public function getEntry(): ?Entry
     {
         return $this->entry;
     }
     
     /**
-     * @param FileImage $image
      * @return $this
      */
     public function setImage(FileImage $image = null): self
@@ -200,7 +181,6 @@ class EntryImage implements CrudInterface
     }
     
     /**
-     * @param string $description
      * @return $this
      */
     public function setDescription(string $description = null): self
@@ -211,7 +191,6 @@ class EntryImage implements CrudInterface
     }
     
     /**
-     * @param User $author
      * @return $this
      */
     public function setAuthor(User $author = null): self
@@ -222,7 +201,6 @@ class EntryImage implements CrudInterface
     }
 
     /**
-     * @param \DateTime $time
      * @return $this
      */
     public function setTime(\DateTime $time = null): self
@@ -233,7 +211,6 @@ class EntryImage implements CrudInterface
     }
     
     /**
-     * @param \DateTime $updatedAt
      * @return $this
      */
     public function setUpdatedAt(\DateTime $updatedAt = null): self
@@ -244,7 +221,6 @@ class EntryImage implements CrudInterface
     }
     
     /**
-     * @param Entry $entry
      * @return $this
      */
     public function setEntry(Entry $entry = null): self
@@ -256,7 +232,6 @@ class EntryImage implements CrudInterface
 
     /**
      * Checks if the author is valid. i.e. he isn't deleted.
-     * @return bool
      */
     public function hasValidAuthor(): bool
     {
@@ -265,19 +240,12 @@ class EntryImage implements CrudInterface
 
     /**
      * Returns a displayable author. Performs an exists check.
-     *
-     * @return string
      */
     public function getAuthorDisplay(): string
     {
         return $this->hasValidAuthor() ? (string)$this->getAuthor() : '?';
     }
 
-    /**
-     * @param Entry $entry
-     * @param User $user
-     * @return self
-     */
     public static function createForEntryAndUser(Entry $entry, User $user): self
     {
         $instance = new self();

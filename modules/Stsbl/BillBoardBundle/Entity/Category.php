@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/BillBoardBundle/Entity/Category.php
+
 namespace Stsbl\BillBoardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -79,25 +79,18 @@ class Category implements CrudInterface
     {
         return $this->id;
     }
-    
-    /**
-     * @return string
-     */
-    public function getTitle()/*: ?string*/
+
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()/*: ?string*/
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
     /**
-     * @param string $title
      * @return $this
      */
     public function setTitle(string $title = null): self
@@ -108,7 +101,6 @@ class Category implements CrudInterface
     }
 
     /**
-     * @param string $description
      * @return $this
      */
     public function setDescription(string $description = null): self

@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/BillBoardBundle/Traits/LoggerInitializationTrait.php
+
 namespace Stsbl\BillBoardBundle\Traits;
 
 use IServ\CoreBundle\Service\Logger;
@@ -41,18 +41,14 @@ trait LoggerInitializationTrait
      */
     protected $logModule;
 
-    /**
-     * @param Logger $logger
-     */
     abstract public function setLogger(Logger $logger);
 
     /**
      * Initializes the logger
      *
      * @required
-     * @param Logger $logger
      */
-    public function initializeLogger(Logger $logger)/*: void*/
+    public function initializeLogger(Logger $logger): void
     {
         // set module context for logging
         $this->logModule = 'Bill-Board';

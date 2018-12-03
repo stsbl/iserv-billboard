@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/BillBoardBundle/Controller/CommentFormTrait.php
+
 namespace Stsbl\BillBoardBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
@@ -70,7 +70,6 @@ trait CommentFormTrait
     /**
      * Get comment form for entry with id $id.
      *
-     * @param Entry $entry
      * @return FormInterface
      */
     public function getCommentForm(Entry $entry): FormInterface
@@ -125,7 +124,6 @@ trait CommentFormTrait
     /**
      * Get confirmation form for comment with id $id.
      *
-     * @param EntryComment $comment
      * @return FormInterface|Form
      */
     protected function getConfirmationForm(EntryComment $comment): FormInterface
@@ -154,11 +152,8 @@ trait CommentFormTrait
 
     /**
      * Returns a entry for given id, or null if not found
-     *
-     * @param $id int
-     * @return Entry|null
      */
-    protected function getEntry(int $id)/*: ?Entry*/
+    protected function getEntry(int $id): ?Entry
     {
         $repo = $this->getDoctrine()->getRepository(Entry::class);
         
@@ -167,11 +162,8 @@ trait CommentFormTrait
     
     /**
      * Returns a comment for given id, or null if not found
-     *
-     * @param $id int
-     * @return EntryComment|null
      */
-    protected function getComment(int $id)/*: ?EntryComment*/
+    protected function getComment(int $id): ?EntryComment
     {
         $repo = $this->getDoctrine()->getRepository(EntryComment::class);
         

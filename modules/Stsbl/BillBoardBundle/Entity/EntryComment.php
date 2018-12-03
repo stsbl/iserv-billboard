@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/BillBoardBunle/Entity/EntryComment.php
+
 namespace Stsbl\BillBoardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -101,65 +101,45 @@ class EntryComment implements CrudInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()/*: ?int*/
+    public function getId(): ?int
     {
         return $this->id;
     }
-    
-    /**
-     * @return string
-     */
-    public function getTitle()/*: ?string*/
+
+    public function getTitle(): ?string
     {
         return $this->title;
     }
-    
-    /**
-     * @return string
-     */
-    public function getContent()/*: ?string*/
+
+    public function getContent(): ?string
     {
         return $this->content;
     }
-    
-    /**
-     * @return User
-     */
-    public function getAuthor()/*: ?User*/
+
+    public function getAuthor(): ?User
     {
         return $this->author;
     }
 
     /**
      * Returns a displayable author. Performs an exists check.
-     *
-     * @return string
      */
     public function getAuthorDisplay(): string
     {
         return $this->hasValidAuthor() ? (string)$this->getAuthor() : '?';
     }
-    
-    /**
-     * @return Entry
-     */
-    public function getEntry()/*: ?Entry*/
+
+    public function getEntry(): ?Entry
     {
         return $this->entry;
     }
-    
-    /**
-     * Get time
-     *
-     * @return \DateTime
-     */
-    public function getTime()
+
+    public function getTime(): ?\DateTime
     {
         return $this->time;
     }
 
     /**
-     * @param string $title
      * @return $this
      */
     public function setTitle(string $title = null): self
@@ -170,7 +150,6 @@ class EntryComment implements CrudInterface
     }
     
     /**
-     * @param string $content
      * @return $this
      */
     public function setContent(string $content = null): self
@@ -181,7 +160,6 @@ class EntryComment implements CrudInterface
     }
     
     /**
-     * @param User $author
      * @return $this
      */
     public function setAuthor(User $author = null): self
@@ -192,7 +170,6 @@ class EntryComment implements CrudInterface
     }
     
     /**
-     * @param \DateTime $time
      * @return $this
      */
     public function setTime(\DateTime $time = null): self
@@ -203,7 +180,6 @@ class EntryComment implements CrudInterface
     }
     
     /**
-     * @param Entry §entry
      * @return $this
      */
     public function setEntry(Entry $entry): self
@@ -218,26 +194,19 @@ class EntryComment implements CrudInterface
      *
      * @ORM\PrePersist
      */
-    public function onCreate()/*: void*/
+    public function onCreate(): void
     {
         $this->setTime(Date::now());
     }
     
     /**
      * Checks if the author is valid. i.e. he isn't deleted.
-     *
-     * @return bool
      */
     public function hasValidAuthor(): bool
     {
         return $this->author !== null;
     }
 
-    /**
-     * @param Entry $entry
-     * @param User $user
-     * @return self
-     */
     public static function createForEntryAndUser(Entry $entry, User $user): self
     {
         $instance = new self();

@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/BillBoardBundle/Entity/Entry.php
+
 namespace Stsbl\BillBoardBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -141,7 +141,7 @@ class Entry implements CrudInterface
      *
      * @ORM\PrePersist
      */
-    public function onCreate()/*: void*/
+    public function onCreate(): void
     {
         $this->setTime(Date::now());
         $this->updateLastUpdatedTime();
@@ -152,7 +152,7 @@ class Entry implements CrudInterface
      *
      * @ORM\PreUpdate
      */
-    public function onUpdate()/*: void*/
+    public function onUpdate(): void
     {
         $this->updateLastUpdatedTime();
     }
@@ -160,7 +160,7 @@ class Entry implements CrudInterface
     /**
      * Updates last updated time to 'now'
      */
-    public function updateLastUpdatedTime()/*: void*/
+    public function updateLastUpdatedTime(): void
     {
         $this->setUpdatedAt(Date::now());
     }
@@ -180,19 +180,13 @@ class Entry implements CrudInterface
     {
         return $this->id;
     }
-    
-    /**
-     * @return string
-     */
-    public function getTitle()/*: ?string*/
+
+    public function getTitle(): ?string
     {
         return $this->title;
     }
-    
-    /**
-     * @return string
-     */
-    public function getDescription()/*: ?string*/
+
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -200,38 +194,26 @@ class Entry implements CrudInterface
     /**
      * @return \DateTime
      */
-    public function getTime()/*: ?\DateTime*/
+    public function getTime(): ?\DateTime
     {
         return $this->time;
     }
-    
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt()/*: ?\DateTime*/
+
+    public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
     }
-    
-    /**
-     * @return Category
-     */
-    public function getCategory()/*: ?Category*/
+
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
-    
-    /**
-     * @return User
-     */
-    public function getAuthor()/*: ?User*/
+
+    public function getAuthor(): ?User
     {
         return $this->author;
     }
-    
-    /**
-     * @return bool
-     */
+
     public function isVisible(): bool
     {
         return $this->visible;
@@ -254,7 +236,6 @@ class Entry implements CrudInterface
     }
     
     /**
-     * @param string $title
      * @return $this
      */
     public function setTitle(string $title = null): self
@@ -265,7 +246,6 @@ class Entry implements CrudInterface
     }
     
     /**
-     * @param string $description
      * @return $this
      */
     public function setDescription(string $description = null): self
@@ -276,7 +256,6 @@ class Entry implements CrudInterface
     }
     
     /**
-     * @param \DateTime $time
      * @return $this
      */
     public function setTime(\DateTime $time = null): self
@@ -287,7 +266,6 @@ class Entry implements CrudInterface
     }
     
     /**
-     * @param \DateTime $updatedAt
      * @return $this
      */
     public function setUpdatedAt(\DateTime $updatedAt = null): self
@@ -298,7 +276,6 @@ class Entry implements CrudInterface
     }
     
     /**
-     * @param Category $category
      * @return $this
      */
     public function setCategory(Category $category = null): self
@@ -309,7 +286,6 @@ class Entry implements CrudInterface
     }
     
     /**
-     * @param User $author
      * @return $this
      */
     public function setAuthor(User $author = null): self
@@ -320,7 +296,6 @@ class Entry implements CrudInterface
     }
     
     /**
-     * @param bool $visible
      * @return $this
      */
     public function setVisible(bool $visible): self
@@ -332,8 +307,6 @@ class Entry implements CrudInterface
 
     /**
      * Checks if the author is valid. i.e. he isn't deleted.
-     *
-     * @return bool
      */
     public function hasValidAuthor(): bool
     {
@@ -342,8 +315,6 @@ class Entry implements CrudInterface
 
     /**
      * Returns a displayable author. Performs an exists check.
-     *
-     * @return string
      */
     public function getAuthorDisplay(): string
     {
@@ -351,7 +322,6 @@ class Entry implements CrudInterface
     }
 
     /**
-     * @param bool $closed
      * @return $this
      */
     public function setClosed(bool $closed): self
@@ -361,16 +331,12 @@ class Entry implements CrudInterface
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isClosed(): bool
     {
         return $this->closed;
     }
 
     /**
-     * @param EntryImage $image
      * @return $this
      */
     public function addImage(EntryImage $image): self
@@ -381,7 +347,6 @@ class Entry implements CrudInterface
     }
 
     /**
-     * @param EntryImage $image
      * @return $this
      */
     public function removeImage(EntryImage $image): self
@@ -391,17 +356,12 @@ class Entry implements CrudInterface
         return $this;
     }
 
-    /**
-     * @param EntryImage $image
-     * @return bool
-     */
     public function hasImage(EntryImage $image): bool
     {
         return $this->images->contains($image);
     }
 
     /**
-     * @param EntryComment $comment
      * @return $this
      */
     public function addComment(EntryComment $comment): self
@@ -412,7 +372,6 @@ class Entry implements CrudInterface
     }
 
     /**
-     * @param EntryComment $comment
      * @return $this
      */
     public function removeComment(EntryComment $comment): self
@@ -422,13 +381,8 @@ class Entry implements CrudInterface
         return $this;
     }
 
-    /**
-     * @param EntryComment $comment
-     * @return bool
-     */
     public function hasComment(EntryComment $comment): bool
     {
         return $this->comments->contains($comment);
     }
-
 }

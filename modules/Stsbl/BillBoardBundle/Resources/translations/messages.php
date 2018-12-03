@@ -1,7 +1,6 @@
-<?php
-// src/Stsbl/BillBoardBundle/Resources/translations/messages.php
+<?php declare(strict_types = 1);
 
-/* 
+/*
  * The MIT License
  *
  * Copyright 2018 Felix Jacobi.
@@ -32,10 +31,12 @@
 
 // Privileges
 _('Access the bill-board');
-_('Users with this privilege are able to access the bill-board and read the entries but there are not able to create and edit entries.');
+_('Users with this privilege are able to access the bill-board and read the entries but there are not able to create '.
+    'and edit entries.');
 
 _('Create new entries at the bill-board');
-_('Users with this privilege can create new entries on the bill-board, edit their existing entries and comment entries of other users.');
+_('Users with this privilege can create new entries on the bill-board, edit their existing entries and comment '.
+    'entries of other users.');
 
 _('Moderate the bill-board');
 _('Users with this privilege can edit and delete every entry on the bill-board. Includes the creation privilege.');
@@ -46,7 +47,8 @@ _('Users with this privilege can manange the bill-board and create new categorie
 // iservcfg
 _('Module: Bill-Board');
 _('Allow comments');
-_('Control whether comments on entries are allowed or not. If you disable commenting, no one can add new comments. Existing comments will still displayed.');
+_('Control whether comments on entries are allowed or not. If you disable commenting, no one can add new comments. '.
+    'Existing comments will still displayed.');
 
 // Notifications
 _('New comment on your post: %s commented on %s');

@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/BillBoardBundle/Controller/CommentController.php
+
 namespace Stsbl\BillBoardBundle\Controller;
 
 use IServ\CoreBundle\Controller\AbstractPageController;
@@ -62,11 +62,6 @@ class CommentController extends AbstractPageController
             is_granted('PRIV_BILLBOARD_MODERATE') or
             is_granted('PRIV_BILLBOARD_MANAGE')
        ")
-     *
-     * @param Request $request
-     * @param Entry $entry
-     * @param Config $config
-     * @return RedirectResponse
      */
     public function addAction(Request $request, Entry $entry, Config $config): RedirectResponse
     {
@@ -115,10 +110,6 @@ class CommentController extends AbstractPageController
      *
      * @Route("/comment/delete/{id}", name="billboard_comment_delete", methods={"POST"})
      * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
-     *
-     * @param Request $request
-     * @param EntryComment $comment
-     * @return RedirectResponse
      */
     public function deleteAction(Request $request, EntryComment $comment): RedirectResponse
     {
@@ -156,12 +147,10 @@ class CommentController extends AbstractPageController
      * @Security("is_granted('PRIV_BILLBOARD_MODERATE') or is_granted('PRIV_BILLBOARD_MANAGE')")
      * @Template()
      *
-     * @param EntryComment $comment
      * @return array
      */
     public function confirmAction(EntryComment $comment): array
     {
-
         // track path
         $this->addBreadcrumb(_('Bill-Board'), $this->generateUrl('billboard_index'));
         $this->addBreadcrumb(
@@ -197,7 +186,7 @@ class CommentController extends AbstractPageController
      * @param Entry $entry
      * @param EntryComment $comment
      */
-    private function notifyAuthor(Entry $entry, EntryComment $comment)/*: void*/
+    private function notifyAuthor(Entry $entry, EntryComment $comment): void
     {
         $author = $entry->getAuthor();
 
@@ -225,7 +214,7 @@ class CommentController extends AbstractPageController
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedServices()
+    public static function getSubscribedServices(): array
     {
         $deps = parent::getSubscribedServices();
 

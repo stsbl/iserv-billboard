@@ -1,5 +1,5 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/BillBoardBundle/Entity/CategoryRepository.php
+
 namespace Stsbl\BillBoardBundle\Entity;
 
 use Doctrine\ORM\NonUniqueResultException;
@@ -41,7 +41,7 @@ class CategoryRepository extends EntitySpecificationRepository
      *
      * @return bool
      */
-    public function exists()
+    public function exists(): bool
     {
         $qb = $this->createQueryBuilder('c');
 

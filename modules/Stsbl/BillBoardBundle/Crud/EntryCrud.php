@@ -1,11 +1,14 @@
 <?php declare(strict_types = 1);
-// src/Stsbl/BillBoardBundle/Crud/EntryCrud.php
+
 namespace Stsbl\BillBoardBundle\Crud;
 
 use IServ\CoreBundle\Form\Type\BooleanType;
 use IServ\CoreBundle\Form\Type\PurifiedTextareaType;
 use IServ\CoreBundle\Traits\LoggerTrait;
+use IServ\CoreBundle\Util\Collection\OrderedCollection;
 use IServ\CrudBundle\Crud\AbstractCrud;
+use IServ\CrudBundle\Crud\Action\Link;
+use IServ\CrudBundle\Crud\Batch\BatchActionCollection;
 use IServ\CrudBundle\Doctrine\ORM\ORMObjectManager;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CrudBundle\Mapper\FormMapper;
@@ -64,18 +67,7 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function isAuthorized()
-    {
-        return $this->isGranted(Privilege::BILLBOARD)
-        || $this->isGranted(Privilege::BILLBOARD_CREATE)
-        || $this->isGranted(Privilege::BILLBOARD_MODERATE)
-        || $this->isGranted(Privilege::BILLBOARD_MANAGE);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this->title = _('Bill-Board');
         $this->itemTitle = _('Entry');
@@ -90,11 +82,22 @@ class EntryCrud extends AbstractCrud
     }
 
     /**
-     * billboard/entry is nicer than billboard/billboard
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getRouteIdentifier()
+    public function isAuthorized(): bool
+    {
+        return $this->isGranted(Privilege::BILLBOARD)
+            || $this->isGranted(Privilege::BILLBOARD_CREATE)
+            || $this->isGranted(Privilege::BILLBOARD_MODERATE)
+            || $this->isGranted(Privilege::BILLBOARD_MANAGE);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * billboard/entry is nicer than billboard/billboard
+     */
+    public function getRouteIdentifier(): string
     {
         return 'entry';
     }
@@ -102,7 +105,7 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    protected function buildRoutes()
+    protected function buildRoutes(): void
     {
         parent::buildRoutes();
         
@@ -132,7 +135,7 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function configureListFields(ListMapper $listMapper)
+    public function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('title', null, [
@@ -172,7 +175,7 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function configureShowFields(ShowMapper $showMapper)
+    public function configureShowFields(ShowMapper $showMapper): void
     {
         $showMapper
             ->add('title', null, [
@@ -207,8 +210,8 @@ class EntryCrud extends AbstractCrud
 
     /**
      * {@inheritdoc}
-     */    
-    public function configureFormFields(FormMapper $formMapper)
+     */
+    public function configureFormFields(FormMapper $formMapper): void
     {
         if (!$this->hasCategories()) {
             return;
@@ -246,7 +249,7 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function configureListFilter(ListHandler $listHandler)
+    public function configureListFilter(ListHandler $listHandler): void
     {
         /** @var ORMObjectManager $em */
         $em = $this->getObjectManager();
@@ -274,7 +277,11 @@ class EntryCrud extends AbstractCrud
             })
         ;
         
-        $authorFilter = new Filter\ListExpressionFilter(_('Entries I created'), 'parent.author = :user and parent.visible = true');
+        $authorFilter = new Filter\ListExpressionFilter(
+            _('Entries I created'),
+            'parent.author = :user and parent.visible = true'
+        );
+
         $authorFilter
             ->setName('created_entries')
             ->setParameters(['user' => $this->getUser()])
@@ -322,9 +329,10 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function loadBatchActions()
+    public function loadBatchActions(): BatchActionCollection
     {
         $res = parent::loadBatchActions();
+
         $res->add(new ShowAction($this));
         $res->add(new HideAction($this));
         
@@ -334,32 +342,32 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function getShowActions(CrudInterface $item)
+    public function getShowActions(CrudInterface $item): OrderedCollection
     {
         /* @var $item \Stsbl\BillBoardBundle\Entity\Entry */
-        $ret = parent::getShowActions($item);
+        $links = parent::getShowActions($item);
         
         if ($this->isModerator()) {
             if ($item->isClosed()) {
-                $ret['unlock'] = [$this->getRouter()->generate(
+                $links->set('unlock', Link::create($this->getRouter()->generate(
                     'billboard_unlock',
                     ['id' => $item->getId()]
-                ), _('Open'), 'pro-unlock'];
+                ), _('Open'), 'pro-unlock'));
             } else {
-                $ret['lock'] = [$this->getRouter()->generate(
+                $links->set('lock', Link::create($this->getRouter()->generate(
                     'billboard_lock',
                     ['id' => $item->getId()]
-                ), _p('billboard', 'Lock'), 'lock'];
+                ), _p('billboard', 'Lock'), 'lock'));
             }
         }
         
-        return $ret;
+        return $links;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function prePersist(CrudInterface $entry)
+    public function prePersist(CrudInterface $entry): void
     {
         /* @var Entry $entry */
         $entry->setAuthor($this->getUser());
@@ -368,7 +376,7 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    protected function getRoutePattern($action, $id, $entityBased = true)
+    protected function getRoutePattern($action, $id, $entityBased = true): string
     {
         // nicer plural entries instead of entrys
         if ('index' === $action) {
@@ -381,17 +389,17 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function getIndexActions()
+    public function getIndexActions(): OrderedCollection
     {
         $links = parent::getIndexActions();
         
         // only add category, if user has management privilege
         if ($this->isGranted(Privilege::BILLBOARD_MANAGE)) {
-            $links['categories'] = [
+            $links->set('categories', Link::create(
                 $this->getRouter()->generate('manage_billboard_category_index'),
                 _('Categories'),
                 'tags'
-            ];
+            ));
         }
         
         return $links;
@@ -400,7 +408,7 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function isAllowedToEdit(CrudInterface $object = null, UserInterface $user = null)
+    public function isAllowedToEdit(CrudInterface $object = null, UserInterface $user = null): bool
     {
         /** @var $object Entry */
         if ($object === null && $user === null) {
@@ -431,7 +439,7 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function isAllowedToAdd(UserInterface $user = null)
+    public function isAllowedToAdd(UserInterface $user = null): bool
     {
         if ($user === null) {
             return true;
@@ -449,7 +457,7 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function isAllowedToDelete(CrudInterface $object = null, UserInterface $user = null)
+    public function isAllowedToDelete(CrudInterface $object = null, UserInterface $user = null): bool
     {
         return $this->isAllowedToEdit($object, $user);
     }
@@ -458,7 +466,7 @@ class EntryCrud extends AbstractCrud
      * 
      * {@inheritdoc}
      */
-    public function isAllowedToView(CrudInterface $object = null, UserInterface $user = null)
+    public function isAllowedToView(CrudInterface $object = null, UserInterface $user = null): bool
     {
         /* @var Entry $object */
         if ($object === null && $user === null) {
@@ -484,7 +492,7 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function postRemove(CrudInterface $entry)
+    public function postRemove(CrudInterface $entry): void
     {
         /* @var Entry $entry */
         if ($this->isModerator() && $this->getUser() !== $entry->getAuthor()) {
@@ -499,7 +507,7 @@ class EntryCrud extends AbstractCrud
     /**
      * {@inheritdoc}
      */
-    public function postUpdate(CrudInterface $entry, array $previousData = null)
+    public function postUpdate(CrudInterface $entry, array $previousData = null): void
     {
         /* @var Entry $entry */
         if ($this->isModerator() && $this->getUser() !== $entry->getAuthor()) {
@@ -524,8 +532,6 @@ class EntryCrud extends AbstractCrud
 
     /**
      * Returns true if there is at least one category
-     *
-     * @return bool
      */
     private function hasCategories(): bool
     {
@@ -539,8 +545,6 @@ class EntryCrud extends AbstractCrud
     
     /**
      * Returns true if the current user has moderation privileges
-     *
-     * @return bool
      */
     public function isModerator(): bool
     {
@@ -550,9 +554,6 @@ class EntryCrud extends AbstractCrud
 
     /**
      * Returns true if current user is author of the given post
-     *
-     * @param CrudInterface $object
-     * @return bool
      */
     public function isAuthor(CrudInterface $object): bool
     {
