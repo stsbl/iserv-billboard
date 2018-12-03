@@ -132,7 +132,7 @@ class CategoryAdmin extends AbstractBillBoardAdmin
     protected function getRoutePattern($action, $id, $entityBased = true): string
     {
         // nicer plural categories instead of categorys
-        if ('index' === $action) {
+        if (self::ACTION_INDEX === $action) {
             return sprintf('%s%s', $this->routesPrefix, 'categories');
         }
 
@@ -145,7 +145,7 @@ class CategoryAdmin extends AbstractBillBoardAdmin
     public function postPersist(CrudInterface $category): void
     {
         /** @var Category $category */
-        $this->log('Kategorie "'.$category->getTitle().'" hinzugefügt');
+        $this->log(sprintf('Kategorie "%s" hinzugefügt', $category->getTitle()));
     }
 
     /**
@@ -156,9 +156,9 @@ class CategoryAdmin extends AbstractBillBoardAdmin
         /** @var Category $category */
         if ($category->getTitle() !== $previousData['title']) {
             // if old and new name does not match, write a rename log
-            $this->log('Kategorie "'.$previousData['title'].'" umbenannt nach "'.$category->getTitle().'"');
+            $this->log(sprintf('Kategorie "%s" umbenannt nach "%s"', $previousData['title'], $category->getTitle()));
         } else {
-            $this->log('Kategorie "'.$category->getTitle().'" verändert');
+            $this->log(sprintf('Kategorie "%s" verändert', $category->getTitle()));
         }
     }
 
@@ -168,6 +168,6 @@ class CategoryAdmin extends AbstractBillBoardAdmin
     public function postRemove(CrudInterface $category): void
     {
         /** @var Category $category */
-        $this->log('Kategorie "'.$category->getTitle().'" gelöscht');
+        $this->log(sprintf('Kategorie "%s" gelöscht', $category->getTitle()));
     }
 }
