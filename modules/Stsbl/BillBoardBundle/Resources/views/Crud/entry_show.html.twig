@@ -52,9 +52,9 @@
                         {% for ent in images %}
                             {% spaceless %}
                                 <div class="billboard-image-container">
-                                {% set imageRoute = admin.getRoute('fileimage_images')|default('fileimage') %}
-                                <a data-toggle="modal-image" href="{{ path(imageRoute, {'id': ent.id, 'entity_id': item.id}) }}">
-                                    <img src="{{ path(imageRoute, {'id': ent.id, 'entity_id': item.id, 'width': thumbsize, 'height': thumbsize}) }}"
+                                {% set imageRoute = admin.getRoute('fileimage_image')|default('fileimage') %}
+                                <a data-toggle="modal-image" href="{{ path(imageRoute, {'id': ent.id, 'entityId': item.id}) }}">
+                                    <img src="{{ path(imageRoute, {'id': ent.id, 'entityId': item.id, 'width': thumbsize, 'height': thumbsize}) }}"
                                     alt="{{ ent }}" class="img-thumbnail" width="{{ thumbsize }}" height="{{ thumbsize }}"/>
                                 </a>
                                 <br />

@@ -100,7 +100,7 @@ class EntryImage implements CrudInterface
      *
      * @ORM\PrePersist
      */
-    public function onCreate()/*: void*/
+    public function onCreate(): void
     {
         $this->setTime(Date::now());
         $this->updateLastUpdatedTime();
@@ -111,7 +111,7 @@ class EntryImage implements CrudInterface
      *
      * @ORM\PreUpdate
      */
-    public function onUpdate()/*: void*/
+    public function onUpdate(): void
     {
         $this->updateLastUpdatedTime();
     }
@@ -119,7 +119,7 @@ class EntryImage implements CrudInterface
     /**
      * Updates last updated time to 'now'
      */
-    public function updateLastUpdatedTime()/*: void*/
+    public function updateLastUpdatedTime(): void
     {
         $this->setUpdatedAt(Date::now());
     }

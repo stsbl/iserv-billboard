@@ -3,6 +3,8 @@
 namespace Stsbl\BillBoardBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use function foo\func;
+use IServ\CoreBundle\Controller\FileImageController;
 use IServ\CoreBundle\Event\NotificationEvent;
 use IServ\CoreBundle\Form\Type\ImageType;
 use IServ\CoreBundle\Service\Flash;
@@ -306,6 +308,7 @@ class EntryController extends StrictCrudController
                 $imageId = $data['image_id'];
 
                 $imageRepo = $this->getDoctrine()->getRepository(EntryImage::class);
+                /** @var EntryImage $image */
                 $image = $imageRepo->find($imageId);
                 
                 if ($image === null) {
@@ -332,7 +335,7 @@ class EntryController extends StrictCrudController
                 
                 $this->get(Flash::class)->success(__(
                     'Image "%s" was deleted successfully.',
-                    $image->getmage()->getFileName()
+                    $image->getImage()->getFileName()
                 ));
                 
                 return true;
@@ -415,5 +418,44 @@ class EntryController extends StrictCrudController
         $deps[] = Flash::class;
 
         return $deps;
+    }
+
+    /**
+     * Calls the FileImageAction from the core
+     */
+    public function entryImage(
+        int $entityId,
+        int $id,
+        string $property,
+        ?string $width = null,
+        ?string $height = null
+    ): Response {
+        // Get item
+        /** @var Entry $object */
+        $object = $this->crud->getObject($entityId);
+
+        if (null === $object) {
+            return $this->createNotFoundPage();
+        }
+
+        // Security
+        if (!$this->crud->isAllowedToView($object, $this->getUser())) {
+            throw $this->createActionDeniedException('You are not allowed to view this object.');
+        }
+
+        $images = $object->getImages()->filter(function (EntryImage $entryImage) use ($id): bool {
+            return $entryImage->getId() === $id;
+        });
+
+        if ($images->isEmpty()) {
+            return $this->createNotFoundPage();
+        }
+
+        return $this->forward(sprintf('%s::fileImageAction', FileImageController::class), [
+            'entity' => $images->get(0),
+            'property' => $property,
+            'width' => $width,
+            'height' => $height,
+        ]);
     }
 }

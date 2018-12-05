@@ -3,12 +3,14 @@
 namespace Stsbl\BillBoardBundle\Crud;
 
 use IServ\CoreBundle\Form\Type\BooleanType;
+use IServ\CoreBundle\Form\Type\ImageType;
 use IServ\CoreBundle\Form\Type\PurifiedTextareaType;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use IServ\CoreBundle\Util\Collection\OrderedCollection;
 use IServ\CrudBundle\Crud\AbstractCrud;
 use IServ\CrudBundle\Crud\Action\Link;
 use IServ\CrudBundle\Crud\Batch\BatchActionCollection;
+use IServ\CrudBundle\Crud\FileImageRoutingTrait;
 use IServ\CrudBundle\Doctrine\ORM\ORMObjectManager;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CrudBundle\Mapper\FormMapper;
@@ -16,6 +18,7 @@ use IServ\CrudBundle\Mapper\ListMapper;
 use IServ\CrudBundle\Mapper\ShowMapper;
 use IServ\CrudBundle\Table\Filter;
 use IServ\CrudBundle\Table\ListHandler;
+use Stsbl\BillBoardBundle\Controller\EntryController;
 use Stsbl\BillBoardBundle\Crud\Batch\HideAction;
 use Stsbl\BillBoardBundle\Crud\Batch\ShowAction;
 use Stsbl\BillBoardBundle\Entity\Category;
@@ -57,7 +60,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class EntryCrud extends AbstractCrud
 {
-    use LoggerTrait, LoggerInitializationTrait;
+    use FileImageRoutingTrait, LoggerTrait, LoggerInitializationTrait;
 
     public function __construct()
     {
@@ -108,28 +111,24 @@ class EntryCrud extends AbstractCrud
     protected function buildRoutes(): void
     {
         parent::buildRoutes();
-        
+
+        $routeId = $this->getRouteIdentifier();
+        $fileImageProperty = 'image';
+
+        $this->buildImageRoute($fileImageProperty);
+
+        $this->routes['fileimage_image']['_controller'] = EntryController::class . '::entryImage';
+        $this->routes['fileimage_image']['pattern'] = sprintf(
+            '/%s%s/image/{entityId}/{id}/%s/{width}/{height}',
+            $this->getRoutesPrefix(),
+            $routeId,
+            $fileImageProperty
+        );
+
         $this->routes[self::ACTION_ADD]['_controller'] = 'StsblBillBoardBundle:Entry:add';
         $this->routes[self::ACTION_EDIT]['_controller'] = 'StsblBillBoardBundle:Entry:edit';
         $this->routes[self::ACTION_INDEX]['_controller'] = 'StsblBillBoardBundle:Entry:index';
         $this->routes[self::ACTION_SHOW]['_controller'] = 'StsblBillBoardBundle:Entry:show';
-        
-        $id = $this->getId();
-        $action = 'fileimage';
-
-        // @Route("/fileimage/{entity}/{id}/{property}/{width}/{height}", name="fileimage")
-
-        // TODO?: Solve image collection stuff.
-        $this->routes['fileimage_images'] = [
-            'pattern' => sprintf('/%s%s/{entity_id}/{id}/%s/{width}/{height}', $this->routesPrefix, 'show', 'image'),
-            'name' => sprintf('%s%s_%s', $this->routesNamePrefix, $id, $action . '_images'),
-            'entity' => 'EntryImage',
-            'property' => 'image',
-            'width' => null,
-            'height' => null,
-            '_controller' => sprintf('IServCoreBundle:FileImage:%s', $action),
-            '_iserv_crud' => $id,
-        ];
     }
 
     /**
@@ -140,34 +139,35 @@ class EntryCrud extends AbstractCrud
         $listMapper
             ->addIdentifier('title', null, [
                 'label' => _('Title'),
-                'responsive' => 'all'
+                'responsive' => 'all',
             ])
             ->add('category', null, [
                 'label' => _('Category'),
-                'responsive' => 'all'
+                'responsive' => 'all',
             ])
             ->add('author', null, [
                 'label' => _('Author'),
-                'responsive' => 'min-tablet'
+                'responsive' => 'min-tablet',
             ])
             ->add('time', 'datetime', [
                 'label' => _('Added'),
-                'responsive' => 'min-tablet'
+                'responsive' => 'min-tablet',
             ])
             ->add('updatedAt', 'datetime', [
                 'label' => _('Last refresh'),
-                'responsive' => 'min-tablet'
+                'responsive' => 'min-tablet',
             ])
-            ->add('images', null, [
+            ->add('images', ImageType::class, [
                 'label' => _('Images'),
                 'required' => false,
-                'template' => 'StsblBillBoardBundle:List:field_imagecollection.html.twig'
+                'template' => '@StsblBillBoard/List/field_imagecollection.html.twig',
+                'image_route' => 'billboard_fileimage_image',
             ])
             ->add('comments', null, [
                 'label' => _('Comments'),
                 'responsive' => 'desktop',
                 'required' => false,
-                'template' => 'StsblBillBoardBundle:List:field_comments.html.twig'
+                'template' => '@StsblBillBoard/List/field_comments.html.twig',
             ])
         ;
     }
@@ -179,31 +179,31 @@ class EntryCrud extends AbstractCrud
     {
         $showMapper
             ->add('title', null, [
-                'label' => _('Title')
+                'label' => _('Title'),
             ])
             ->add('category', null, [
                 'label' => _('Category')
             ])
             ->add('author', null, [
-                'label' => _('Author')
+                'label' => _('Author'),
             ])
             ->add('time', 'datetime', [
-                'label' => _('Date')
+                'label' => _('Date'),
             ])
             ->add('updatedAt', 'datetime', [
-                'label' => _('Last refresh')
+                'label' => _('Last refresh'),
             ])
             ->add('visible', 'boolean', [
-                'label' => _('Visible')
+                'label' => _('Visible'),
             ])
             ->add('description', null, [
                 'label' => _('Description'),
-                'template' => 'StsblBillBoardBundle:List:field_formatted_content.html.twig'
+                'template' => '@StsblBillBoard/List/field_formatted_content.html.twig',
             ])
             ->add('images', null, [
                 'label' => _('Images'),
                 'hideIfEmpty' => true,
-                'template' => 'IServCrudBundle:Show:field_imagecollection.html.twig'
+                'template' => '@IServCrud/Show/field_imagecollection.html.twig',
             ]);
         ;
     }
@@ -221,7 +221,8 @@ class EntryCrud extends AbstractCrud
             ->add('title', null, [
                 'label' => _('Title'),
                 'attr' => [
-                    'help_text' => _('Name the matter that you want to offer in one sentence, for example »I am oferring my electric guitar for selling«.')
+                    'help_text' => _('Name the matter that you want to offer in one sentence, for example '.
+                        '»I am oferring my electric guitar for selling«.'),
                 ]
             ])
             ->add('category', null, [
@@ -233,7 +234,8 @@ class EntryCrud extends AbstractCrud
             ->add('visible', BooleanType::class, [
                 'label' => _('Visible'),
                 'attr' => [
-                    'help_text' => _('If you hide the entry, it is only visible by yourself and people who has the privilege to moderate the bill-board.')
+                    'help_text' => _('If you hide the entry, it is only visible by yourself and people who has the '.
+                        'privilege to moderate the bill-board.')
                 ]
             ])
             ->add('description', PurifiedTextareaType::class, [
