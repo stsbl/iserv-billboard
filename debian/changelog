@@ -1,3 +1,11 @@
+stsbl-iserv-billboard (18.12.05-1) experimental; urgency=medium
+
+  * Overhauled code
+  * CategoryAdmin: Use sprintf for logging
+  * Resolved file image collection issues after CRUD update
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Wed, 05 Dec 2018 21:59:06 +0100
+
 stsbl-iserv-billboard (18.11.25-1) experimental; urgency=medium
 
   * Adapted module structure to web application move
