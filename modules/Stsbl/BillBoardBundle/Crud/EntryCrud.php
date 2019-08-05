@@ -125,10 +125,10 @@ class EntryCrud extends AbstractCrud
             $fileImageProperty
         );
 
-        $this->routes[self::ACTION_ADD]['_controller'] = 'StsblBillBoardBundle:Entry:add';
-        $this->routes[self::ACTION_EDIT]['_controller'] = 'StsblBillBoardBundle:Entry:edit';
-        $this->routes[self::ACTION_INDEX]['_controller'] = 'StsblBillBoardBundle:Entry:index';
-        $this->routes[self::ACTION_SHOW]['_controller'] = 'StsblBillBoardBundle:Entry:show';
+        $this->routes[self::ACTION_ADD]['_controller'] = EntryController::class . '::addAction';
+        $this->routes[self::ACTION_EDIT]['_controller'] = EntryController::class . '::editAction';
+        $this->routes[self::ACTION_INDEX]['_controller'] = EntryController::class . '::indexAction';
+        $this->routes[self::ACTION_SHOW]['_controller'] = EntryController::class . '::showAction';
     }
 
     /**
