@@ -1,3 +1,10 @@
+stsbl-iserv-billboard (19.08.08-1) experimental; urgency=medium
+
+  * Updated source format
+  * Fixed deprecations
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Thu, 08 Aug 2019 02:44:47 +0200
+
 stsbl-iserv-billboard (18.12.05-1) experimental; urgency=medium
 
   * Overhauled code
