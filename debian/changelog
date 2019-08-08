@@ -1,3 +1,12 @@
+stsbl-iserv-billboard (19.08.08-2) experimental; urgency=medium
+
+  * Fixed image attachments display and TinyMCE integration
+
+  iserv: Integration des Editors beim Bearbeiten und Anzeige der
+    Bilder-Anhänge repariert.
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Thu, 08 Aug 2019 03:19:27 +0200
+
 stsbl-iserv-billboard (19.08.08-1) experimental; urgency=medium
 
   * Updated source format
