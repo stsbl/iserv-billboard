@@ -3,6 +3,8 @@
 namespace Stsbl\BillBoardBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use IServ\CrudBundle\Contracts\CrudContract;
+use IServ\CrudBundle\Contracts\CrudContractInterface;
 use function foo\func;
 use IServ\CoreBundle\Controller\FileImageController;
 use IServ\CoreBundle\Event\NotificationEvent;
@@ -432,14 +434,14 @@ class EntryController extends StrictCrudController
     ): Response {
         // Get item
         /** @var Entry $object */
-        $object = $this->crud->getObject($entityId);
+        $object = $this->crud->getObject((string)$entityId);
 
         if (null === $object) {
             return $this->createNotFoundPage();
         }
 
         // Security
-        if (!$this->crud->isAllowedToView($object, $this->getUser())) {
+        if (!$this->crud->isAllowedTo(CrudContract::ACTION_SHOW, $this->getUser(), $object)) {
             throw $this->createActionDeniedException('You are not allowed to view this object.');
         }
 
@@ -452,7 +454,7 @@ class EntryController extends StrictCrudController
         }
 
         return $this->forward(sprintf('%s::fileImageAction', FileImageController::class), [
-            'entity' => $images->get(0),
+            'entity' => $images->current(),
             'property' => $property,
             'width' => $width,
             'height' => $height,

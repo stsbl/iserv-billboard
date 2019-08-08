@@ -188,36 +188,14 @@
     {% if app.environment != 'prod' %}
         <!-- {{ _self }} => billboard.less -->
     {% endif %}
-    <link rel="stylesheet" href="{{ asset('less/billboard.less', 'stsbl_bill_board') }}" />
+    <link rel="stylesheet" href="{{ asset('css/billboard.css', 'stsbl_bill_board') }}" />
 {% endblock %}
 
 {% block javascripts %}
     {{ parent () }}
-    
-    {% if app.environment != 'prod' %}
-	<!-- {{ _self }} => components/tinymce-dist/tinymce.js -->
-    {% endif %}
-    <script type="text/javascript" src="{{ asset('components/tinymce-dist/tinymce.js') }}"></script>
-    
-    {% if app.environment != 'prod' %}
-	<!-- {{ _self }} => components/tinymce-dist/jquery.tinymce.min.js -->
-    {% endif %}
-    <script type="text/javascript" src="{{ asset('components/tinymce-dist/jquery.tinymce.min.js') }}"></script>
- 
-    {% if app.request.locale == 'de_DE' %}
-        {% if app.environment != 'prod' %}
-            <!-- {{ _self }} => components/tinymce-i10n/langs/de.js -->
-        {% endif %}
-        <script type="text/javascript" src="{{ asset('components/tinymce-i10n/langs/de.js') }}"></script>
-    {% endif %}
 
     {% if app.environment != 'prod' %}
-        <!-- {{ _self }} => billboard_image.js -->
+        <!-- {{ _self }} => image.js -->
     {% endif %}
-    <script src="{{ asset('js/billboard_image.js', 'stsbl_bill_board') }}"></script>
-
-    {% if app.environment != 'prod' %}
-    <!-- {{ _self }} => billboard_common.js -->
-    {% endif %}}
-    <script src="{{ asset('js/billboard_common.js', 'stsbl_bill_board') }}"></script>
+    <script src="{{ asset('js/image.js', 'stsbl_bill_board') }}"></script>
 {% endblock %}

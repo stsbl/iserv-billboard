@@ -22,8 +22,27 @@
  * THE SOFTWARE.
  */
 
-/**
- * Initializes the IServ.BillBoard Object used in multiple javascript files
- */
-IServ.BillBoard = {};
+(function () {
+    "use strict";
+    
+    function updateDeleteForm($element)
+    {
+        const imageName = $element.attr('data-image-name');
+        const entryTitle = $element.attr('data-image-entry-title');
+        const question = __('Do you really want to delete the image "{0}" from entry "{1}"?', imageName, entryTitle);
+        
+        $('#image-delete-confirm-question').text(question);
+        $('#image_delete_confirm_image_id').attr('value', $element.attr('data-image-id'));
+    }
 
+    function initialize()
+    {
+        $('.billboard-delete-image').each(function () {
+            $(this).click(function () {
+                updateDeleteForm($(this));
+            });
+        });
+    }
+    
+    $(document).ready(initialize);
+}());

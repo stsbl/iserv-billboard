@@ -18,31 +18,17 @@
 
 {% block javascripts %}
     {{ parent() }}
-    
+
     {% if app.environment != 'prod' %}
-	<!-- {{ _self }} => components/tinymce-dist/tinymce.js -->
+        <!-- {{ _self }} => TinyMCE -->
     {% endif %}
-    <script type="text/javascript" src="{{ asset('components/tinymce-dist/tinymce.js') }}"></script>
-    
-    {% if app.environment != 'prod' %}
-	<!-- {{ _self }} => components/tinymce-dist/jquery.tinymce.min.js -->
-    {% endif %}
-    <script type="text/javascript" src="{{ asset('components/tinymce-dist/jquery.tinymce.min.js') }}"></script>
- 
+    <script type="text/javascript" src="{{ asset('js/tinymce.js', 'vendor') }}"></script>
     {% if app.request.locale == 'de_DE' %}
-        {% if app.environment != 'prod' %}
-            <!-- {{ _self }} => components/tinymce-i10n/langs/de.js -->
-        {% endif %}
-        <script type="text/javascript" src="{{ asset('components/tinymce-i10n/langs/de.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/tinymce-de.js', 'vendor') }}"></script>
     {% endif %}
 
     {% if app.environment != 'prod' %}
-        <!-- {{ _self }} => billboard_editor.js -->
+        <!-- {{ _self }} => editor.js -->
     {% endif %}
-    <script src="{{ asset('js/billboard_editor.js', 'stsbl_bill_board') }}"></script>
-
-    {% if app.environment != 'prod' %}
-    <!-- {{ _self }} => billboard_common.js -->
-    {% endif %}}
-    <script src="{{ asset('js/billboard_common.js', 'stsbl_bill_board') }}"></script>
+    <script src="{{ asset('js/editor.js', 'stsbl_bill_board') }}"></script>
 {% endblock %}
