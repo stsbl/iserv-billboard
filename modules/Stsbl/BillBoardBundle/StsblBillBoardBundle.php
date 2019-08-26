@@ -1,11 +1,10 @@
-<?php declare(strict_types = 1);
+<?php
+declare(strict_types=1);
 
 namespace Stsbl\BillBoardBundle;
 
 use IServ\CoreBundle\Routing\AutoloadRoutingBundleInterface;
-use Stsbl\BillBoardBundle\DependencyInjection\Compiler\NotificationCompilerPass;
 use Stsbl\BillBoardBundle\DependencyInjection\StsblBillBoardExtension;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /*
@@ -44,13 +43,5 @@ class StsblBillBoardBundle extends Bundle implements AutoloadRoutingBundleInterf
     public function getContainerExtension(): StsblBillBoardExtension
     {
         return new StsblBillBoardExtension();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container): void
-    {
-        $container->addCompilerPass(new NotificationCompilerPass());
     }
 }

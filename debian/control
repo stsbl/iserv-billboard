@@ -12,6 +12,7 @@ Architecture: all
 Depends: ${misc:Depends},
   ${perl:Depends},
   iserv-portal,
+  iserv3-core (>= 19.08.06-2),
   stsbl-iserv3-maintenance,
 Xb-Private-IServ-Revision: ${iserv:Revision}
 Description: Schwarzes Brett-Modul für IServ

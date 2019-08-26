@@ -1,4 +1,5 @@
-<?php declare(strict_types = 1);
+<?php
+declare(strict_types=1);
 
 namespace Stsbl\BillBoardBundle\Security;
 
@@ -37,20 +38,20 @@ final class Privilege
     /**
      * Access privilege
      */
-    const BILLBOARD = 'PRIV_BILLBOARD';
+    public const BILLBOARD = 'PRIV_BILLBOARD';
 
     /**
      * Creation privilege
      */
-    const BILLBOARD_CREATE = 'PRIV_BILLBOARD_CREATE';
+    public const BILLBOARD_CREATE = 'PRIV_BILLBOARD_CREATE';
 
     /**
      * Moderation privilege
      */
-    const BILLBOARD_MODERATE = 'PRIV_BILLBOARD_MODERATE';
+    public const BILLBOARD_MODERATE = 'PRIV_BILLBOARD_MODERATE';
 
     /**
      * Manage privilege
      */
-    const BILLBOARD_MANAGE = 'PRIV_BILLBOARD_MANAGE';
+    public const BILLBOARD_MANAGE = 'PRIV_BILLBOARD_MANAGE';
 }

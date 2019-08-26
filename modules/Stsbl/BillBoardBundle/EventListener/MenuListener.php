@@ -1,4 +1,5 @@
-<?php declare(strict_types = 1);
+<?php
+declare(strict_types=1);
 
 namespace Stsbl\BillBoardBundle\EventListener;
 
@@ -46,8 +47,7 @@ class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterf
             || $event->getAuthorizationChecker()->isGranted(Privilege::BILLBOARD_MODERATE)
             || $event->getAuthorizationChecker()->isGranted(Privilege::BILLBOARD_MANAGE)
         ) {
-            $menu = $event->getMenu(self::COMMUNICATION);
-            $item = $menu->addChild('billboard', [
+            $item = $event->getMenu()->addChild('billboard', [
                 'route' => 'billboard_index',
                 'label' => _('Bill-Board'),
                 'extras' => [

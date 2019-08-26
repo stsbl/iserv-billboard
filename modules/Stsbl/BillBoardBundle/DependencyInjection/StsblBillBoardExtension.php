@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Stsbl\BillBoardBundle\DependencyInjection;
 
 use IServ\CoreBundle\DependencyInjection\IServBaseExtension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /*
  * The MIT License
@@ -30,4 +32,13 @@ use IServ\CoreBundle\DependencyInjection\IServBaseExtension;
 
 class StsblBillBoardExtension extends IServBaseExtension
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function load(array $configs, ContainerBuilder $container): void
+    {
+        parent::load($configs, $container);
+
+        $this->addNotificationType($container, 'billboard', 'Bill-Board');
+    }
 }
