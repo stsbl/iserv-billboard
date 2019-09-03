@@ -1,3 +1,9 @@
+stsbl-iserv-billboard (19.09.03-1) experimental; urgency=medium
+
+  * Use new notification type handling
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Tue, 03 Sep 2019 16:27:42 +0200
+
 stsbl-iserv-billboard (19.08.08-2) experimental; urgency=medium
 
   * Fixed image attachments display and TinyMCE integration
