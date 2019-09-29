@@ -1,6 +1,6 @@
 /**
  * Author:  Felix Jacobi
- * Created: 15.08.2016
+ * Created: 15.08.2019
  * License: https://opensource.org/licenses/MIT MIT license
  */
 CREATE TABLE billboard_category (
