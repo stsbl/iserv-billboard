@@ -50,7 +50,7 @@
                     {% set images = item.images %}
                     {% if images is iterable and images|length > 0 %}
                         {% for ent in images %}
-                            {% spaceless %}
+                            {% apply spaceless %}
                                 <div class="billboard-image-container">
                                 {% set imageRoute = admin.getRoute('fileimage_image')|default('fileimage') %}
                                 <a data-toggle="modal-image" href="{{ path(imageRoute, {'id': ent.id, 'entityId': item.id}) }}">
@@ -67,7 +67,7 @@
                                     <a href="#delete-image" id="billboard-delete-image-{{ ent.id }}" data-id="#billboard-delete-image-{{ ent.id }}" data-image-name="{{ ent.image.fileName }}" data-image-entry-title="{{ ent.entry.title }}" data-image-id="{{ ent.id }}" data-toggle="modal" data-target="#image-delete-confirm-container" class="billboard-delete-image btn btn-xs btn-default">{{ icon('remove-circle') }}{{ _('Delete') }}</a>
                                 {% endif %}
                                 </div>
-                            {% endspaceless %}
+                            {% endapply %}
                         {% endfor %}
                     {% elseif images is iterable and images|length == 0 %}
                         {% if item.closed and not admin.isModerator(app.user) %}

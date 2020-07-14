@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Stsbl\BillBoardBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use IServ\CoreBundle\Service\Config;
 use IServ\CrudBundle\Contracts\CrudContract;
 use IServ\CrudBundle\Contracts\CrudContractInterface;
 use function foo\func;
@@ -123,10 +124,9 @@ class EntryController extends StrictCrudController
             $ret['commentForm'] = $this->getCommentForm($entry)->createView();
             $ret['imageUploadForm'] = $this->getImageUploadForm($entry)->createView();
             $ret['imageDeleteConfirmForm'] = $this->getDeleteConfirmForm()->createView();
-            $ret['commentsEnabled'] = $this->get('iserv.config')->get('BillBoardEnableComments');
+            $ret['commentsEnabled'] = $this->get(Config::class)->get('BillBoardEnableComments');
             $ret['moderator'] = $crud->isModerator();
             $ret['authorIsDeleted'] = !$entry->hasValidAuthor();
-            $ret['servername'] = $this->get('iserv.config')->get('Servername');
         }
         
         return $ret;
@@ -371,15 +371,15 @@ class EntryController extends StrictCrudController
             return;
         }
         
-        $dispatcher = $this->get('event_dispatcher');
+        $dispatcher = $this->get(EventDispatcherInterface::class);
         
-        $dispatcher->dispatch(NotificationEvent::NAME, new NotificationEvent(
+        $dispatcher->dispatch(new NotificationEvent(
             $author,
             'billboard',
             ['Your entry was locked: %s locked %s', (string)$this->getUser(), (string)$entry],
             'lock',
             ['billboard_show', ['id' => $entry->getId()]]
-        ));
+        ), NotificationEvent::NAME);
     }
 
     /**
@@ -401,13 +401,13 @@ class EntryController extends StrictCrudController
         
         $dispatcher = $this->get('event_dispatcher');
         
-        $dispatcher->dispatch(NotificationEvent::NAME, new NotificationEvent(
+        $dispatcher->dispatch(new NotificationEvent(
             $author,
             'billboard',
             ['Your entry was opened: %s opened %s', (string)$this->getUser(), (string)$entry],
             'pencil',
             ['billboard_show', ['id' => $entry->getId()]]
-        ));
+        ), NotificationEvent::NAME);
     }
 
     /**
@@ -417,7 +417,8 @@ class EntryController extends StrictCrudController
     {
         $deps = parent::getSubscribedServices();
 
-        $deps['event_dispatcher'] = EventDispatcherInterface::class;
+        $deps[] = Config::class;
+        $deps[] = EventDispatcherInterface::class;
         $deps[] = Flash::class;
 
         return $deps;

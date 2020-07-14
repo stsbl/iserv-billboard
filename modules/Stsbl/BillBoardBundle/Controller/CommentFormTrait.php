@@ -110,7 +110,7 @@ trait CommentFormTrait
             function (Entry $entry) {
                 return $entry->getId();
             },
-            function (int $entryId = null): Entry {
+            function (int $entryId = null): ?Entry {
                 if (null === $entryId) {
                     return null;
                 }
