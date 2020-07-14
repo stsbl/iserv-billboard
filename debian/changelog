@@ -1,3 +1,10 @@
+stsbl-iserv-billboard (20.07.14-1) stable; urgency=medium
+
+  * Bumped copyright
+  * Fixed displaying entries
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Tue, 14 Jul 2020 16:16:51 +0200
+
 stsbl-iserv-billboard (19.09.03-1) experimental; urgency=medium
 
   * Use new notification type handling
