@@ -1,3 +1,10 @@
+stsbl-iserv-billboard (20.08.02-1) testing; urgency=medium
+
+  * Bumped copyright
+  * Updated locale handling to use genpo
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Sun, 02 Aug 2020 06:37:09 +0200
+
 stsbl-iserv-billboard (20.07.14-1) stable; urgency=medium
 
   * Bumped copyright
