@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-02 01:07+0200\n"
+"POT-Creation-Date: 2021-03-03 20:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -284,8 +284,8 @@ msgid "Lock"
 msgstr ""
 
 #: modules/Stsbl/BillBoardBundle/Controller/AdminController.php
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_index.html.twig.php
 #: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/admin/index.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_index.html.twig.php
 msgid "Manage"
 msgstr ""
 
@@ -335,8 +335,8 @@ msgstr ""
 msgid "Rules"
 msgstr ""
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_edit.html.twig.php
 #: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_add.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_edit.html.twig.php
 msgid "Rules for posting on the Bill-Board:"
 msgstr ""
 
@@ -366,8 +366,8 @@ msgid ""
 "which have a worth of more than 100 euro."
 msgstr ""
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_edit.html.twig.php
 #: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_add.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_edit.html.twig.php
 msgid ""
 "There are no bill-board categories configured yet. Please contact your "
 "administrator."
@@ -472,7 +472,7 @@ msgstr ""
 msgid "by"
 msgstr ""
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/List/field_comments.html.twig.php
 #: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/List/field_imagecollection.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/List/field_comments.html.twig.php
 msgid "none"
 msgstr ""

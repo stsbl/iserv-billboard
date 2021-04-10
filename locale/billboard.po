@@ -280,8 +280,8 @@ msgid "Lock"
 msgstr "Schließen"
 
 #: modules/Stsbl/BillBoardBundle/Controller/AdminController.php
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_index.html.twig.php
 #: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/admin/index.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_index.html.twig.php
 msgid "Manage"
 msgstr "Verwalten"
 
@@ -333,8 +333,8 @@ msgstr "Bitte beschreiben Sie Ihr Anliegen kurz."
 msgid "Rules"
 msgstr "Regeln"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_edit.html.twig.php
 #: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_add.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_edit.html.twig.php
 msgid "Rules for posting on the Bill-Board:"
 msgstr "Regeln für das Veröffentlichen auf dem schwarzen Brett:"
 
@@ -367,8 +367,8 @@ msgstr ""
 "Das schwarze Brett ist nur für kleine Dinge gedacht. Bitte bieten Sie keine "
 "Dinge mit einem Wert von mehr als 100 Euro an."
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_edit.html.twig.php
 #: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_add.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_edit.html.twig.php
 msgid ""
 "There are no bill-board categories configured yet. Please contact your "
 "administrator."
@@ -490,7 +490,7 @@ msgstr "Ihr Eintrag wurde geöffnet: %s hat %s geöffnet"
 msgid "by"
 msgstr "von"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/List/field_comments.html.twig.php
 #: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/List/field_imagecollection.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/List/field_comments.html.twig.php
 msgid "none"
 msgstr "keine"
