@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\BillBoardBundle\Controller;
@@ -49,10 +50,10 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/billboard/manage")
  */
-class AdminController extends AbstractPageController
+final class AdminController extends AbstractPageController
 {
-    use LoggerTrait, LoggerInitializationTrait;
-    
+    use LoggerTrait;use LoggerInitializationTrait;
+
     private const CONFIG_DIR = '/var/lib/stsbl/billboard/cfg/';
     private const FILE_RULES = 'rules.cfg';
 
@@ -65,7 +66,7 @@ class AdminController extends AbstractPageController
     public function indexAction(): array
     {
         $this->denyAccessUnlessMangePrivilegeIsGranted();
-        
+
         // track path
         // change breadcrumb depending on if user is logged in admin section or not
         if (!$this->isAdmin()) {
@@ -74,7 +75,7 @@ class AdminController extends AbstractPageController
         } else {
             $this->addBreadcrumb(_('Bill-Board'));
         }
-        
+
         // changing extended template depending on you know already ;)
         if ($this->isAdmin()) {
             $bundle = '@IServAdmin';
@@ -83,7 +84,7 @@ class AdminController extends AbstractPageController
             $bundle = '@IServCore';
             $isAdmin = false;
         }
-        
+
         return ['rules_form' => $this->getRulesForm()->createView(),
             'bundle' => $bundle,
             'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard',
@@ -99,22 +100,22 @@ class AdminController extends AbstractPageController
     public function updateRulesAction(Request $request): RedirectResponse
     {
         $this->denyAccessUnlessMangePrivilegeIsGranted();
-        
+
         $form = $this->getRulesForm();
         $form->handleRequest($request);
-        
+
         if (!$form->isValid()) {
             $this->get(Flash::class)->error(_('Invalid rules text'));
-            
+
             return $this->redirect($this->generateUrl('manage_billboard'));
         }
-        
+
         $data = $form->getData();
-        
+
         return $this->updateFile($data['rules'], self::FILE_RULES);
     }
-    
-    
+
+
     /**
      * Returns the current bill-board rules returns the default rules, if no rules text is set.
      */
@@ -123,17 +124,17 @@ class AdminController extends AbstractPageController
         if (!is_file(self::CONFIG_DIR . self::FILE_RULES) || !is_readable(self::CONFIG_DIR . self::FILE_RULES)) {
             return self::getDefaultRules();
         }
-        
+
         return file_get_contents(self::CONFIG_DIR . self::FILE_RULES);
     }
-    
+
     /**
      * Returns the translated default bill-board rules. Used when no custom rules text is set
      */
     public static function getDefaultRules(): string
     {
         return _(
-            'The bill-board is only intended for small things. Please dont\'t offer things which have a worth of more '.
+            'The bill-board is only intended for small things. Please dont\'t offer things which have a worth of more ' .
             'than 100 euro.'
         );
     }
@@ -144,7 +145,7 @@ class AdminController extends AbstractPageController
     private function getRulesForm(): FormInterface
     {
         $builder = $this->createFormBuilder();
-        
+
         $builder
             ->setAction($this->generateUrl('manage_billboard_update_rules'))
             ->add('rules', TextareaType::class, [
@@ -152,7 +153,7 @@ class AdminController extends AbstractPageController
                 'data' => self::getCurrentRules(),
                 'attr' => [
                     'rows' => 10,
-                    'help_text' => _('Here you can enter rules, which are shown at the form for adding an entry to '.
+                    'help_text' => _('Here you can enter rules, which are shown at the form for adding an entry to ' .
                         'the bill-board.')
                 ],
                 'required' => false
@@ -163,7 +164,7 @@ class AdminController extends AbstractPageController
                 'icon' => 'ok'
             ])
         ;
-        
+
         return $builder->getForm();
     }
 
@@ -184,11 +185,11 @@ class AdminController extends AbstractPageController
                 $e->getMessage()
             ), ['exception' => $e]);
         }
-        
-        if ($filename == self::FILE_RULES) {
+
+        if ($filename === self::FILE_RULES) {
             $logText = 'Regeln aktualisiert';
         } else {
-            throw new \InvalidArgumentException('Unknown filename '.$filename.'.');
+            throw new \InvalidArgumentException('Unknown filename ' . $filename . '.');
         }
 
         $this->log($logText);
@@ -197,7 +198,7 @@ class AdminController extends AbstractPageController
 
         return $this->redirect($this->generateUrl('manage_billboard'));
     }
-    
+
     /**
      * Checks if the user has the manage privilege.
      */
@@ -210,7 +211,7 @@ class AdminController extends AbstractPageController
             'You need the `BILLBOARD_MANAGE` privilege to access this page.'
         );
     }
-    
+
     /**
      * Checks if user is authenticated admin.
      */

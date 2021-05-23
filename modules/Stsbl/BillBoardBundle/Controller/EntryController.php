@@ -1,20 +1,18 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\BillBoardBundle\Controller;
 
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
-use IServ\CoreBundle\Service\Config;
-use IServ\CrudBundle\Contracts\CrudContract;
-use IServ\CrudBundle\Contracts\CrudContractInterface;
-use function foo\func;
+use IServ\BootstrapBundle\Form\Type\FormActionsType;
 use IServ\CoreBundle\Controller\FileImageController;
 use IServ\CoreBundle\Event\NotificationEvent;
 use IServ\CoreBundle\Form\Type\ImageType;
 use IServ\CoreBundle\Service\Flash;
 use IServ\CoreBundle\Traits\LoggerTrait;
+use IServ\CrudBundle\Contracts\CrudContract;
 use IServ\CrudBundle\Controller\StrictCrudController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use IServ\Library\Config\Config;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Stsbl\BillBoardBundle\Crud\EntryCrud;
 use Stsbl\BillBoardBundle\Entity\Entry;
@@ -29,6 +27,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /*
@@ -61,9 +60,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  *
  * @Route("/billboard")
  */
-class EntryController extends StrictCrudController
+final class EntryController extends StrictCrudController
 {
-    use CommentFormTrait, LoggerInitializationTrait, LoggerTrait;
+    use CommentFormTrait;use LoggerInitializationTrait;use LoggerTrait;
 
     /**
      * {@inheritdoc}
@@ -75,11 +74,11 @@ class EntryController extends StrictCrudController
     public function addAction(Request $request)
     {
         $ret = parent::addAction($request);
-        
+
         if (is_array($ret)) {
             $ret['rules'] = AdminController::getCurrentRules();
         }
-        
+
         return $ret;
     }
 
@@ -93,11 +92,11 @@ class EntryController extends StrictCrudController
     public function editAction(Request $request, $id)
     {
         $ret = parent::editAction($request, $id);
-        
+
         if (is_array($ret)) {
             $ret['rules'] = AdminController::getCurrentRules();
         }
-        
+
         return $ret;
     }
 
@@ -113,13 +112,13 @@ class EntryController extends StrictCrudController
         if ($this->handleImageUploadForm($request, (int)$id) || $this->handleDeleteConfirmForm($request)) {
             return $this->redirectToRoute('billboard_show', ['id' => $id]);
         }
-        
+
         $ret = parent::showAction($request, $id);
         /** @var Entry $entry */
         $entry = $ret['item'];
         /** @var EntryCrud $crud */
         $crud = $this->crud;
-        
+
         if (is_array($ret)) {
             $ret['commentForm'] = $this->getCommentForm($entry)->createView();
             $ret['imageUploadForm'] = $this->getImageUploadForm($entry)->createView();
@@ -128,7 +127,7 @@ class EntryController extends StrictCrudController
             $ret['moderator'] = $crud->isModerator();
             $ret['authorIsDeleted'] = !$entry->hasValidAuthor();
         }
-        
+
         return $ret;
     }
 
@@ -146,7 +145,7 @@ class EntryController extends StrictCrudController
 
         $em->persist($entry);
         $em->flush();
-        
+
         $this->notifyLock($entry);
         $this->log(sprintf(
             'Eintrag "%s" von %s für Schreibzugriffe gesperrt',
@@ -154,7 +153,7 @@ class EntryController extends StrictCrudController
             $entry->getAuthorDisplay()
         ));
         $this->get(Flash::class)->success(sprintf(_('Entry is now locked: %s'), $entry));
-        
+
         return $this->redirect($this->generateUrl('billboard_show', ['id' => $entry->getId()]));
     }
 
@@ -167,20 +166,20 @@ class EntryController extends StrictCrudController
     public function unlockAction(Entry $entry): RedirectResponse
     {
         $entry->setClosed(false);
-        
+
         $em = $this->getDoctrine()->getManagerForClass(Entry::class);
 
         $em->persist($entry);
         $em->flush();
-        
+
         $this->notifyOpen($entry);
         $this->log(sprintf(
             'Eintrag "%s" von %s für Schreibzugriffe geöffnet',
             $entry,
             $entry->getAuthorDisplay()
         ));
-        $this->get(Flash::class)->success(sprintf(_('Entry is now unlocked: %s'), $entry));
-        
+        $this->flashMessage()->success(sprintf(_('Entry is now unlocked: %s'), $entry));
+
         return $this->redirect($this->generateUrl('billboard_show', ['id' => $entry->getId()]));
     }
 
@@ -191,7 +190,7 @@ class EntryController extends StrictCrudController
     {
         $entryImage = EntryImage::createForEntryAndUser($entry, $this->getUser());
         $builder = $this->createFormBuilder($entryImage);
-        
+
         $builder
             ->add('image', ImageType::class, [
                 'label' => _('Image'),
@@ -207,10 +206,10 @@ class EntryController extends StrictCrudController
                 'icon' => 'pro-upload'
             ])
         ;
-        
+
         return $builder->getForm();
     }
-    
+
     /**
      * Handles submitted image upload form
      */
@@ -223,36 +222,38 @@ class EntryController extends StrictCrudController
 
         $form = $this->getImageUploadForm($entry);
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
             /* @var $data EntryImage */
             $data = $form->getData();
 
             $em = $this->getDoctrine()->getManager();
-            
+
             if (!$crud->isAuthor($data->getEntry())) {
                 throw $this->createAccessDeniedException('You are not allowed to add an image to this entry.');
             }
-            
+
             $em->persist($data);
             $em->flush();
-            
+
             $this->get(Flash::class)->success(__(
                 'Image "%s" was uploaded successfully.',
                 $data->getImage()->getFileName()
             ));
-            
+
             return true;
-        } elseif ($form->isSubmitted()) {
-            $this->get(Flash::class)->error((string)$form->getErrors());
-            
+        }
+
+        if ($form->isSubmitted()) {
+            $this->flashMessage()->error((string)$form->getErrors());
+
             return true;
         }
 
 
         return false;
     }
-    
+
     /**
      * Create confirm form for image deletion
      *
@@ -262,7 +263,7 @@ class EntryController extends StrictCrudController
     {
         /* @var $builder \Symfony\Component\Form\FormBuilder */
         $builder = $this->get('form.factory')->createNamedBuilder('image_delete_confirm');
-        
+
         $builder
             ->add('image_id', HiddenType::class, [
                 'constraints' => [new NotBlank()],
@@ -272,9 +273,9 @@ class EntryController extends StrictCrudController
             ])
             ->add('submit', FormActionsType::class)
         ;
-        
+
         $submit = $builder->get('submit');
-            
+
         $submit
             ->add('approve', SubmitType::class, [
                 'label' => _('Delete'),
@@ -290,10 +291,10 @@ class EntryController extends StrictCrudController
                 ]
             ])
         ;
-        
+
         return $builder->getForm();
     }
-    
+
     /**
      * Handles submitted image delete confirm form
      *
@@ -304,7 +305,7 @@ class EntryController extends StrictCrudController
     {
         $form = $this->getDeleteConfirmForm();
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->getClickedButton()->getName() === 'approve') {
                 $data = $form->getData();
@@ -313,19 +314,19 @@ class EntryController extends StrictCrudController
                 $imageRepo = $this->getDoctrine()->getRepository(EntryImage::class);
                 /** @var EntryImage $image */
                 $image = $imageRepo->find($imageId);
-                
+
                 if ($image === null) {
                     throw $this->createNotFoundException(sprintf('An image with the ID %d was not found!', $imageId));
                 }
-                
-                if (!$this->crud->isAllowedToEdit($image->getEntry(), $this->getUser())) {
+
+                if (!$this->crud->isAllowedTo(CrudContract::ACTION_EDIT, $this->getUser(), $image->getEntry())) {
                     throw $this->createAccessDeniedException('You are not allowed to delete images of this entry.');
                 }
-                
+
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($image);
                 $em->flush();
-                
+
                 // log moderative actions
                 if ($image->getAuthor() !== $this->getUser()) {
                     $this->log(sprintf(
@@ -335,44 +336,46 @@ class EntryController extends StrictCrudController
                         $image->getAuthorDisplay()
                     ));
                 }
-                
+
                 $this->get(Flash::class)->success(__(
                     'Image "%s" was deleted successfully.',
                     $image->getImage()->getFileName()
                 ));
-                
+
                 return true;
-            } else {
-                return false;
             }
-        } elseif ($form->isSubmitted()) {
+
+            return false;
+        }
+
+        if ($form->isSubmitted()) {
             $this->get(Flash::class)->error((string)$form->getErrors());
-            
+
             return true;
         }
 
         return false;
     }
-    
+
     /**
      * Notifies the entry author that his post is locked
      */
     private function notifyLock(Entry $entry): void
     {
         $author = $entry->getAuthor();
-        
+
         if (null === $author) {
             // no notification, if there is no author (e.g. he is deleted)
             return;
         }
-        
+
         // don't notify the author himself, for example if he locks his own post
         if ($author === $this->getUser()) {
             return;
         }
-        
+
         $dispatcher = $this->get(EventDispatcherInterface::class);
-        
+
         $dispatcher->dispatch(new NotificationEvent(
             $author,
             'billboard',
@@ -388,19 +391,19 @@ class EntryController extends StrictCrudController
     private function notifyOpen(Entry $entry): void
     {
         $author = $entry->getAuthor();
-        
+
         if (null === $author) {
             // no notification, if there is no author (e.g. he is deleted)
             return;
         }
-        
+
         // don't notify the author himself, for example if he locks his own post
         if ($author === $this->getUser()) {
             return;
         }
-        
+
         $dispatcher = $this->get('event_dispatcher');
-        
+
         $dispatcher->dispatch(new NotificationEvent(
             $author,
             'billboard',
@@ -419,7 +422,6 @@ class EntryController extends StrictCrudController
 
         $deps[] = Config::class;
         $deps[] = EventDispatcherInterface::class;
-        $deps[] = Flash::class;
 
         return $deps;
     }

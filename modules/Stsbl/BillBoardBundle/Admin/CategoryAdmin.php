@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\BillBoardBundle\Admin;
@@ -8,6 +9,7 @@ use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CrudBundle\Mapper\FormMapper;
 use IServ\CrudBundle\Mapper\ListMapper;
 use IServ\CrudBundle\Mapper\ShowMapper;
+use IServ\CrudBundle\Routing\RoutingDefinition;
 use Stsbl\BillBoardBundle\Entity\Category;
 use Stsbl\BillBoardBundle\Security\Privilege;
 use Stsbl\BillBoardBundle\Traits\LoggerInitializationTrait;
@@ -42,14 +44,15 @@ use Stsbl\BillBoardBundle\Traits\LoggerInitializationTrait;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://mit.otg/licenses/MIT>
  */
-class CategoryAdmin extends AbstractBillBoardAdmin
+final class CategoryAdmin extends AbstractBillBoardAdmin
 {
-    use LoggerTrait, LoggerInitializationTrait;
+    use LoggerTrait;
+    use LoggerInitializationTrait;
 
-    public function __construct()
-    {
-        parent::__construct(Category::class);
-    }
+    /**
+     * {@inheritDoc}
+     */
+    protected static $entityClass = Category::class;
 
     /**
      * {@inheritdoc}
@@ -73,13 +76,23 @@ class CategoryAdmin extends AbstractBillBoardAdmin
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * billboard/manage/category is nicer than billboard/manage/billboard_category
+     * {@inheritDoc}
      */
-    public function getRouteIdentifier(): string
+    public static function defineRoutes(): RoutingDefinition
     {
-        return 'category';
+        $definition = parent::defineRoutes();
+
+        // FIXME: Remove, after CRUD allows proper access!
+        try {
+            $reflectionProperty = new \ReflectionProperty($definition, 'baseName');
+        } catch (\ReflectionException $e) {
+            throw new \RuntimeException('Could not reflect!', 0, $e);
+        }
+
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($definition, 'category');
+
+        return $definition;
     }
 
     /**
@@ -88,10 +101,10 @@ class CategoryAdmin extends AbstractBillBoardAdmin
     public function prepareBreadcrumbs(): array
     {
         if ($this->isAdmin()) {
-            return [_('Bill-Board') => $this->router->generate('manage_billboard')];
-        } else {
-            return [_('Bill-Board') => $this->router->generate('billboard_index')];
+            return [_('Bill-Board') => $this->router()->generate('manage_billboard')];
         }
+
+        return [_('Bill-Board') => $this->router()->generate('billboard_index')];
     }
 
     /**
@@ -130,45 +143,32 @@ class CategoryAdmin extends AbstractBillBoardAdmin
     /**
      * {@inheritdoc}
      */
-    protected function getRoutePattern($action, $id, $entityBased = true): string
+    public function postPersist(CrudInterface $object): void
     {
-        // nicer plural categories instead of categorys
-        if (self::ACTION_INDEX === $action) {
-            return sprintf('%s%s', $this->routesPrefix, 'categories');
-        }
-
-        return parent::getRoutePattern($action, $id, $entityBased);
+        /** @var Category $object */
+        $this->log(sprintf('Kategorie "%s" hinzugefügt', $object->getTitle()));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function postPersist(CrudInterface $category): void
+    public function postUpdate(CrudInterface $object, array $previousData = null): void
     {
-        /** @var Category $category */
-        $this->log(sprintf('Kategorie "%s" hinzugefügt', $category->getTitle()));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function postUpdate(CrudInterface $category, array $previousData = null): void
-    {
-        /** @var Category $category */
-        if ($category->getTitle() !== $previousData['title']) {
+        /** @var Category $object */
+        if ($object->getTitle() !== $previousData['title']) {
             // if old and new name does not match, write a rename log
-            $this->log(sprintf('Kategorie "%s" umbenannt nach "%s"', $previousData['title'], $category->getTitle()));
+            $this->log(sprintf('Kategorie "%s" umbenannt nach "%s"', $previousData['title'], $object->getTitle()));
         } else {
-            $this->log(sprintf('Kategorie "%s" verändert', $category->getTitle()));
+            $this->log(sprintf('Kategorie "%s" verändert', $object->getTitle()));
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function postRemove(CrudInterface $category): void
+    public function postRemove(CrudInterface $object): void
     {
-        /** @var Category $category */
-        $this->log(sprintf('Kategorie "%s" gelöscht', $category->getTitle()));
+        /** @var Category $object */
+        $this->log(sprintf('Kategorie "%s" gelöscht', $object->getTitle()));
     }
 }

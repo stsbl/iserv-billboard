@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * The MIT License
@@ -31,11 +33,11 @@
 
 // Privileges
 _('Access the bill-board');
-_('Users with this privilege are able to access the bill-board and read the entries but there are not able to create '.
+_('Users with this privilege are able to access the bill-board and read the entries but there are not able to create ' .
     'and edit entries.');
 
 _('Create new entries at the bill-board');
-_('Users with this privilege can create new entries on the bill-board, edit their existing entries and comment '.
+_('Users with this privilege can create new entries on the bill-board, edit their existing entries and comment ' .
     'entries of other users.');
 
 _('Moderate the bill-board');
@@ -47,7 +49,7 @@ _('Users with this privilege can manange the bill-board and create new categorie
 // iservcfg
 _('Module: Bill-Board');
 _('Allow comments');
-_('Control whether comments on entries are allowed or not. If you disable commenting, no one can add new comments. '.
+_('Control whether comments on entries are allowed or not. If you disable commenting, no one can add new comments. ' .
     'Existing comments will still displayed.');
 
 // Notifications

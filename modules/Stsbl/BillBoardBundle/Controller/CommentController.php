@@ -1,13 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\BillBoardBundle\Controller;
 
 use IServ\CoreBundle\Controller\AbstractPageController;
 use IServ\CoreBundle\Event\NotificationEvent;
-use IServ\CoreBundle\Service\Config;
 use IServ\CoreBundle\Service\Flash;
 use IServ\CoreBundle\Traits\LoggerTrait;
+use IServ\Library\Config\Config;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\BillBoardBundle\Entity\Entry;
@@ -51,9 +52,9 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/billboard")
  */
-class CommentController extends AbstractPageController
+final class CommentController extends AbstractPageController
 {
-    use CommentFormTrait, LoggerTrait, LoggerInitializationTrait;
+    use CommentFormTrait;use LoggerTrait;use LoggerInitializationTrait;
 
     /**
      * Adds a comment
@@ -203,13 +204,13 @@ class CommentController extends AbstractPageController
 
         $dispatcher = $this->get('event_dispatcher');
 
-        $dispatcher->dispatch(NotificationEvent::NAME, new NotificationEvent(
+        $dispatcher->dispatch(new NotificationEvent(
             $author,
             'billboard',
             ['New comment on your post: %s commented on %s', (string)$this->getUser(), (string)$entry],
             'comments',
             ['billboard_show', ['id' => $entry->getId()]]
-        ));
+        ), NotificationEvent::NAME);
     }
 
     /**

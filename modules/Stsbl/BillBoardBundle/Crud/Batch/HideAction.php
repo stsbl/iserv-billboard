@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\BillBoardBundle\Crud\Batch;
@@ -38,22 +39,22 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Bill-Board hide entry batch
- * 
+ *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-class HideAction extends AbstractBatchAction
+final class HideAction extends AbstractBatchAction
 {
     /**
      * {@inheritdoc}
      */
-    public function execute(ArrayCollection $entries): FlashMessageBag
+    public function execute(ArrayCollection $entities): FlashMessageBag
     {
         /** @var ORMObjectManager $em */
         $em =  $this->crud->getObjectManager();
         $bag = new FlashMessageBag();
-        
-        foreach ($entries as $entry) {
+
+        foreach ($entities as $entry) {
             $qb = $em->createQueryBuilder();
             $user = $this->crud->getUser();
             try {
@@ -66,7 +67,7 @@ class HideAction extends AbstractBatchAction
                         ->getQuery()
                         ->execute()
                     ;
-                    
+
                     $bag->addMessage('success', __("Entry is now hidden: %s", $entry));
                 } else {
                     $bag->addMessage('error', __("You don't have the permission to change that entry: %s", $entry));
@@ -75,7 +76,7 @@ class HideAction extends AbstractBatchAction
                 $bag->addMessage('error', __("Failed to hide entry: %s", $entry));
             }
         }
-        
+
         return $bag;
     }
 
@@ -86,7 +87,7 @@ class HideAction extends AbstractBatchAction
     {
         return 'hide';
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -94,7 +95,7 @@ class HideAction extends AbstractBatchAction
     {
         return _('Hide');
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -102,7 +103,7 @@ class HideAction extends AbstractBatchAction
     {
         return 'eye-close';
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -126,8 +127,7 @@ class HideAction extends AbstractBatchAction
                 return false;
             }
         }
-        
+
         return true;
     }
 }
-

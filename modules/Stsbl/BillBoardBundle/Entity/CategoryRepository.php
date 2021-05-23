@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\BillBoardBundle\Entity;
@@ -35,7 +36,7 @@ use IServ\CrudBundle\Doctrine\ORM\EntitySpecificationRepository;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-class CategoryRepository extends EntitySpecificationRepository
+final class CategoryRepository extends EntitySpecificationRepository
 {
     /**
      * Checks if there's at least one category

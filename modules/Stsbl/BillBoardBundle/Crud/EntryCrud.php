@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\BillBoardBundle\Crud;
@@ -56,12 +57,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Bill-Board entry list
  *
+ * FIXME: Migrate away from FileImage and remove AbstractCrud usage.
+ *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://mit.otg/licenses/MIT>
  */
-class EntryCrud extends AbstractCrud
+final class EntryCrud extends AbstractCrud
 {
-    use FileImageRoutingTrait, LoggerTrait, LoggerInitializationTrait;
+    use FileImageRoutingTrait;
+    use LoggerTrait;
+    use LoggerInitializationTrait;
 
     public function __construct()
     {
@@ -205,7 +210,7 @@ class EntryCrud extends AbstractCrud
                 'label' => _('Images'),
                 'hideIfEmpty' => true,
                 'template' => '@IServCrud/Show/field_imagecollection.html.twig',
-            ]);
+            ])
         ;
     }
 
@@ -217,12 +222,12 @@ class EntryCrud extends AbstractCrud
         if (!$this->hasCategories()) {
             return;
         }
-        
+
         $formMapper
             ->add('title', null, [
                 'label' => _('Title'),
                 'attr' => [
-                    'help_text' => _('Name the matter that you want to offer in one sentence, for example '.
+                    'help_text' => _('Name the matter that you want to offer in one sentence, for example ' .
                         '»I am oferring my electric guitar for selling«.'),
                 ]
             ])
@@ -235,7 +240,7 @@ class EntryCrud extends AbstractCrud
             ->add('visible', BooleanType::class, [
                 'label' => _('Visible'),
                 'attr' => [
-                    'help_text' => _('If you hide the entry, it is only visible by yourself and people who has the '.
+                    'help_text' => _('If you hide the entry, it is only visible by yourself and people who has the ' .
                         'privilege to moderate the bill-board.')
                 ]
             ])
@@ -248,7 +253,7 @@ class EntryCrud extends AbstractCrud
             ])
         ;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -263,7 +268,7 @@ class EntryCrud extends AbstractCrud
             ->where($qb->expr()->eq('p', 'parent'))
             ->andWhere('p.visible = true')
         ;
-        
+
         $listHandler
             ->addListFilter(
                 (new Filter\ListPropertyFilter(_('Category'), 'category', 'StsblBillBoardBundle:Category'))
@@ -271,7 +276,7 @@ class EntryCrud extends AbstractCrud
             )
             ->addListFilter(new Filter\ListSearchFilter('search', ['title', 'description']))
         ;
-        
+
         $allFilter = new Filter\ListExpressionFilter(_('All entries'), $qb->expr()->exists($qb));
         $allFilter
             ->setName('all_entries')
@@ -279,7 +284,7 @@ class EntryCrud extends AbstractCrud
                 $listHandler->disableBatchAction('show');
             })
         ;
-        
+
         $authorFilter = new Filter\ListExpressionFilter(
             _('Entries I created'),
             'parent.author = :user and parent.visible = true'
@@ -292,7 +297,7 @@ class EntryCrud extends AbstractCrud
                 $listHandler->disableBatchAction('show');
             })
         ;
-        
+
         $hiddenFilter = new Filter\ListExpressionFilter(_('My hidden entries'), $qb->expr()->andX(
             $qb->expr()->eq('parent.author', ':user'),
             $qb->expr()->eq('parent.visible', 'false')
@@ -311,7 +316,7 @@ class EntryCrud extends AbstractCrud
             ->addListFilter($hiddenFilter)
             ->setDefaultFilter('all_entries')
         ;
-        
+
         if ($this->isModerator()) {
             $hiddenAllFilter = new Filter\ListExpressionFilter(_('Hidden entries of other users'), $qb->expr()->andX(
                 $qb->expr()->neq('parent.author', ':user'),
@@ -324,11 +329,11 @@ class EntryCrud extends AbstractCrud
                     $listHandler->disableBatchAction('hide');
                 })
             ;
-            
+
             $listHandler->addListFilter($hiddenAllFilter);
         }
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -338,10 +343,10 @@ class EntryCrud extends AbstractCrud
 
         $res->add(new ShowAction($this));
         $res->add(new HideAction($this));
-        
+
         return $res;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -349,7 +354,7 @@ class EntryCrud extends AbstractCrud
     {
         /* @var $item \Stsbl\BillBoardBundle\Entity\Entry */
         $links = parent::getShowActions($item);
-        
+
         if ($this->isModerator()) {
             if ($item->isClosed()) {
                 $links->set('unlock', Link::create($this->getRouter()->generate(
@@ -363,17 +368,17 @@ class EntryCrud extends AbstractCrud
                 ), _p('billboard', 'Lock'), 'lock'));
             }
         }
-        
+
         return $links;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function prePersist(CrudInterface $entry): void
+    public function prePersist(CrudInterface $object): void
     {
-        /* @var Entry $entry */
-        $entry->setAuthor($this->getUser());
+        /* @var Entry $object */
+        $object->setAuthor($this->getUser());
     }
 
     /**
@@ -388,14 +393,14 @@ class EntryCrud extends AbstractCrud
 
         return parent::getRoutePattern($action, $id, $entityBased);
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function getIndexActions(): OrderedCollection
     {
         $links = parent::getIndexActions();
-        
+
         // only add category, if user has management privilege
         if ($this->isGranted(Privilege::BILLBOARD_MANAGE)) {
             $links->set('categories', Link::create(
@@ -404,7 +409,7 @@ class EntryCrud extends AbstractCrud
                 'tags'
             ));
         }
-        
+
         return $links;
     }
 
@@ -417,21 +422,21 @@ class EntryCrud extends AbstractCrud
         if ($object === null && $user === null) {
             return true;
         }
-        
+
         if (!$this->hasCategories()) {
             return false;
         }
-        
+
         // only allow moderators to edit locked entries
         if ($object->isClosed() && !$this->isModerator()) {
             return false;
         }
-        
+
         if ($object->getAuthor() === $user &&
         $this->isGranted(Privilege::BILLBOARD_CREATE)) {
             return true;
         }
-        
+
         if ($this->isModerator()) {
             return true;
         }
@@ -447,7 +452,7 @@ class EntryCrud extends AbstractCrud
         if ($user === null) {
             return true;
         }
-        
+
         if ($this->isGranted(Privilege::BILLBOARD_CREATE)
         || $this->isModerator()) {
             // allow users with creation and moderation privilege to add entries
@@ -464,9 +469,9 @@ class EntryCrud extends AbstractCrud
     {
         return $this->isAllowedToEdit($object, $user);
     }
-    
+
     /**
-     * 
+     *
      * {@inheritdoc}
      */
     public function isAllowedToView(CrudInterface $object = null, UserInterface $user = null): bool
@@ -475,15 +480,15 @@ class EntryCrud extends AbstractCrud
         if ($object === null && $user === null) {
             return true;
         }
-        
+
         if ($object->isVisible() === false && $user === $object->getAuthor()) {
             return true;
         }
-        
+
         if ($object->isVisible() === true) {
             return true;
         }
-        
+
         if ($this->isModerator()) {
             // allow users with moderation and admin privilege to show hidden objects
             return true;
@@ -491,7 +496,7 @@ class EntryCrud extends AbstractCrud
 
         return false;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -506,7 +511,7 @@ class EntryCrud extends AbstractCrud
             ));
         }
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -545,7 +550,7 @@ class EntryCrud extends AbstractCrud
 
         return $repo->exists();
     }
-    
+
     /**
      * Returns true if the current user has moderation privileges
      */

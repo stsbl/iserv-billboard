@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\BillBoardBundle\Entity;
@@ -48,7 +49,7 @@ class Category implements CrudInterface
      * @var int
      */
     private $id;
-    
+
     /**
      * @ORM\Column(name="title", type="text")
      * @Assert\NotBlank()
@@ -64,19 +65,19 @@ class Category implements CrudInterface
      * @var string
      */
     private $description;
-    
+
     /**
      * {@inheritdoc}
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->title;
+        return $this->title ?? '?';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -97,7 +98,7 @@ class Category implements CrudInterface
     public function setTitle(string $title = null): self
     {
         $this->title = $title;
-        
+
         return $this;
     }
 

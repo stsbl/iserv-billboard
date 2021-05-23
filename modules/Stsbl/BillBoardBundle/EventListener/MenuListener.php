@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\BillBoardBundle\EventListener;
@@ -37,8 +38,11 @@ use Stsbl\BillBoardBundle\Security\Privilege;
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
 
-class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterface
+final class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterface
 {
+    /**
+     * {@inheritDoc}
+     */
     public function onBuildMainMenu(MenuEvent $event): void
     {
         // check if user is privileged
@@ -59,6 +63,9 @@ class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterf
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function onBuildAdminMenu(MenuEvent $event): void
     {
         // check if user is privileged
@@ -73,7 +80,7 @@ class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterf
             ]);
             $item->setExtra('icon', 'billboard-empty');
             $item->setExtra('icon_style', 'fugue');
-            
+
             $item = $block->addChild('billboard_category', [
                 'route' => 'manage_billboard_category_index',
                 'label' => _('Categories'),

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\BillBoardBundle\Entity;
@@ -51,14 +52,14 @@ class EntryImage implements CrudInterface
      * @var int
      */
     private $id;
-    
+
     /**
      * @ORM\Column(type="file_image",  nullable=true)
      *
      * @var FileImage
      */
     private $image;
-    
+
     /**
      * @ORM\Column(name="description", type="text", nullable=true)
      *
@@ -73,14 +74,14 @@ class EntryImage implements CrudInterface
      * @var User
      */
     private $author;
-    
+
     /**
      * @ORM\Column(name="time",type="datetime",nullable=false)
      *
      * @var \DateTime
      */
     private $time;
-    
+
     /**
      * @ORM\Column(name="updated_at",type="datetime",nullable=false)
      *
@@ -106,7 +107,7 @@ class EntryImage implements CrudInterface
         $this->setTime(Date::now());
         $this->updateLastUpdatedTime();
     }
-    
+
     /**
      * Lifecycle callback to set the update date
      *
@@ -124,7 +125,7 @@ class EntryImage implements CrudInterface
     {
         $this->setUpdatedAt(Date::now());
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -170,34 +171,34 @@ class EntryImage implements CrudInterface
     {
         return $this->entry;
     }
-    
+
     /**
      * @return $this
      */
     public function setImage(FileImage $image = null): self
     {
         $this->image = $image;
-        
+
         return $this;
     }
-    
+
     /**
      * @return $this
      */
     public function setDescription(string $description = null): self
     {
         $this->description = $description;
-        
+
         return $this;
     }
-    
+
     /**
      * @return $this
      */
     public function setAuthor(User $author = null): self
     {
         $this->author = $author;
-        
+
         return $this;
     }
 
@@ -207,27 +208,27 @@ class EntryImage implements CrudInterface
     public function setTime(\DateTime $time = null): self
     {
         $this->time = $time;
-        
+
         return $this;
     }
-    
+
     /**
      * @return $this
      */
     public function setUpdatedAt(\DateTime $updatedAt = null): self
     {
         $this->updatedAt = $updatedAt;
-        
+
         return $this;
     }
-    
+
     /**
      * @return $this
      */
     public function setEntry(Entry $entry = null): self
     {
         $this->entry = $entry;
-        
+
         return $this;
     }
 

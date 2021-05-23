@@ -1,15 +1,17 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\BillBoardBundle\Admin;
 
-use IServ\AdminBundle\Admin\AbstractAdmin;
-use IServ\CrudBundle\Crud\AbstractCrud;
+use IServ\AdminBundle\Admin\Settings;
+use IServ\CrudBundle\Crud\ServiceCrud;
+use IServ\CrudBundle\Routing\RoutingDefinition;
 
 /*
  * The MIT License
  *
- * Copyright 2021 felix.
+ * Copyright 2021 Felix Jacobi.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,37 +38,38 @@ use IServ\CrudBundle\Crud\AbstractCrud;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-abstract class AbstractBillBoardAdmin extends AbstractCrud
+abstract class AbstractBillBoardAdmin extends ServiceCrud
 {
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    public static function defineRoutes(): RoutingDefinition
     {
-        // set base parameter
-        $this->routesPrefix = 'billboard/manage/';
-        $this->routesNamePrefix = 'manage_';
+        return parent::defineRoutes()
+            ->setNamePrefix('manage_billboard_')
+            ->setPathPrefix('billboard/manage/')
+        ;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTemplate($action)
+    public function getTemplate(string $name): ?string
     {
         // Move management into admin section for admins
-        if ('page' === $action && $this->isAdmin()) {
-            return AbstractAdmin::TEMPLATE_PAGE;
-        } elseif ('crud_base' === $action && $this->isAdmin()) {
-            return AbstractAdmin::TEMPLATE_BASE;
+        if ('page' === $name && $this->isAdmin()) {
+            return Settings::TEMPLATE_PAGE;
         }
 
-        return parent::getTemplate($action);
+        if ('crud_base' === $name && $this->isAdmin()) {
+            return Settings::TEMPLATE_BASE;
+        }
+
+        return parent::getTemplate($name);
     }
 
     /**
      * Checks if the CRUD is used as an authenticated admin
-     *
-     * @return bool
      */
     public function isAdmin(): bool
     {

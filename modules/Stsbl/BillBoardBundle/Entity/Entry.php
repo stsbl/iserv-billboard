@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\BillBoardBundle\Entity;
@@ -52,7 +53,7 @@ class Entry implements CrudInterface
      * @var int
      */
     private $id;
-    
+
     /**
      * @ORM\Column(name="title", type="text")
      * @Assert\NotBlank()
@@ -60,7 +61,7 @@ class Entry implements CrudInterface
      * @var string
      */
     private $title;
-    
+
     /**
      * @ORM\Column(name="description", type="text")
      * @Assert\NotBlank()
@@ -68,14 +69,14 @@ class Entry implements CrudInterface
      * @var string
      */
     private $description;
-    
+
     /**
      * @ORM\Column(name="time", type="datetime", nullable=false)
      *
      * @var \DateTime
      */
     private $time;
-    
+
     /**
      * @ORM\Column(name="updated_at",type="datetime",nullable=false)
      *
@@ -91,7 +92,7 @@ class Entry implements CrudInterface
      * @var Category
      */
     private $category;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="\IServ\CoreBundle\Entity\User", fetch="EAGER")
      * @ORM\JoinColumn(name="author", referencedColumnName="act")
@@ -99,28 +100,28 @@ class Entry implements CrudInterface
      * @var User
      */
     private $author;
-    
+
     /**
      * @ORM\Column(name="visible", type="boolean")
      *
      * @var bool
      */
     private $visible = true;
-    
+
     /**
      * @ORM\Column(name="closed", type="boolean")
      *
      * @var bool
      */
     private $closed = false;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="EntryImage", mappedBy="entry")
      *
      * @var ArrayCollection|EntryImage[]
      */
     private $images;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="EntryComment", mappedBy="entry")
      *
@@ -136,7 +137,7 @@ class Entry implements CrudInterface
         $this->images = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
-    
+
     /**
      * Lifecycle callback to set the creation date
      *
@@ -147,7 +148,7 @@ class Entry implements CrudInterface
         $this->setTime(Date::now());
         $this->updateLastUpdatedTime();
     }
-    
+
     /**
      * Lifecycle callback to set the update date
      *
@@ -165,19 +166,19 @@ class Entry implements CrudInterface
     {
         $this->setUpdatedAt(Date::now());
     }
-    
+
     /**
      * {@inheritdoc}
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->title;
+        return $this->title ?? '?';
     }
-    
+
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -191,7 +192,7 @@ class Entry implements CrudInterface
     {
         return $this->description;
     }
-    
+
     /**
      * @return \DateTime
      */
@@ -219,7 +220,7 @@ class Entry implements CrudInterface
     {
         return $this->visible;
     }
-    
+
     /**
      * @return ArrayCollection|EntryImage[]
      */
@@ -227,7 +228,7 @@ class Entry implements CrudInterface
     {
         return $this->images;
     }
-    
+
     /**
      * @return ArrayCollection|EntryComment[]
      */
@@ -235,74 +236,74 @@ class Entry implements CrudInterface
     {
         return $this->comments;
     }
-    
+
     /**
      * @return $this
      */
     public function setTitle(string $title = null): self
     {
         $this->title = $title;
-        
+
         return $this;
     }
-    
+
     /**
      * @return $this
      */
     public function setDescription(string $description = null): self
     {
         $this->description = $description;
-        
+
         return $this;
     }
-    
+
     /**
      * @return $this
      */
     public function setTime(\DateTime $time = null): self
     {
         $this->time = $time;
-        
+
         return $this;
     }
-    
+
     /**
      * @return $this
      */
     public function setUpdatedAt(\DateTime $updatedAt = null): self
     {
         $this->updatedAt = $updatedAt;
-        
+
         return $this;
     }
-    
+
     /**
      * @return $this
      */
     public function setCategory(Category $category = null): self
     {
         $this->category = $category;
-        
+
         return $this;
     }
-    
+
     /**
      * @return $this
      */
     public function setAuthor(User $author = null): self
     {
         $this->author = $author;
-        
+
         return $this;
     }
-    
+
     /**
      * @return $this
      */
     public function setVisible(bool $visible): self
     {
         $this->visible = $visible;
-        
+
         return $this;
     }
 

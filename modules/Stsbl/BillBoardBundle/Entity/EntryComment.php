@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\BillBoardBundle\Entity;
@@ -51,7 +52,7 @@ class EntryComment implements CrudInterface
      * @var int
      */
     private $id;
-    
+
     /**
      * @ORM\Column(name="title",type="text",length=255)
      * @Assert\NotBlank()
@@ -59,7 +60,7 @@ class EntryComment implements CrudInterface
      * @var string
      */
     private $title;
-    
+
     /**
      * @ORM\Column(name="content",type="text")
      * @Assert\NotBlank()
@@ -67,7 +68,7 @@ class EntryComment implements CrudInterface
      * @var string
      */
     private $content;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="\IServ\CoreBundle\Entity\User", fetch="EAGER")
      * @ORM\JoinColumn(name="author", referencedColumnName="act")
@@ -75,7 +76,7 @@ class EntryComment implements CrudInterface
      * @var User
      */
     private $author;
-    
+
     /**
      * @ORM\Column(name="time",type="datetime",nullable=false)
      *
@@ -90,13 +91,13 @@ class EntryComment implements CrudInterface
      * @var Entry
      */
     private $entry;
-    
+
     /**
      * {@inheritdoc}
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->title;
+        return $this->title ?? '?';
     }
 
     /**
@@ -146,47 +147,47 @@ class EntryComment implements CrudInterface
     public function setTitle(string $title = null): self
     {
         $this->title = $title;
-        
+
         return $this;
     }
-    
+
     /**
      * @return $this
      */
     public function setContent(string $content = null): self
     {
         $this->content = $content;
-        
+
         return $this;
     }
-    
+
     /**
      * @return $this
      */
     public function setAuthor(User $author = null): self
     {
         $this->author = $author;
-        
+
         return $this;
     }
-    
+
     /**
      * @return $this
      */
     public function setTime(\DateTime $time = null): self
     {
         $this->time = $time;
-        
+
         return $this;
     }
-    
+
     /**
      * @return $this
      */
     public function setEntry(Entry $entry): self
     {
         $this->entry = $entry;
-        
+
         return $this;
     }
 
@@ -199,7 +200,7 @@ class EntryComment implements CrudInterface
     {
         $this->setTime(Date::now());
     }
-    
+
     /**
      * Checks if the author is valid. i.e. he isn't deleted.
      */

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stsbl\BillBoardBundle\DependencyInjection;
@@ -30,7 +31,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * THE SOFTWARE.
  */
 
-class StsblBillBoardExtension extends IServBaseExtension
+final class StsblBillBoardExtension extends IServBaseExtension
 {
     /**
      * {@inheritDoc}
