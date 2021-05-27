@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/billboard/manage/categories", name="billboard_manage_category_legacy_redirect")
+ * @Route("/billboard/manage/categories", name="manage_billboard_category_legacy_redirect")
  */
 final class RedirectController extends AbstractController
 {

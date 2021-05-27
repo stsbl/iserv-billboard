@@ -45,7 +45,7 @@ abstract class AbstractBillBoardAdmin extends ServiceCrud
      */
     public static function defineRoutes(): RoutingDefinition
     {
-        return parent::defineRoutes()
+        return static::buildRouteDefinition()
             ->setNamePrefix('manage_billboard_')
             ->setPathPrefix('billboard/manage/')
         ;
@@ -74,5 +74,13 @@ abstract class AbstractBillBoardAdmin extends ServiceCrud
     public function isAdmin(): bool
     {
         return $this->isGranted('IS_AUTHENTICATED_ADMIN');
+    }
+
+    /**
+     * Callback to create the basic route definition.
+     */
+    protected static function buildRouteDefinition(): RoutingDefinition
+    {
+        return parent::defineRoutes();
     }
 }

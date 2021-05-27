@@ -10,6 +10,7 @@ Package: stsbl-iserv-billboard
 Architecture: all
 Depends: iserv-portal,
          iserv3-core (>= 19.08.06-2),
+         iserv3-crud (>= 21.05.27),
          stsbl-iserv3-maintenance,
          ${misc:Depends},
          ${perl:Depends}

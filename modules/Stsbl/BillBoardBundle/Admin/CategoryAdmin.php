@@ -78,21 +78,9 @@ final class CategoryAdmin extends AbstractBillBoardAdmin
     /**
      * {@inheritDoc}
      */
-    public static function defineRoutes(): RoutingDefinition
+    protected static function buildRouteDefinition(): RoutingDefinition
     {
-        $definition = parent::defineRoutes();
-
-        // FIXME: Remove, after CRUD allows proper access!
-        try {
-            $reflectionProperty = new \ReflectionProperty($definition, 'baseName');
-        } catch (\ReflectionException $e) {
-            throw new \RuntimeException('Could not reflect!', 0, $e);
-        }
-
-        $reflectionProperty->setAccessible(true);
-        $reflectionProperty->setValue($definition, 'category');
-
-        return $definition;
+        return self::createRoutes('category', 'category');
     }
 
     /**
