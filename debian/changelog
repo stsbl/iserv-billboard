@@ -1,3 +1,15 @@
+stsbl-iserv-billboard (21.06.09.1) testing; urgency=medium
+
+  * Updated license copyright
+  * Fixed Build-Depends
+  * Moved to iservinstall
+  * Updated copyright
+  * Turned source format to native
+  * Fixed almost all deprecations and rectored code
+  * Removed CRUD hack of evilness
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Wed, 09 Jun 2021 22:27:20 +0200
+
 stsbl-iserv-billboard (20.08.02-1) testing; urgency=medium
 
   * Bumped copyright
