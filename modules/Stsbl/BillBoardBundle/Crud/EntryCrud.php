@@ -84,10 +84,10 @@ final class EntryCrud extends AbstractCrud
         $this->routesPrefix = 'billboard/';
         $this->routesNamePrefix = '';
         $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard';
-        $this->templates['crud_add'] = 'StsblBillBoardBundle:Crud:entry_add.html.twig';
-        $this->templates['crud_edit'] = 'StsblBillBoardBundle:Crud:entry_edit.html.twig';
-        $this->templates['crud_index'] = 'StsblBillBoardBundle:Crud:entry_index.html.twig';
-        $this->templates['crud_show'] = 'StsblBillBoardBundle:Crud:entry_show.html.twig';
+        $this->templates['crud_add'] = '@StsblBillBoard/Crud/entry_add.html.twig';
+        $this->templates['crud_edit'] = '@StsblBillBoard/Crud/entry_edit.html.twig';
+        $this->templates['crud_index'] = '@StsblBillBoard/Crud/entry_index.html.twig';
+        $this->templates['crud_show'] = '@StsblBillBoard/Crud/entry_show.html.twig';
     }
 
     /**
