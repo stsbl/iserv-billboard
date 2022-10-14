@@ -6,13 +6,13 @@
         ({{ _('none') }})
     {% elseif value is iterable %}
         {% for ent in value %}
-            {% spaceless %}
+            {% apply spaceless %}
                 {% set imageRoute = admin.getRoute('fileimage_' ~ field.name)|default(field.option('image_route')) %}
                 <a data-toggle="modal-image" href="{{ path(imageRoute, {'entityId': object.id, 'id': ent.id}) }}" class="mr">
                     <img src="{{ path(imageRoute, {'entityId': object.id, 'id': ent.id, 'width': thumbsize, 'height': thumbsize}) }}"
                         alt="{{ ent }}" class="img-thumbnail" width="{{ thumbsize }}" height="{{ thumbsize }}"/>
                 </a>
-            {% endspaceless %}
+            {% endapply spaceless %}
         {% endfor %}
     {% else %}
         {{ parent() }}

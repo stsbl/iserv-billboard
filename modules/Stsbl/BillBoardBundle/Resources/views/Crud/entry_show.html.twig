@@ -50,7 +50,7 @@
                     {% set images = item.images %}
                     {% if images is iterable and images|length > 0 %}
                         {% for ent in images %}
-                            {% apply spaceless %}
+                            {% apply apply spaceless %}
                                 <div class="billboard-image-container">
                                 {% set imageRoute = admin.getRoute('fileimage_image')|default('fileimage') %}
                                 <a data-toggle="modal-image" href="{{ path(imageRoute, {'id': ent.id, 'entityId': item.id}) }}">
