@@ -1,20 +1,24 @@
 priv.billboard:
+uuid 		0b8c0e53-5d2e-485c-b708-7a12fae11fdc
 module      Bill-Board
 title       Access the bill-board
 description Users with this privilege are able to access the bill-board and read the entries but there are not able to create and edit entries.
 
 priv.billboard_create:
+uuid 		81b6fd6a-92c0-49bf-8ee4-3272335f05c2
 module      Bill-Board
 title       Create new entries at the bill-board
 description Users with this privilege can create new entries on the bill-board, edit their existing entries and comment entries of other users.
 
 priv.billboard_moderate:
+uuid 		c232f91d-7c6f-495b-ac42-d179f3fa1c1c
 module          Bill-Board
 title           Moderate the bill-board
 description     Users with this privilege can edit and delete every entry on the bill-board. Includes the creation privilege.
 assign          moderatoren
 
 priv.billboard_manage:
+uuid 		b1412593-5db4-4044-b53f-ed0b258b5cea
 module          Bill-Board
 title           Manage the bill-board
 description     Users with this privilege can manange the bill-board and create new categories. Includes the moderation privilege.
