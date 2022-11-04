@@ -9,6 +9,7 @@ use IServ\CoreBundle\Entity\User;
 use IServ\CoreBundle\Model\FileImage;
 use IServ\CoreBundle\Util\Date;
 use IServ\CrudBundle\Entity\CrudInterface;
+use IServ\Library\Zeit\Zeit;
 
 /*
  * The MIT License
@@ -48,63 +49,44 @@ class EntryImage implements CrudInterface
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * @var int
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="file_image",  nullable=true)
-     *
-     * @var FileImage
      */
-    private $image;
+    private ?FileImage $image;
 
     /**
      * @ORM\Column(name="description", type="text", nullable=true)
-     *
-     * @var string
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\ManyToOne(targetEntity="\IServ\CoreBundle\Entity\User", fetch="EAGER")
      * @ORM\JoinColumn(name="author", referencedColumnName="act")
-     *
-     * @var User
      */
-    private $author;
+    private ?User $author;
 
     /**
-     * @ORM\Column(name="time",type="datetime",nullable=false)
-     *
-     * @var \DateTime
+     * @ORM\Column(name="time",type="datetimetz_immutable",nullable=false)
      */
-    private $time;
+    private \DateTimeImmutable $time;
 
     /**
-     * @ORM\Column(name="updated_at",type="datetime",nullable=false)
-     *
-     * @var \DateTime
+     * @ORM\Column(name="updated_at",type="datetimetz_immutable",nullable=false)
      */
-    private $updatedAt;
+    private \DateTimeImmutable $updatedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="Entry", inversedBy="images")
      * @ORM\JoinColumn(name="entry", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     *
-     * @var Entry
      */
-    private $entry;
+    private ?Entry $entry;
 
-    /**
-     * Lifecycle callback to set the creation date
-     *
-     * @ORM\PrePersist
-     */
-    public function onCreate(): void
+    public function __construct()
     {
-        $this->setTime(Date::now());
+        $this->time = Zeit::now();
         $this->updateLastUpdatedTime();
     }
 
@@ -123,7 +105,7 @@ class EntryImage implements CrudInterface
      */
     public function updateLastUpdatedTime(): void
     {
-        $this->setUpdatedAt(Date::now());
+        $this->setUpdatedAt(Zeit::now());
     }
 
     /**
@@ -157,12 +139,12 @@ class EntryImage implements CrudInterface
         return $this->author;
     }
 
-    public function getTime(): ?\DateTime
+    public function getTime(): \DateTimeImmutable
     {
         return $this->time;
     }
 
-    public function getUpdatedAt(): ?\DateTime
+    public function getUpdatedAt(): \DateTimeImmutable
     {
         return $this->updatedAt;
     }
@@ -202,20 +184,11 @@ class EntryImage implements CrudInterface
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function setTime(\DateTime $time = null): self
-    {
-        $this->time = $time;
-
-        return $this;
-    }
 
     /**
      * @return $this
      */
-    public function setUpdatedAt(\DateTime $updatedAt = null): self
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt = null): self
     {
         $this->updatedAt = $updatedAt;
 

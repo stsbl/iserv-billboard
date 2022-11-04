@@ -52,7 +52,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 final class AdminController extends AbstractPageController
 {
-    use LoggerTrait;use LoggerInitializationTrait;
+    use LoggerTrait;
+    use LoggerInitializationTrait;
 
     private const CONFIG_DIR = '/var/lib/stsbl/billboard/cfg/';
     private const FILE_RULES = 'rules.cfg';

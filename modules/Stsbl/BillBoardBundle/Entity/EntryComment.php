@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use IServ\CoreBundle\Entity\User;
 use IServ\CoreBundle\Util\Date;
 use IServ\CrudBundle\Entity\CrudInterface;
+use IServ\Library\Zeit\Zeit;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /*
@@ -48,49 +49,42 @@ class EntryComment implements CrudInterface
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * @var int
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(name="title",type="text",length=255)
      * @Assert\NotBlank()
-     *
-     * @var string
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(name="content",type="text")
      * @Assert\NotBlank()
-     *
-     * @var string
      */
-    private $content;
+    private ?string $content;
 
     /**
      * @ORM\ManyToOne(targetEntity="\IServ\CoreBundle\Entity\User", fetch="EAGER")
      * @ORM\JoinColumn(name="author", referencedColumnName="act")
-     *
-     * @var User
      */
-    private $author;
+    private ?User $author;
 
     /**
      * @ORM\Column(name="time",type="datetime",nullable=false)
-     *
-     * @var \DateTime
      */
-    private $time;
+    private \DateTimeImmutable $time;
 
     /**
      * @ORM\ManyToOne(targetEntity="Entry", inversedBy="comments")
      * @ORM\JoinColumn(name="entry", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     *
-     * @var Entry
      */
-    private $entry;
+    private ?Entry $entry;
+
+    public function __construct()
+    {
+        $this->time = Zeit::now();
+    }
 
     /**
      * {@inheritdoc}
@@ -136,7 +130,7 @@ class EntryComment implements CrudInterface
         return $this->entry;
     }
 
-    public function getTime(): ?\DateTime
+    public function getTime(): \DateTimeImmutable
     {
         return $this->time;
     }
@@ -174,31 +168,11 @@ class EntryComment implements CrudInterface
     /**
      * @return $this
      */
-    public function setTime(\DateTime $time = null): self
-    {
-        $this->time = $time;
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
     public function setEntry(Entry $entry): self
     {
         $this->entry = $entry;
 
         return $this;
-    }
-
-    /**
-     * Lifecycle callback to set the creation date
-     *
-     * @ORM\PrePersist
-     */
-    public function onCreate(): void
-    {
-        $this->setTime(Date::now());
     }
 
     /**

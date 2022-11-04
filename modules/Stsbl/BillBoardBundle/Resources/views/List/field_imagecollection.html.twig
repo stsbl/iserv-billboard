@@ -12,7 +12,7 @@
                     <img src="{{ path(imageRoute, {'entityId': object.id, 'id': ent.id, 'width': thumbsize, 'height': thumbsize}) }}"
                         alt="{{ ent }}" class="img-thumbnail" width="{{ thumbsize }}" height="{{ thumbsize }}"/>
                 </a>
-            {% endapply spaceless %}
+            {% endapply %}
         {% endfor %}
     {% else %}
         {{ parent() }}

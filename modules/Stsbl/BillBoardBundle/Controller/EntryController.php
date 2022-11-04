@@ -62,7 +62,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 final class EntryController extends StrictCrudController
 {
-    use CommentFormTrait;use LoggerInitializationTrait;use LoggerTrait;
+    use CommentFormTrait;
+    use LoggerInitializationTrait;
+    use LoggerTrait;
 
     /**
      * {@inheritdoc}
@@ -71,7 +73,7 @@ final class EntryController extends StrictCrudController
      *
      * @return Response|array
      */
-    public function addAction(Request $request)
+    public function addAction(Request $request): array|Response
     {
         $ret = parent::addAction($request);
 
@@ -89,7 +91,7 @@ final class EntryController extends StrictCrudController
      *
      * @return Response|array
      */
-    public function editAction(Request $request, $id)
+    public function editAction(Request $request, $id): array|Response
     {
         $ret = parent::editAction($request, $id);
 
@@ -107,7 +109,7 @@ final class EntryController extends StrictCrudController
      *
      * @return Response|array
      */
-    public function showAction(Request $request, $id)
+    public function showAction(Request $request, $id): array|Response
     {
         if ($this->handleImageUploadForm($request, (int)$id) || $this->handleDeleteConfirmForm($request)) {
             return $this->redirectToRoute('billboard_show', ['id' => $id]);

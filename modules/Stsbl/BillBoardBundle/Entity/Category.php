@@ -45,26 +45,20 @@ class Category implements CrudInterface
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * @var int
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(name="title", type="text")
      * @Assert\NotBlank()
-     *
-     * @var string
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(name="description", type="text")
      * @Assert\NotBlank()
-     *
-     * @var string
      */
-    private $description;
+    private ?string $description;
 
     /**
      * {@inheritdoc}

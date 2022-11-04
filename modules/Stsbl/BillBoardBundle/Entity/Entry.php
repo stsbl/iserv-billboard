@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Stsbl\BillBoardBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use IServ\CoreBundle\Entity\User;
 use IServ\CoreBundle\Util\Date;
 use IServ\CrudBundle\Entity\CrudInterface;
+use IServ\Library\Zeit\Zeit;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /*
@@ -49,85 +51,67 @@ class Entry implements CrudInterface
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * @var int
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(name="title", type="text")
      * @Assert\NotBlank()
-     *
-     * @var string
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(name="description", type="text")
      * @Assert\NotBlank()
-     *
-     * @var string
      */
-    private $description;
+    private ?string $description;
 
     /**
-     * @ORM\Column(name="time", type="datetime", nullable=false)
-     *
-     * @var \DateTime
+     * @ORM\Column(name="time", type="datetimetz_immutable", nullable=false)
      */
-    private $time;
+    private \DateTimeImmutable $time;
 
     /**
-     * @ORM\Column(name="updated_at",type="datetime",nullable=false)
-     *
-     * @var \DateTime
+     * @ORM\Column(name="updated_at",type="datetimetz_immutable",nullable=false)
      */
-    private $updatedAt;
+    private \DateTimeImmutable $updatedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="\Stsbl\BillBoardBundle\Entity\Category", fetch="EAGER")
      * @ORM\JoinColumn(name="category", referencedColumnName="id")
      * @Assert\NotNull()
-     *
-     * @var Category
      */
-    private $category;
+    private ?Category $category;
 
     /**
      * @ORM\ManyToOne(targetEntity="\IServ\CoreBundle\Entity\User", fetch="EAGER")
      * @ORM\JoinColumn(name="author", referencedColumnName="act")
-     *
-     * @var User
      */
-    private $author;
+    private ?User $author;
 
     /**
      * @ORM\Column(name="visible", type="boolean")
-     *
-     * @var bool
      */
-    private $visible = true;
+    private bool $visible = true;
 
     /**
      * @ORM\Column(name="closed", type="boolean")
-     *
-     * @var bool
      */
-    private $closed = false;
+    private bool $closed = false;
 
     /**
      * @ORM\OneToMany(targetEntity="EntryImage", mappedBy="entry")
      *
-     * @var ArrayCollection|EntryImage[]
+     * @var Collection&EntryImage[]
      */
-    private $images;
+    private Collection $images;
 
     /**
      * @ORM\OneToMany(targetEntity="EntryComment", mappedBy="entry")
      *
-     * @var ArrayCollection|EntryComment[]
+     * @var Collection&EntryComment[]
      */
-    private $comments;
+    private Collection $comments;
 
     /**
      * The constructor
@@ -136,18 +120,10 @@ class Entry implements CrudInterface
     {
         $this->images = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->time = Zeit::now();
+        $this->updatedAt = Zeit::now();
     }
 
-    /**
-     * Lifecycle callback to set the creation date
-     *
-     * @ORM\PrePersist
-     */
-    public function onCreate(): void
-    {
-        $this->setTime(Date::now());
-        $this->updateLastUpdatedTime();
-    }
 
     /**
      * Lifecycle callback to set the update date
@@ -164,7 +140,7 @@ class Entry implements CrudInterface
      */
     public function updateLastUpdatedTime(): void
     {
-        $this->setUpdatedAt(Date::now());
+        $this->setUpdatedAt(Zeit::now());
     }
 
     /**
@@ -193,15 +169,12 @@ class Entry implements CrudInterface
         return $this->description;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getTime(): ?\DateTime
+    public function getTime(): ?\DateTimeImmutable
     {
         return $this->time;
     }
 
-    public function getUpdatedAt(): ?\DateTime
+    public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
     }
@@ -222,17 +195,17 @@ class Entry implements CrudInterface
     }
 
     /**
-     * @return ArrayCollection|EntryImage[]
+     * @return Collection&EntryImage[]
      */
-    public function getImages()
+    public function getImages(): Collection
     {
         return $this->images;
     }
 
     /**
-     * @return ArrayCollection|EntryComment[]
+     * @return Collection&EntryComment[]
      */
-    public function getComments()
+    public function getComments(): Collection
     {
         return $this->comments;
     }
@@ -260,7 +233,7 @@ class Entry implements CrudInterface
     /**
      * @return $this
      */
-    public function setTime(\DateTime $time = null): self
+    public function setTime(\DateTimeImmutable $time): self
     {
         $this->time = $time;
 
@@ -270,7 +243,7 @@ class Entry implements CrudInterface
     /**
      * @return $this
      */
-    public function setUpdatedAt(\DateTime $updatedAt = null): self
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 

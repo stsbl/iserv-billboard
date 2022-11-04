@@ -54,7 +54,9 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 final class CommentController extends AbstractPageController
 {
-    use CommentFormTrait;use LoggerTrait;use LoggerInitializationTrait;
+    use CommentFormTrait;
+    use LoggerTrait;
+    use LoggerInitializationTrait;
 
     /**
      * Adds a comment
