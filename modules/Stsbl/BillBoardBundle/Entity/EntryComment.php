@@ -71,7 +71,7 @@ class EntryComment implements CrudInterface
     private ?User $author;
 
     /**
-     * @ORM\Column(name="time",type="datetime",nullable=false)
+     * @ORM\Column(name="time",type="datetimetz_immutable", nullable=false)
      */
     private \DateTimeImmutable $time;
 
