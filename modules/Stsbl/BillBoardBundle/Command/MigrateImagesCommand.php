@@ -63,6 +63,6 @@ final class MigrateImagesCommand extends Command
             }
         }
 
-        return $error ? self::FAILURE : self::SUCCESS;
+        return $error ? 1 : 0;
     }
 }
