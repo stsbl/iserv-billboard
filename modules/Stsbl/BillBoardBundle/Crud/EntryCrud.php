@@ -175,7 +175,7 @@ final class EntryCrud extends AbstractCrud implements ServiceSubscriberInterface
                 'label' => _('Title'),
             ])
             ->add('category', null, [
-                'label' => _('Category')
+                'label' => _('Category'),
             ])
             ->add('author', null, [
                 'label' => _('Author'),
@@ -216,27 +216,27 @@ final class EntryCrud extends AbstractCrud implements ServiceSubscriberInterface
                 'attr' => [
                     'help_text' => _('Name the matter that you want to offer in one sentence, for example ' .
                         '»I am oferring my electric guitar for selling«.'),
-                ]
+                ],
             ])
             ->add('category', null, [
                 'label' => _('Category'),
                 'attr' => [
-                    'help_text' => _('Select the matching category for your matter.')
-                ]
+                    'help_text' => _('Select the matching category for your matter.'),
+                ],
             ])
             ->add('visible', BooleanType::class, [
                 'label' => _('Visible'),
                 'attr' => [
                     'help_text' => _('If you hide the entry, it is only visible by yourself and people who has the ' .
-                        'privilege to moderate the bill-board.')
-                ]
+                        'privilege to moderate the bill-board.'),
+                ],
             ])
             ->add('description', PurifiedTextareaType::class, [
                 'label' => _('Description'),
                 'attr' => [
                     'rows' => 30,
-                    'help_text' => _('Please give a short description of your matter.')
-                ]
+                    'help_text' => _('Please give a short description of your matter.'),
+                ],
             ])
         ;
     }
@@ -468,11 +468,11 @@ final class EntryCrud extends AbstractCrud implements ServiceSubscriberInterface
             return true;
         }
 
-        if ($object->isVisible() === false && $user === $object->getAuthor()) {
+        if (!$object->isVisible() && $user === $object->getAuthor()) {
             return true;
         }
 
-        if ($object->isVisible() === true) {
+        if ($object->isVisible()) {
             return true;
         }
 
@@ -487,18 +487,11 @@ final class EntryCrud extends AbstractCrud implements ServiceSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public function postRemove(CrudInterface $entry): void
+    public function preRemove(CrudInterface $object): void
     {
-        /* @var Entry $entry */
-        if ($this->isModerator() && $this->getUser() !== $entry->getAuthor()) {
-            $this->log(sprintf(
-                'Moderatives Löschen des Eintrages "%s" von %s',
-                $entry->getTitle(),
-                $entry->getAuthorDisplay()
-            ));
-        }
-
-        foreach ($entry->getImages() as $image) {
+        /** @var Entry $object */
+        // Must preremove images to avoid flush conflicts
+        foreach ($object->getImages() as $image) {
             $this->imageManager()->delete($image);
         }
     }
@@ -506,7 +499,22 @@ final class EntryCrud extends AbstractCrud implements ServiceSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public function postUpdate(CrudInterface $entry, array $previousData = null): void
+    public function postRemove(CrudInterface $object): void
+    {
+        /* @var Entry $object */
+        if ($this->isModerator() && $this->getUser() !== $object->getAuthor()) {
+            $this->log(sprintf(
+                'Moderatives Löschen des Eintrages "%s" von %s',
+                $object->getTitle(),
+                $object->getAuthorDisplay()
+            ));
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function postUpdate(CrudInterface $object, array $previousData = null): void
     {
         /* @var Entry $entry */
         if ($this->isModerator() && $this->getUser() !== $entry->getAuthor()) {
@@ -566,6 +574,9 @@ final class EntryCrud extends AbstractCrud implements ServiceSubscriberInterface
     }
 
 
+    /**
+     * @required
+     */
     public function setContainer(ContainerInterface $container): void
     {
         $this->container = $container;
