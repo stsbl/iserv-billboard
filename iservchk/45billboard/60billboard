@@ -1,3 +1,5 @@
 MkDir 0755 root:root /var/lib/stsbl
 MkDir 0755 root:root /var/lib/stsbl/billboard
+MkDir 0700 www-data:root /var/lib/stsbl/billboard/images
 MkDir 0700 www-data:root /var/lib/stsbl/billboard/cfg
+

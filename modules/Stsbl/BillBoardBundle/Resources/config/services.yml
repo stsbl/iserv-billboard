@@ -6,7 +6,7 @@ services:
         public: false
 
     Stsbl\BillBoardBundle\:
-        resource: '../../{Admin,Crud}'
+        resource: '../../{Admin,Command,Crud,Image}'
         exclude: '../../Crud/Batch'
 
     Stsbl\BillBoardBundle\Controller\:

@@ -60,7 +60,7 @@ final class HideAction extends AbstractBatchAction
             try {
                 if ($this->isAllowedToExecute($entry, $user)) {
                     $qb
-                        ->update('StsblBillBoardBundle:Entry', 'e')
+                        ->update(\Stsbl\BillBoardBundle\Entity\Entry::class, 'e')
                         ->set('e.visible', 'false')
                         ->where('e.id = :id')
                         ->setParameter('id', $entry->getId())

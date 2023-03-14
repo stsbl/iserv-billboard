@@ -1,0 +1,6 @@
+Test "billboard: migrate fileimage"
+  grep -qx 40billboard_migrate_images /var/lib/iserv/config/update.log
+  ---
+  symfony stsbl:billboard:migrate-images &&
+      echo 40billboard_migrate_images >> /var/lib/iserv/config/update.log
+

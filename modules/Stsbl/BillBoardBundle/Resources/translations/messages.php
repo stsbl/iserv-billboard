@@ -57,3 +57,6 @@ _('New comment on your post: %s commented on %s');
 _('Your entry was locked: %s locked %s');
 _('Your entry was opened: %s opened %s');
 _('Bill-Board');
+
+// Constraints
+_('Please upload an image.');

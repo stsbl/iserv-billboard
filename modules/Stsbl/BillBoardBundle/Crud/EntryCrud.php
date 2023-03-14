@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Stsbl\BillBoardBundle\Crud;
 
-use IServ\CoreBundle\Form\Type\BooleanType;
-use IServ\CoreBundle\Form\Type\ImageType;
-use IServ\CoreBundle\Form\Type\PurifiedTextareaType;
+use IServ\Bundle\Form\Form\Type\BooleanType;
+use IServ\Bundle\Form\Form\Type\PurifiedTextareaType;
 use IServ\CoreBundle\Traits\LoggerTrait;
-use IServ\CoreBundle\Util\Collection\OrderedCollection;
 use IServ\CrudBundle\Crud\AbstractCrud;
 use IServ\CrudBundle\Crud\Action\Link;
 use IServ\CrudBundle\Crud\Batch\BatchActionCollection;
-use IServ\CrudBundle\Crud\FileImageRoutingTrait;
+use IServ\CrudBundle\Crud\Collection\OrderedCollection;
 use IServ\CrudBundle\Doctrine\ORM\ORMObjectManager;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CrudBundle\Mapper\FormMapper;
@@ -20,15 +18,18 @@ use IServ\CrudBundle\Mapper\ListMapper;
 use IServ\CrudBundle\Mapper\ShowMapper;
 use IServ\CrudBundle\Table\Filter;
 use IServ\CrudBundle\Table\ListHandler;
+use Psr\Container\ContainerInterface;
 use Stsbl\BillBoardBundle\Controller\EntryController;
 use Stsbl\BillBoardBundle\Crud\Batch\HideAction;
 use Stsbl\BillBoardBundle\Crud\Batch\ShowAction;
 use Stsbl\BillBoardBundle\Entity\Category;
 use Stsbl\BillBoardBundle\Entity\CategoryRepository;
 use Stsbl\BillBoardBundle\Entity\Entry;
+use Stsbl\BillBoardBundle\Image\ImageManager;
 use Stsbl\BillBoardBundle\Security\Privilege;
 use Stsbl\BillBoardBundle\Traits\LoggerInitializationTrait;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
 /*
  * The MIT License
@@ -57,16 +58,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Bill-Board entry list
  *
- * FIXME: Migrate away from FileImage and remove AbstractCrud usage.
- *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://mit.otg/licenses/MIT>
  */
-final class EntryCrud extends AbstractCrud
+final class EntryCrud extends AbstractCrud implements ServiceSubscriberInterface
 {
-    use FileImageRoutingTrait;
     use LoggerTrait;
     use LoggerInitializationTrait;
+
+    private readonly ContainerInterface $container;
 
     public function __construct()
     {
@@ -118,19 +118,6 @@ final class EntryCrud extends AbstractCrud
     {
         parent::buildRoutes();
 
-        $routeId = $this->getRouteIdentifier();
-        $fileImageProperty = 'image';
-
-        $this->buildImageRoute($fileImageProperty);
-
-        $this->routes['fileimage_image']['_controller'] = EntryController::class . '::entryImage';
-        $this->routes['fileimage_image']['pattern'] = sprintf(
-            '/%s%s/image/{entityId}/{id}/%s/{width}/{height}',
-            $this->getRoutesPrefix(),
-            $routeId,
-            $fileImageProperty
-        );
-
         $this->routes[self::ACTION_ADD]['_controller'] = EntryController::class . '::addAction';
         $this->routes[self::ACTION_EDIT]['_controller'] = EntryController::class . '::editAction';
         $this->routes[self::ACTION_INDEX]['_controller'] = EntryController::class . '::indexAction';
@@ -163,7 +150,7 @@ final class EntryCrud extends AbstractCrud
                 'label' => _('Last refresh'),
                 'responsive' => 'min-tablet',
             ])
-            ->add('images', ImageType::class, [
+            ->add('images', null, [
                 'label' => _('Images'),
                 'required' => false,
                 'template' => '@StsblBillBoard/List/field_imagecollection.html.twig',
@@ -264,14 +251,14 @@ final class EntryCrud extends AbstractCrud
         $qb = $em->createQueryBuilder($this->class);
 
         $qb->select('p')
-            ->from('StsblBillBoardBundle:Entry', 'p')
+            ->from(Entry::class, 'p')
             ->where($qb->expr()->eq('p', 'parent'))
             ->andWhere('p.visible = true')
         ;
 
         $listHandler
             ->addListFilter(
-                (new Filter\ListPropertyFilter(_('Category'), 'category', 'StsblBillBoardBundle:Category'))
+                (new Filter\ListPropertyFilter(_('Category'), 'category', \Stsbl\BillBoardBundle\Entity\Category::class))
                     ->allowNone()
             )
             ->addListFilter(new Filter\ListSearchFilter('search', ['title', 'description']))
@@ -352,7 +339,7 @@ final class EntryCrud extends AbstractCrud
      */
     public function getShowActions(CrudInterface $item): OrderedCollection
     {
-        /* @var $item \Stsbl\BillBoardBundle\Entity\Entry */
+        /* @var $item Entry */
         $links = parent::getShowActions($item);
 
         if ($this->isModerator()) {
@@ -510,6 +497,10 @@ final class EntryCrud extends AbstractCrud
                 $entry->getAuthorDisplay()
             ));
         }
+
+        foreach ($entry->getImages() as $image) {
+            $this->imageManager()->delete($image);
+        }
     }
 
     /**
@@ -567,5 +558,26 @@ final class EntryCrud extends AbstractCrud
     {
         /* @var $object Entry */
         return $object->getAuthor() === $this->getUser();
+    }
+
+    private function imageManager(): ImageManager
+    {
+        return $this->container->get(ImageManager::class);
+    }
+
+
+    public function setContainer(ContainerInterface $container): void
+    {
+        $this->container = $container;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public static function getSubscribedServices(): array
+    {
+        return [
+            ImageManager::class,
+        ];
     }
 }

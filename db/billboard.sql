@@ -5,20 +5,20 @@
  */
 CREATE TABLE billboard_category (
   id          SERIAL      PRIMARY KEY,
-  title       VARCHAR(255),
+  title       TEXT,
   description TEXT
 );
 
 CREATE TABLE billboard (
     id          SERIAL              PRIMARY KEY,
-    title       VARCHAR(255),
+    title       TEXT,
     description TEXT,
-    time        TIMESTAMPTZ(0)  NOT NULL,
-    updated_at  TIMESTAMPTZ(0)  NOT NULL DEFAULT now(),
+    time        TIMESTAMPTZ  NOT NULL,
+    updated_at  TIMESTAMPTZ  NOT NULL DEFAULT now(),
     category    INT     REFERENCES billboard_category(id)
                         ON DELETE SET NULL
                         ON UPDATE CASCADE,
-    author      VARCHAR(255) REFERENCES users(act)
+    author      TEXT REFERENCES users(act)
                              ON DELETE SET NULL
                              ON UPDATE CASCADE,
     visible     BOOLEAN         NOT NULL DEFAULT true,
@@ -28,12 +28,14 @@ CREATE TABLE billboard (
 CREATE TABLE billboard_images (
     id          SERIAL      PRIMARY KEY,
     image       FILE_IMAGE,
+    image_uuid  UUID,
+    image_name  TEXT,
     description TEXT,
-    author      VARCHAR(255) REFERENCES users(act)
+    author      TEXT REFERENCES users(act)
                              ON DELETE SET NULL
                              ON UPDATE CASCADE,
-    time        TIMESTAMPTZ(0) NOT NULL,
-    updated_at  TIMESTAMPTZ(0) NOT NULL  DEFAULT now(),
+    time        TIMESTAMPTZ NOT NULL,
+    updated_at  TIMESTAMPTZ NOT NULL  DEFAULT now(),
     entry       INT     REFERENCES billboard(id)
                         ON DELETE SET NULL
                         ON UPDATE CASCADE
@@ -41,13 +43,13 @@ CREATE TABLE billboard_images (
 
 CREATE TABLE billboard_comments (
     id          SERIAL      PRIMARY KEY,
-    title       VARCHAR(255) NOT NULL,
+    title       TEXT NOT NULL,
     content     TEXT NOT NULL,
-    author      VARCHAR(255) REFERENCES users(act)
+    author      TEXT REFERENCES users(act)
                              ON DELETE SET NULL
                              ON UPDATE CASCADE,
                       
-    time        TIMESTAMPTZ(0) NOT NULL,
+    time        TIMESTAMPTZ NOT NULL,
     entry       INT     REFERENCES billboard(id)
                         ON DELETE CASCADE
                         ON UPDATE CASCADE

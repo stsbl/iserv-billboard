@@ -7,23 +7,28 @@ namespace Stsbl\BillBoardBundle\Controller;
 use IServ\BootstrapBundle\Form\Type\FormActionsType;
 use IServ\CoreBundle\Controller\FileImageController;
 use IServ\CoreBundle\Event\NotificationEvent;
-use IServ\CoreBundle\Form\Type\ImageType;
-use IServ\CoreBundle\Service\Flash;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use IServ\CrudBundle\Contracts\CrudContract;
 use IServ\CrudBundle\Controller\StrictCrudController;
+use IServ\FilesystemBundle\Upload\Form\Type\UniversalFileType;
 use IServ\Library\Config\Config;
+use IServ\Library\Flash\FlashInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Stsbl\BillBoardBundle\Crud\EntryCrud;
 use Stsbl\BillBoardBundle\Entity\Entry;
 use Stsbl\BillBoardBundle\Entity\EntryImage;
+use Stsbl\BillBoardBundle\Form\DataTransformer\FileToUuidTransformer;
+use Stsbl\BillBoardBundle\Image\ImageManager;
+use Stsbl\BillBoardBundle\Image\ImageUpload;
 use Stsbl\BillBoardBundle\Traits\LoggerInitializationTrait;
+use Stsbl\BillBoardBundle\Validator\Constraints\SupportedImage;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -154,7 +159,7 @@ final class EntryController extends StrictCrudController
             $entry,
             $entry->getAuthorDisplay()
         ));
-        $this->get(Flash::class)->success(sprintf(_('Entry is now locked: %s'), $entry));
+        $this->get(FlashInterface::class)->success(sprintf(_('Entry is now locked: %s'), $entry));
 
         return $this->redirect($this->generateUrl('billboard_show', ['id' => $entry->getId()]));
     }
@@ -180,7 +185,7 @@ final class EntryController extends StrictCrudController
             $entry,
             $entry->getAuthorDisplay()
         ));
-        $this->flashMessage()->success(sprintf(_('Entry is now unlocked: %s'), $entry));
+        $this->container->get(FlashInterface::class)->success(sprintf(_('Entry is now unlocked: %s'), $entry));
 
         return $this->redirect($this->generateUrl('billboard_show', ['id' => $entry->getId()]));
     }
@@ -190,24 +195,25 @@ final class EntryController extends StrictCrudController
      */
     private function getImageUploadForm(Entry $entry): FormInterface
     {
-        $entryImage = EntryImage::createForEntryAndUser($entry, $this->getUser());
+        $entryImage = new ImageUpload(EntryImage::createForEntryAndUser($entry, $this->getUser()));
         $builder = $this->createFormBuilder($entryImage);
 
         $builder
-            ->add('image', ImageType::class, [
+            ->add('image', UniversalFileType::class, [
                 'label' => _('Image'),
-                'constraints' => [new NotBlank(['message' => _('Image should not be empty.')])]
+                'multiple' => false,
             ])
             ->add('description', TextType::class, [
                 'label' => _('Description'),
-                'required' => false
+                'required' => false,
             ])
             ->add('submit', SubmitType::class, [
                 'label' => _('Upload'),
                 'buttonClass' => 'btn-success',
-                'icon' => 'pro-upload'
+                'icon' => 'pro-upload',
             ])
         ;
+
 
         return $builder->getForm();
     }
@@ -226,28 +232,25 @@ final class EntryController extends StrictCrudController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /* @var $data EntryImage */
+            /* @var $data ImageUpload */
             $data = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
-
-            if (!$crud->isAuthor($data->getEntry())) {
+            if (!$crud->isAuthor($data->getEntity()->getEntry())) {
                 throw $this->createAccessDeniedException('You are not allowed to add an image to this entry.');
             }
 
-            $em->persist($data);
-            $em->flush();
+            $this->container->get(ImageManager::class)->store($data);
 
-            $this->get(Flash::class)->success(__(
+            $this->container->get(FlashInterface::class)->success(__(
                 'Image "%s" was uploaded successfully.',
-                $data->getImage()->getFileName()
+                $data->getEntity()->getImageName()
             ));
 
             return true;
         }
 
         if ($form->isSubmitted()) {
-            $this->flashMessage()->error((string)$form->getErrors());
+            $this->container->get(FlashInterface::class)->error((string)$form->getErrors());
 
             return true;
         }
@@ -264,7 +267,7 @@ final class EntryController extends StrictCrudController
     private function getDeleteConfirmForm(): FormInterface
     {
         /* @var $builder \Symfony\Component\Form\FormBuilder */
-        $builder = $this->get('form.factory')->createNamedBuilder('image_delete_confirm');
+        $builder = $this->container->get('form.factory')->createNamedBuilder('image_delete_confirm');
 
         $builder
             ->add('image_id', HiddenType::class, [
@@ -325,23 +328,21 @@ final class EntryController extends StrictCrudController
                     throw $this->createAccessDeniedException('You are not allowed to delete images of this entry.');
                 }
 
-                $em = $this->getDoctrine()->getManager();
-                $em->remove($image);
-                $em->flush();
+                $this->container->get(ImageManager::class)->delete($image);
 
                 // log moderative actions
                 if ($image->getAuthor() !== $this->getUser()) {
                     $this->log(sprintf(
                         'Moderatives Löschen des Bildes "%s" von Beitrag "%s" von %s"',
-                        $image->getImage(),
+                        $image->getImageName(),
                         $image->getEntry(),
                         $image->getAuthorDisplay()
                     ));
                 }
 
-                $this->get(Flash::class)->success(__(
+                $this->container->get(FlashInterface::class)->success(__(
                     'Image "%s" was deleted successfully.',
-                    $image->getImage()->getFileName()
+                    $image->getImageName(),
                 ));
 
                 return true;
@@ -351,7 +352,7 @@ final class EntryController extends StrictCrudController
         }
 
         if ($form->isSubmitted()) {
-            $this->get(Flash::class)->error((string)$form->getErrors());
+            $this->container->get(FlashInterface::class)->error((string)$form->getErrors());
 
             return true;
         }
@@ -376,7 +377,7 @@ final class EntryController extends StrictCrudController
             return;
         }
 
-        $dispatcher = $this->get(EventDispatcherInterface::class);
+        $dispatcher = $this->container->get(EventDispatcherInterface::class);
 
         $dispatcher->dispatch(new NotificationEvent(
             $author,
@@ -424,46 +425,42 @@ final class EntryController extends StrictCrudController
 
         $deps[] = Config::class;
         $deps[] = EventDispatcherInterface::class;
+        $deps[] = FlashInterface::class;
+        $deps[] = ImageManager::class;
 
         return $deps;
     }
 
     /**
-     * Calls the FileImageAction from the core
+     * @Route("/billboard/entry/image/{entityId}/{id}", name="billboard_fileimage_image")
      */
     public function entryImage(
         int $entityId,
         int $id,
-        string $property,
-        ?string $width = null,
-        ?string $height = null
+        EntryCrud $crud,
+        ImageManager $imageManager,
     ): Response {
         // Get item
         /** @var Entry $object */
-        $object = $this->crud->getObject((string)$entityId);
+        $object = $crud->getObject((string)$entityId);
 
         if (null === $object) {
-            return $this->createNotFoundPage();
+            throw $this->createNotFoundException('Entry not found.');
         }
 
         // Security
-        if (!$this->crud->isAllowedTo(CrudContract::ACTION_SHOW, $this->getUser(), $object)) {
+        if (!$crud->isAllowedTo(CrudContract::ACTION_SHOW, $this->getUser(), $object)) {
             throw $this->createActionDeniedException('You are not allowed to view this object.');
         }
 
-        $images = $object->getImages()->filter(function (EntryImage $entryImage) use ($id): bool {
+        $images = $object->getImages()->filter(static function (EntryImage $entryImage) use ($id): bool {
             return $entryImage->getId() === $id;
         });
 
         if ($images->isEmpty()) {
-            return $this->createNotFoundPage();
+            throw $this->createNotFoundException('Entry in image not found.');
         }
 
-        return $this->forward(sprintf('%s::fileImageAction', FileImageController::class), [
-            'entity' => $images->current(),
-            'property' => $property,
-            'width' => $width,
-            'height' => $height,
-        ]);
+        return new BinaryFileResponse($imageManager->path($images->current()));
     }
 }

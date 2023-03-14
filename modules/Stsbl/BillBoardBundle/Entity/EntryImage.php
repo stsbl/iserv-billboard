@@ -58,6 +58,16 @@ class EntryImage implements CrudInterface
     private ?FileImage $image;
 
     /**
+     * @ORM\Column(name="image_uuid", type="guid", nullable=true)
+     */
+    private ?string $imageUuid = null;
+
+    /**
+     * @ORM\Column(name="image_name", type="text", nullable=true)
+     */
+    private ?string $imageName = null;
+
+    /**
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     private ?string $description;
@@ -111,9 +121,9 @@ class EntryImage implements CrudInterface
     /**
      * {@inheritdoc}
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getImage()->getFileName() ? $this->getImage()->getFileName() : '';
+        return $this->imageName ?? '?';
     }
 
     /**
@@ -124,9 +134,22 @@ class EntryImage implements CrudInterface
         return $this->id;
     }
 
+    /**
+     * @deprecated Use ImageManager to store images.
+     */
     public function getImage(): ?FileImage
     {
         return $this->image;
+    }
+
+    public function getImageUuid(): ?string
+    {
+        return $this->imageUuid;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
     }
 
     public function getDescription(): ?string
@@ -155,6 +178,8 @@ class EntryImage implements CrudInterface
     }
 
     /**
+     * @deprecated Use ImageManager to store images.
+     *
      * @return $this
      */
     public function setImage(FileImage $image = null): self
@@ -164,6 +189,15 @@ class EntryImage implements CrudInterface
         return $this;
     }
 
+    public function setImageUuid(?string $imageUuid): void
+    {
+        $this->imageUuid = $imageUuid;
+    }
+
+    public function setImageName(?string $imageName): void
+    {
+        $this->imageName = $imageName;
+    }
     /**
      * @return $this
      */

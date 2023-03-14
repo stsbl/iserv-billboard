@@ -52,7 +52,7 @@
                         {% for ent in images %}
                             {% apply spaceless %}
                                 <div class="billboard-image-container">
-                                {% set imageRoute = admin.getRoute('fileimage_image')|default('fileimage') %}
+                                {% set imageRoute = 'billboard_fileimage_image' %}
                                 <a data-toggle="modal-image" href="{{ path(imageRoute, {'id': ent.id, 'entityId': item.id}) }}">
                                     <img src="{{ path(imageRoute, {'id': ent.id, 'entityId': item.id, 'width': thumbsize, 'height': thumbsize}) }}"
                                     alt="{{ ent }}" class="img-thumbnail" width="{{ thumbsize }}" height="{{ thumbsize }}"/>
@@ -64,7 +64,7 @@
                                 
                                 {% if admin.isAllowedToEdit(item, app.user) %}
                                     <br />
-                                    <a href="#delete-image" id="billboard-delete-image-{{ ent.id }}" data-id="#billboard-delete-image-{{ ent.id }}" data-image-name="{{ ent.image.fileName }}" data-image-entry-title="{{ ent.entry.title }}" data-image-id="{{ ent.id }}" data-toggle="modal" data-target="#image-delete-confirm-container" class="billboard-delete-image btn btn-xs btn-default">{{ icon('remove-circle') }}{{ _('Delete') }}</a>
+                                    <a href="#delete-image" id="billboard-delete-image-{{ ent.id }}" data-id="#billboard-delete-image-{{ ent.id }}" data-image-name="{{ ent.imageName }}" data-image-entry-title="{{ ent.entry.title }}" data-image-id="{{ ent.id }}" data-toggle="modal" data-target="#image-delete-confirm-container" class="billboard-delete-image btn btn-xs btn-default">{{ icon('remove-circle') }}{{ _('Delete') }}</a>
                                 {% endif %}
                                 </div>
                             {% endapply %}
