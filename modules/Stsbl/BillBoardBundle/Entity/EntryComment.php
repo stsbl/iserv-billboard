@@ -6,7 +6,6 @@ namespace Stsbl\BillBoardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use IServ\CoreBundle\Entity\User;
-use IServ\CoreBundle\Util\Date;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\Library\Zeit\Zeit;
 use Symfony\Component\Validator\Constraints as Assert;

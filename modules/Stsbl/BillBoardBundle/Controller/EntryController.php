@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stsbl\BillBoardBundle\Controller;
 
 use IServ\BootstrapBundle\Form\Type\FormActionsType;
-use IServ\CoreBundle\Controller\FileImageController;
 use IServ\CoreBundle\Event\NotificationEvent;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use IServ\CrudBundle\Contracts\CrudContract;
@@ -21,7 +20,6 @@ use Stsbl\BillBoardBundle\Form\DataTransformer\FileToUuidTransformer;
 use Stsbl\BillBoardBundle\Image\ImageManager;
 use Stsbl\BillBoardBundle\Image\ImageUpload;
 use Stsbl\BillBoardBundle\Traits\LoggerInitializationTrait;
-use Stsbl\BillBoardBundle\Validator\Constraints\SupportedImage;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use IServ\CoreBundle\Entity\User;
-use IServ\CoreBundle\Util\Date;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\Library\Zeit\Zeit;
 use Symfony\Component\Validator\Constraints as Assert;
