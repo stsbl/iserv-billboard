@@ -27,9 +27,8 @@ CREATE TABLE billboard (
 
 CREATE TABLE billboard_images (
     id          SERIAL      PRIMARY KEY,
-    image       FILE_IMAGE,
-    image_uuid  UUID,
-    image_name  TEXT,
+    image_uuid  UUID NOT NULL,
+    image_name  TEXT NOT NULL,
     description TEXT,
     author      TEXT REFERENCES users(act)
                              ON DELETE SET NULL

@@ -6,9 +6,11 @@ namespace Stsbl\BillBoardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use IServ\CoreBundle\Entity\User;
-use IServ\CoreBundle\Model\FileImage;
 use IServ\CrudBundle\Entity\CrudInterface;
+use IServ\Library\Uuid\UuidInterface;
 use IServ\Library\Zeit\Zeit;
+use Webmozart\Assert\Assert;
+use Webmozart\Assert\InvalidArgumentException;
 
 /*
  * The MIT License
@@ -52,17 +54,12 @@ class EntryImage implements CrudInterface
     private ?int $id;
 
     /**
-     * @ORM\Column(type="file_image",  nullable=true)
+     * @ORM\Column(name="image_uuid", type="iserv_uuid", nullable=false)
      */
-    private ?FileImage $image;
+    private ?UuidInterface $imageUuid = null;
 
     /**
-     * @ORM\Column(name="image_uuid", type="guid", nullable=true)
-     */
-    private ?string $imageUuid = null;
-
-    /**
-     * @ORM\Column(name="image_name", type="text", nullable=true)
+     * @ORM\Column(name="image_name", type="text", nullable=false)
      */
     private ?string $imageName = null;
 
@@ -133,16 +130,14 @@ class EntryImage implements CrudInterface
         return $this->id;
     }
 
-    /**
-     * @deprecated Use ImageManager to store images.
-     */
-    public function getImage(): ?FileImage
+    public function getImageUuid(): UuidInterface
     {
-        return $this->image;
-    }
+        try {
+            Assert::notNull($this->imageUuid, 'UUID not set. Did you forgot to set the UUID using setImageUuid()?');
+        } catch (InvalidArgumentException $e) {
+            throw new \RuntimeException($e->getMessage(), previous: $e);
+        }
 
-    public function getImageUuid(): ?string
-    {
         return $this->imageUuid;
     }
 
@@ -176,19 +171,7 @@ class EntryImage implements CrudInterface
         return $this->entry;
     }
 
-    /**
-     * @deprecated Use ImageManager to store images.
-     *
-     * @return $this
-     */
-    public function setImage(FileImage $image = null): self
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
-    public function setImageUuid(?string $imageUuid): void
+    public function setImageUuid(UuidInterface $imageUuid): void
     {
         $this->imageUuid = $imageUuid;
     }
@@ -221,7 +204,7 @@ class EntryImage implements CrudInterface
     /**
      * @return $this
      */
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt = null): self
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
@@ -231,7 +214,7 @@ class EntryImage implements CrudInterface
     /**
      * @return $this
      */
-    public function setEntry(Entry $entry = null): self
+    public function setEntry(Entry $entry): self
     {
         $this->entry = $entry;
 

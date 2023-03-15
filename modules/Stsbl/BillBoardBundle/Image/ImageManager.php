@@ -10,7 +10,6 @@ use IServ\Library\Image\Image;
 use IServ\Library\Uuid\Uuid;
 use Stsbl\BillBoardBundle\Entity\EntryImage;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Mime\MimeTypes;
 use Webmozart\Assert\Assert;
 use Webmozart\Assert\InvalidArgumentException;
 
@@ -34,17 +33,6 @@ final class ImageManager
             throw new \RuntimeException('Invalid file provided!', previous: $e);
         }
 
-
-        if (false === $file->getSize()) {
-            throw new \RuntimeException('Could not read size of file!');
-        }
-        if (false === $mimetype = $file->getMimetype()) {
-            throw new \RuntimeException('Could not get mimetype for file!');
-        }
-        if (!MimeTypes::getDefault()->getExtensions($mimetype)) {
-            throw new \RuntimeException('Could not get extension for mimetype: ' . $mimetype);
-        }
-
         try {
             Assert::string($content = $file->read());
         } catch (InvalidArgumentException $e) {
@@ -58,37 +46,16 @@ final class ImageManager
         $this->entityManager->flush();
     }
 
-    public function convertFileImage(EntryImage $image): void
-    {
-        try {
-            Assert::notNull($fileImage = $image->getImage());
-        } catch (InvalidArgumentException $e) {
-            throw new \RuntimeException('Invalid file image within entry image: ' . $e->getMessage(), previous: $e);
-        }
-
-        $image->setImageName($fileImage->getFileName());
-        $image->setImage(null);
-        $this->createFile($fileImage->getData(), $image);
-        $this->entityManager->persist($image);
-        $this->entityManager->flush();
-    }
-
     public function delete(EntryImage $image): void
     {
-        try {
-            Assert::string($id = $image->getImageUuid());
-        } catch (InvalidArgumentException) {
-            return;
-        }
-
-        $this->filesystem->remove($this->buildFilePath($id));
+        $this->filesystem->remove($this->buildFilePath($image->getImageUuid()->toNormalizedString()));
         $this->entityManager->remove($image);
         $this->entityManager->flush();
     }
 
     public function path(EntryImage $image): string
     {
-        return $this->buildFilePath($image->getImageUuid());
+        return $this->buildFilePath($image->getImageUuid()->toNormalizedString());
     }
 
     private function buildFilePath(string $file): string
@@ -107,7 +74,7 @@ final class ImageManager
             throw new \RuntimeException('Could not convert image!', previous: $e);
         }
 
-        $entity->setImageUuid($uuid->toNormalizedString());
+        $entity->setImageUuid($uuid);
     }
 
 }
