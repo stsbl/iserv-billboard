@@ -22,9 +22,9 @@
     {% if app.environment != 'prod' %}
         <!-- {{ _self }} => TinyMCE -->
     {% endif %}
-    <script type="text/javascript" src="{{ asset('js/tinymce.js', 'vendor') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/tinymce5.js', 'vendor') }}"></script>
     {% if app.request.locale == 'de_DE' %}
-        <script type="text/javascript" src="{{ asset('js/tinymce-de.js', 'vendor') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/tinymce5-de.js', 'vendor') }}"></script>
     {% endif %}
 
     {% if app.environment != 'prod' %}

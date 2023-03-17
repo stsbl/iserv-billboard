@@ -22,32 +22,22 @@
  * THE SOFTWARE.
  */
 
-/* globals tinymce */
-(function () {
-    "use strict";
-    
-    function initialize()
-    {
-        // Taken from Tiny's default theme.js - replaced image with tiny.images, added fullscreen
-        // https://www.tinymce.com/docs/advanced/editor-control-identifiers/
-        const defaultToolbar = "undo redo | styleselect | bold italic underline strikethrough" +
-            " | alignleft aligncenter alignright alignjustify | " +
-            "bullist numlist | outdent indent | forecolor backcolor | removeformat | link";
+import TinyMCEBuilder from 'IServ.TinyMCEBuilder';
 
-        // Image plugin doesn't work
+/* globals tinymce */
+(function() {
+    'use strict';
+
+    function initTinyMCE() {
+        const defaultOptions = TinyMCEBuilder.buildDefaultOptions();
         const tinyOptions = {
-            branding: false,
             selector: '#billboard_description',
-            plugins: ['link', 'fullscreen', 'paste', 'charmap', 'code', 'insertdatetime', 'textcolor', 'wordcount'],
-            toolbar: defaultToolbar,
-            menubar: 'edit insert view format table tools',
             convert_urls: false,
-            height: window.screen.height * 0.4,
-            skin_url: '/iserv/assets/vendor/tinymce/skins/lightgray',
             setup: function (editor) {
-                editor.on('change', function (e) {
+                editor.on('change', function () {
                     editor.save();
                 });
+
                 editor.on('FullscreenStateChanged', function (e) {
                     if (true === e.state) {
                         $('#sidebar-wrapper').hide();
@@ -58,17 +48,8 @@
             }
         };
 
-        // Make sure no message is displayed if exiting the proper way via cancel/save
-        $('#billboard_actions_submit').click(function () {
-            $(window).off('beforeunload');
-        });
-
-        $('#billboard_actions_cancel').click(function () {
-            $(window).off('beforeunload');
-        });
-
-        tinymce.init(tinyOptions);
+        tinymce.init($.extend({}, defaultOptions, tinyOptions));
     }
 
-    $(document).ready(initialize);
-}());
+    $(document).ready(initTinyMCE);
+})();
