@@ -5,7 +5,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 #, php-format
 msgid "%s at %s"
 msgstr "%s am %s"
@@ -19,15 +19,15 @@ msgstr "Auf das schwarze Brett zugreifen"
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Add a comment"
 msgstr "Einen Kommentar hinzufügen"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Add a new image to this entry"
 msgstr "Ein neues Bild zum diesem Eintrag hinzufügen"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Add image"
 msgstr "Bild hinzufügen"
 
@@ -35,7 +35,7 @@ msgstr "Bild hinzufügen"
 msgid "Added"
 msgstr "Hinzugefügt"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/admin/index.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/admin/index.html.twig.php
 msgid "Administration"
 msgstr "Verwaltung"
 
@@ -49,17 +49,17 @@ msgid "Allow comments"
 msgstr "Kommentare erlauben"
 
 #: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Author"
 msgstr "Autor"
 
 #: priv/billboard modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
 #: modules/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php
-#: modules/Stsbl/BillBoardBundle/Resources/translations/messages.php
+#: modules/Stsbl/BillBoardBundle/EventListener/MenuListener.php
 #: modules/Stsbl/BillBoardBundle/Controller/CommentController.php
 #: modules/Stsbl/BillBoardBundle/Controller/AdminController.php
-#: modules/Stsbl/BillBoardBundle/EventListener/MenuListener.php
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/admin/index.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/translations/messages.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/admin/index.html.twig.php
 msgid "Bill-Board"
 msgstr "Schwarzes Brett"
 
@@ -75,15 +75,15 @@ msgstr "Kategorien"
 
 #: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
 #: modules/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Category"
 msgstr "Kategorie"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Close"
 msgstr "Schließen"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgctxt "billboard"
 msgid "Closed"
 msgstr "Geschlossen"
@@ -107,7 +107,7 @@ msgid "Comments"
 msgstr "Kommentare"
 
 # Translations with context
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgctxt "billboard"
 msgid "Comments"
 msgstr "Kommentare"
@@ -128,11 +128,11 @@ msgstr ""
 msgid "Create new entries at the bill-board"
 msgstr "Neue Einträge auf dem schwarzen Brett erstellen"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Created"
 msgstr "Erstellt"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Currently no comments."
 msgstr "Derzeit keine Kommentare."
 
@@ -141,32 +141,32 @@ msgid "Date"
 msgstr "Datum"
 
 #: modules/Stsbl/BillBoardBundle/Controller/EntryController.php
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Delete"
 msgstr "Löschen"
 
 #: modules/Stsbl/BillBoardBundle/Controller/CommentController.php
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Comment/confirm.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Comment/confirm.html.twig.php
 msgid "Delete comment"
 msgstr "Kommentar löschen"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Delete image"
 msgstr "Bild löschen"
 
 #: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
 #: modules/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php
 #: modules/Stsbl/BillBoardBundle/Controller/EntryController.php
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Description"
 msgstr "Beschreibung"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Comment/confirm.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Comment/confirm.html.twig.php
 #, php-format
 msgid "Do you really want to delete the comment \"%s\" by %s?"
 msgstr "Möchten Sie den Kommentar \"%s\" von %s wirklich löschen?"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgctxt "billboard"
 msgid "Do you really want to delete the image?"
 msgstr "Möchten Sie das Bild wirklich löschen?"
@@ -179,7 +179,7 @@ msgstr "Einträge, die ich erstellt habe"
 msgid "Entry"
 msgstr "Eintrag"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 #, php-format
 msgid "Entry \"%s\" on the billboard"
 msgstr "Eintrag \"%s\" auf dem schwarzen Brett"
@@ -222,7 +222,7 @@ msgstr ""
 "Hier können Sie Regeln eingeben, die im Formular für das Hinzufügen eines "
 "Eintrages zum schwarzen Brett angezeigt werden."
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Hidden"
 msgstr "Versteckt"
 
@@ -256,12 +256,8 @@ msgstr "Bild \"%s\" wurde erfolgreich gelöscht."
 msgid "Image \"%s\" was uploaded successfully."
 msgstr "Bild \"%s\" wurde erfolgreich hochgeladen."
 
-#: modules/Stsbl/BillBoardBundle/Controller/EntryController.php
-msgid "Image should not be empty."
-msgstr "Bild sollte leer sein."
-
 #: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Images"
 msgstr "Bilder"
 
@@ -270,7 +266,7 @@ msgid "Invalid rules text"
 msgstr "Ungültiger Regeltext"
 
 #: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Last refresh"
 msgstr "Zuletzt aktualisiert"
 
@@ -280,8 +276,8 @@ msgid "Lock"
 msgstr "Schließen"
 
 #: modules/Stsbl/BillBoardBundle/Controller/AdminController.php
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/admin/index.html.twig.php
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_index.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/admin/index.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_index.html.twig.php
 msgid "Manage"
 msgstr "Verwalten"
 
@@ -329,12 +325,16 @@ msgstr "Öffnen"
 msgid "Please give a short description of your matter."
 msgstr "Bitte beschreiben Sie Ihr Anliegen kurz."
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/admin/index.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/translations/messages.php
+msgid "Please upload an image."
+msgstr "Bitte laden Sie ein Bild hoch."
+
+#: modules/Stsbl/BillBoardBundle/Resources/views/admin/index.html.twig.php
 msgid "Rules"
 msgstr "Regeln"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_add.html.twig.php
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_edit.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_edit.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_add.html.twig.php
 msgid "Rules for posting on the Bill-Board:"
 msgstr "Regeln für das Veröffentlichen auf dem schwarzen Brett:"
 
@@ -354,7 +354,7 @@ msgstr "Wählen Sie eine passende Kategorie für Ihr Anliegen aus."
 msgid "Show"
 msgstr "Anzeigen"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "The adding of new comments was disabled by your administrator."
 msgstr ""
 "Das Hinzufügen neuer Kommentare wurde durch Ihren Administrator deaktiviert."
@@ -367,8 +367,12 @@ msgstr ""
 "Das schwarze Brett ist nur für kleine Dinge gedacht. Bitte bieten Sie keine "
 "Dinge mit einem Wert von mehr als 100 Euro an."
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_add.html.twig.php
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_edit.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Validator/Constraints/SupportedImage.php
+msgid "The given file has a not supported format."
+msgstr "Die Datei hat ein nicht unterstütztes Format."
+
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_edit.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_add.html.twig.php
 msgid ""
 "There are no bill-board categories configured yet. Please contact your "
 "administrator."
@@ -376,18 +380,18 @@ msgstr ""
 "Es sind noch keine Kategorien für das schwarze Brett eingerichtet. Bitte "
 "kontaktieren Sie Ihren Administrator."
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid ""
 "This entry currently has no images. To add one, click \"Add image\" below."
 msgstr ""
 "Dieser Eintrag hat derzeit keine Bilder. Um eines hinzuzufügen, klicken Sie "
 "unten auf \"Bild hinzufügen\"."
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "This entry is closed for any write access."
 msgstr "Dieser Eintrag ist für jeglichen Schreibzugriff geschlossen."
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid ""
 "This entry is locked, therefor the creation of comments is not longer "
 "possible."
@@ -410,7 +414,7 @@ msgstr "Titel"
 msgid "Upload"
 msgstr "Hochladen"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Upload a new image."
 msgstr "Ein neues Bild hochladen."
 
@@ -451,12 +455,12 @@ msgstr ""
 "Benutzer mit diesem Recht können das Schwarze Brett verwalten und neue "
 "Kategorien anlegen. Beinhaltet das Moderationsrecht."
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Visibility"
 msgstr "Sichtbarkeit"
 
 #: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Visible"
 msgstr "Sichtbar"
 
@@ -464,14 +468,14 @@ msgstr "Sichtbar"
 msgid "Yes"
 msgstr "Ja"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "You can not add further images to this entry, because it is closed."
 msgstr ""
 "Sie können keine weiteren Bilder zum diesem Eintrag hinzufügen, da er "
 "geschlossen wurde."
 
-#: modules/Stsbl/BillBoardBundle/Crud/Batch/ShowAction.php
 #: modules/Stsbl/BillBoardBundle/Crud/Batch/HideAction.php
+#: modules/Stsbl/BillBoardBundle/Crud/Batch/ShowAction.php
 #, php-format
 msgid "You don't have the permission to change that entry: %s"
 msgstr "Sie haben nicht die Berechtigung, diesen Eintrag zu verändern: %s"
@@ -486,11 +490,11 @@ msgstr "Ihr Eintrag wurde geschlossen: %s hat %s geschlossen"
 msgid "Your entry was opened: %s opened %s"
 msgstr "Ihr Eintrag wurde geöffnet: %s hat %s geöffnet"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "by"
 msgstr "von"
 
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/List/field_imagecollection.html.twig.php
-#: /tmp/twig2php-stsbl-iserv-billboard/modules/Stsbl/BillBoardBundle/Resources/views/List/field_comments.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/List/field_imagecollection.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/List/field_comments.html.twig.php
 msgid "none"
 msgstr "keine"
