@@ -6,7 +6,6 @@ namespace Stsbl\BillBoardBundle\Controller;
 
 use IServ\CoreBundle\Controller\AbstractPageController;
 use IServ\CoreBundle\Event\NotificationEvent;
-use IServ\CoreBundle\Service\Flash;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use IServ\Library\Config\Config;
 use IServ\Library\Flash\FlashInterface;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stsbl\BillBoardBundle\Controller;
 
 use IServ\CoreBundle\Controller\AbstractPageController;
-use IServ\CoreBundle\Service\Flash;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use IServ\Library\Flash\FlashInterface;
 use Psr\Log\LoggerInterface;
