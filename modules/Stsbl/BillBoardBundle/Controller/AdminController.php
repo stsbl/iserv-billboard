@@ -7,6 +7,7 @@ namespace Stsbl\BillBoardBundle\Controller;
 use IServ\CoreBundle\Controller\AbstractPageController;
 use IServ\CoreBundle\Service\Flash;
 use IServ\CoreBundle\Traits\LoggerTrait;
+use IServ\Library\Flash\FlashInterface;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\BillBoardBundle\Security\Privilege;
@@ -195,7 +196,7 @@ final class AdminController extends AbstractPageController
 
         $this->log($logText);
 
-        $this->get(Flash::class)->success(_('Rules updated successfully.'));
+        $this->get(FlashInterface::class)->success(_('Rules updated successfully.'));
 
         return $this->redirect($this->generateUrl('manage_billboard'));
     }
@@ -227,7 +228,7 @@ final class AdminController extends AbstractPageController
     public static function getSubscribedServices(): array
     {
         $deps = parent::getSubscribedServices();
-        $deps[] = Flash::class;
+        $deps[] = FlashInterface::class;
         $deps['logger'] = LoggerInterface::class;
 
         return $deps;

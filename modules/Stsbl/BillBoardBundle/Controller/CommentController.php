@@ -9,6 +9,7 @@ use IServ\CoreBundle\Event\NotificationEvent;
 use IServ\CoreBundle\Service\Flash;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use IServ\Library\Config\Config;
+use IServ\Library\Flash\FlashInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\BillBoardBundle\Entity\Entry;
@@ -104,7 +105,7 @@ final class CommentController extends AbstractPageController
         // trigger notification event
         $this->notifyAuthor($entry, $data);
 
-        $this->get(Flash::class)->success(__('Comment to entry "%s" successful added.', $entry));
+        $this->get(FlashInterface::class)->success(__('Comment to entry "%s" successful added.', $entry));
 
         return $this->redirect($this->generateUrl('billboard_show', ['id' => $entry->getId()]));
     }
@@ -223,7 +224,7 @@ final class CommentController extends AbstractPageController
         $deps = parent::getSubscribedServices();
 
         $deps['event_dispatcher'] = EventDispatcherInterface::class;
-        $deps[] = Flash::class;
+        $deps[] = FlashInterface::class;
 
         return $deps;
     }
