@@ -1,3 +1,12 @@
+stsbl-iserv-billboard (23.04.21.1) stable; urgency=medium
+
+  * Prepared for new locale support in iservmake
+  * Use TinyMCE 5 instead of removed TinyMCE 4
+  * Fixed deprecations
+  * Removed Flash usage
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Fri, 21 Apr 2023 05:38:14 +0200
+
 stsbl-iserv-billboard (23.03.15.1) testing; urgency=medium
 
   * Cleaned up use statements
