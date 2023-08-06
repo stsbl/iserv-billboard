@@ -3,3 +3,7 @@ debian/stsbl-iserv-billboard.debhelper.log
 debian/stsbl-iserv-billboard.substvars
 debian/debhelper-build-stamp
 debian/files
+/Makefile.iservmake
+/locale
+/system-locale
+!/locale/templates/*_misc.pot
