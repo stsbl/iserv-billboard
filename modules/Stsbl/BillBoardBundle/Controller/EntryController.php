@@ -16,7 +16,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Stsbl\BillBoardBundle\Crud\EntryCrud;
 use Stsbl\BillBoardBundle\Entity\Entry;
 use Stsbl\BillBoardBundle\Entity\EntryImage;
-use Stsbl\BillBoardBundle\Form\DataTransformer\FileToUuidTransformer;
 use Stsbl\BillBoardBundle\Image\ImageManager;
 use Stsbl\BillBoardBundle\Image\ImageUpload;
 use Stsbl\BillBoardBundle\Traits\LoggerInitializationTrait;
