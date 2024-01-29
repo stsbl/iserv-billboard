@@ -6,3 +6,4 @@ debian/files
 /Makefile.iservmake
 /system-locale
 !/locale/templates/*_misc.pot
+/public/assets
