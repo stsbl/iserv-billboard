@@ -55,8 +55,8 @@ final class MenuListener implements MainMenuListenerInterface, AdminMenuListener
                 'route' => 'billboard_index',
                 'label' => _('Bill-Board'),
                 'extras' => [
-                  'icon' => 'billboard-empty',
-                  'icon_style' => 'fugue',
+                    'icon' => 'billboard',
+                    'icon_style' => 'fa',
                 ],
             ]);
             $item->setExtra('orderNumber', 20);
@@ -70,23 +70,14 @@ final class MenuListener implements MainMenuListenerInterface, AdminMenuListener
     {
         // check if user is privileged
         if ($event->getAuthorizationChecker()->isGranted(Privilege::BILLBOARD_MANAGE)) {
-            $menu = $event->getMenu();
-            $block = $menu->addChild(_('Bill-Board'));
-            $block->setExtra('orderNumber', 30);
+            $menu = $event->getMenu()->getChild(self::ADMIN_MODULES);
 
-            $item = $block->addChild('billboard_admin', [
+            $item = $menu->addChild('billboard_admin', [
                 'route' => 'manage_billboard',
                 'label' => _('Bill-Board'),
             ]);
-            $item->setExtra('icon', 'billboard-empty');
-            $item->setExtra('icon_style', 'fugue');
-
-            $item = $block->addChild('billboard_category', [
-                'route' => 'manage_billboard_category_index',
-                'label' => _('Categories'),
-            ]);
-            $item->setExtra('icon', 'category');
-            $item->setExtra('icon_style', 'fugue');
+            $item->setExtra('icon', 'billboard');
+            $item->setExtra('icon_style', 'fa');
         }
     }
 }

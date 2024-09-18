@@ -11,6 +11,13 @@
 {% endblock %}
 
 {% block content %}
+<div class="list-actions">
+    <ul class="list-inline">
+        <li>
+            <a class="btn btn-default" href="{{ path('manage_billboard_category_index') }}">{{ icon('fa-list') }}{{ _('Categories') }}</a>
+        </li>
+    </ul>
+</div>
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">{{ _('Rules') }}</h3>

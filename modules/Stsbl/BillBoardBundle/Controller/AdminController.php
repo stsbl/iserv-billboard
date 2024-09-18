@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Stsbl\BillBoardBundle\Controller;
 
+use IServ\Bundle\Flash\Flash\FlashInterface;
 use IServ\CoreBundle\Controller\AbstractPageController;
 use IServ\CoreBundle\Traits\LoggerTrait;
-use IServ\Library\Flash\FlashInterface;
 use Psr\Log\LoggerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\BillBoardBundle\Security\Privilege;
 use Stsbl\BillBoardBundle\Traits\LoggerInitializationTrait;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -16,7 +15,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 
 /*
  * The MIT License
@@ -89,7 +87,7 @@ final class AdminController extends AbstractPageController
         return ['rules_form' => $this->getRulesForm()->createView(),
             'bundle' => $bundle,
             'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard',
-            'is_admin' => $isAdmin
+            'is_admin' => $isAdmin,
         ];
     }
 
@@ -98,7 +96,7 @@ final class AdminController extends AbstractPageController
      *
      * @Route("/update/rules", name="manage_billboard_update_rules")
      */
-    public function updateRulesAction(Request $request): RedirectResponse
+    public function updateRulesAction(Request $request, FlashInterface $flash, LoggerInterface $logger): RedirectResponse
     {
         $this->denyAccessUnlessMangePrivilegeIsGranted();
 
@@ -106,14 +104,14 @@ final class AdminController extends AbstractPageController
         $form->handleRequest($request);
 
         if (!$form->isValid()) {
-            $this->get(Flash::class)->error(_('Invalid rules text'));
+            $flash->error(_('Invalid rules text'));
 
             return $this->redirect($this->generateUrl('manage_billboard'));
         }
 
         $data = $form->getData();
 
-        return $this->updateFile($data['rules'], self::FILE_RULES);
+        return $this->updateFile($data['rules'], self::FILE_RULES, $flash, $logger);
     }
 
 
@@ -172,16 +170,16 @@ final class AdminController extends AbstractPageController
     /**
      * Write $content to given file inside given folder and creates file and folders if necessary.
      */
-    private function updateFile(string $content, string $filename, string $folder = self::CONFIG_DIR): RedirectResponse
+    private function updateFile(string $content, string $filename, FlashInterface $flash, LoggerInterface $logger, string $folder = self::CONFIG_DIR): RedirectResponse
     {
         try {
             touch($folder . $filename);
             $file = new \SplFileObject($folder . $filename, 'w');
             $file->fwrite($content);
         } catch (\RuntimeException $e) {
-            $this->get(Flash::class)->error(_p('billboard', 'This should never happen.'));
+            $flash->error(_p('billboard', 'This should never happen.'));
 
-            $this->get(LoggerInterface::class)->error(sprintf(
+            $logger->error(sprintf(
                 'Exception on writing rules file: %s',
                 $e->getMessage()
             ), ['exception' => $e]);
@@ -195,7 +193,7 @@ final class AdminController extends AbstractPageController
 
         $this->log($logText);
 
-        $this->get(FlashInterface::class)->success(_('Rules updated successfully.'));
+        $flash->success(_('Rules updated successfully.'));
 
         return $this->redirect($this->generateUrl('manage_billboard'));
     }
@@ -219,17 +217,5 @@ final class AdminController extends AbstractPageController
     private function isAdmin(): bool
     {
         return $this->isGranted('IS_AUTHENTICATED_ADMIN');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedServices(): array
-    {
-        $deps = parent::getSubscribedServices();
-        $deps[] = FlashInterface::class;
-        $deps['logger'] = LoggerInterface::class;
-
-        return $deps;
     }
 }
