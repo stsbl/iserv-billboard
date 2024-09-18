@@ -66,12 +66,9 @@ msgstr ""
 #: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
 #: modules/Stsbl/BillBoardBundle/EventListener/MenuListener.php
 #: modules/Stsbl/BillBoardBundle/Resources/translations/messages.php
+#: share/shared/administration/menu/stsbl-iserv-billboard.php
 #: modules/Stsbl/BillBoardBundle/Resources/views/admin/index.html.twig.php
 msgid "Bill-Board"
-msgstr ""
-
-#: share/shared/administration/menu/stsbl-iserv-billboard.php
-msgid "Billboard"
 msgstr ""
 
 #: modules/Stsbl/BillBoardBundle/Controller/EntryController.php

@@ -53,12 +53,13 @@ msgstr "Kommentare erlauben"
 msgid "Author"
 msgstr "Autor"
 
-#: priv/billboard modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
-#: modules/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php
-#: modules/Stsbl/BillBoardBundle/EventListener/MenuListener.php
-#: modules/Stsbl/BillBoardBundle/Controller/CommentController.php
+#: priv/billboard modules/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php
 #: modules/Stsbl/BillBoardBundle/Controller/AdminController.php
+#: modules/Stsbl/BillBoardBundle/Controller/CommentController.php
+#: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
+#: modules/Stsbl/BillBoardBundle/EventListener/MenuListener.php
 #: modules/Stsbl/BillBoardBundle/Resources/translations/messages.php
+#: share/shared/administration/menu/stsbl-iserv-billboard.php
 #: modules/Stsbl/BillBoardBundle/Resources/views/admin/index.html.twig.php
 msgid "Bill-Board"
 msgstr "Schwarzes Brett"
@@ -67,14 +68,14 @@ msgstr "Schwarzes Brett"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
 #: modules/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php
-#: modules/Stsbl/BillBoardBundle/EventListener/MenuListener.php
+#: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/admin/index.html.twig.php
 msgid "Categories"
 msgstr "Kategorien"
 
-#: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
 #: modules/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php
+#: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
 #: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Category"
 msgstr "Kategorie"
@@ -154,9 +155,9 @@ msgstr "Kommentar löschen"
 msgid "Delete image"
 msgstr "Bild löschen"
 
-#: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
 #: modules/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php
 #: modules/Stsbl/BillBoardBundle/Controller/EntryController.php
+#: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
 #: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Description"
 msgstr "Beschreibung"
@@ -276,8 +277,8 @@ msgid "Lock"
 msgstr "Schließen"
 
 #: modules/Stsbl/BillBoardBundle/Controller/AdminController.php
-#: modules/Stsbl/BillBoardBundle/Resources/views/admin/index.html.twig.php
 #: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_index.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/admin/index.html.twig.php
 msgid "Manage"
 msgstr "Verwalten"
 
@@ -333,8 +334,8 @@ msgstr "Bitte laden Sie ein Bild hoch."
 msgid "Rules"
 msgstr "Regeln"
 
-#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_edit.html.twig.php
 #: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_add.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_edit.html.twig.php
 msgid "Rules for posting on the Bill-Board:"
 msgstr "Regeln für das Veröffentlichen auf dem schwarzen Brett:"
 
@@ -371,8 +372,8 @@ msgstr ""
 msgid "The given file has a not supported format."
 msgstr "Die Datei hat ein nicht unterstütztes Format."
 
-#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_edit.html.twig.php
 #: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_add.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_edit.html.twig.php
 msgid ""
 "There are no bill-board categories configured yet. Please contact your "
 "administrator."
@@ -404,9 +405,9 @@ msgctxt "billboard"
 msgid "This should never happen."
 msgstr "Dies sollte niemals vorkommen."
 
-#: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
 #: modules/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php
 #: modules/Stsbl/BillBoardBundle/Controller/CommentFormTrait.php
+#: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
 msgid "Title"
 msgstr "Titel"
 
@@ -494,7 +495,7 @@ msgstr "Ihr Eintrag wurde geöffnet: %s hat %s geöffnet"
 msgid "by"
 msgstr "von"
 
-#: modules/Stsbl/BillBoardBundle/Resources/views/List/field_imagecollection.html.twig.php
 #: modules/Stsbl/BillBoardBundle/Resources/views/List/field_comments.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/List/field_imagecollection.html.twig.php
 msgid "none"
 msgstr "keine"
