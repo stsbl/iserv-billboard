@@ -1,3 +1,9 @@
+stsbl-iserv-billboard (24.09.19.5) testing; urgency=medium
+
+  * Fixed admin menu again, again and again
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Thu, 19 Sep 2024 01:44:17 +0200
+
 stsbl-iserv-billboard (24.09.19.4) testing; urgency=medium
 
   * Try to fix admin menu
