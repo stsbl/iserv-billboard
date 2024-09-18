@@ -1,3 +1,14 @@
+stsbl-iserv-billboard (24.09.19.1) testing; urgency=medium
+
+  * Renamed pot files
+  * Renamed po files
+  * Updated .gitignore
+  * Updated CS to PSR-12
+  * Updated locales
+  * Fixed admin menu integration
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Thu, 19 Sep 2024 00:36:21 +0200
+
 stsbl-iserv-billboard (23.04.21.3) stable; urgency=medium
 
   * Fixed building package again
