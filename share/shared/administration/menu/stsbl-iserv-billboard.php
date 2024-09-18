@@ -12,7 +12,7 @@ return static function (MenuConfigurator $config): void {
         ->add(
             key: 'billboard',
             label: _('Bill-Board'),
-            url: '/billboard/manage',
+            url: '/manage',
             icon: new MenuIcon(name: 'fa-billboard'),
             accessExpr: 'user.hasPrivilege("b1412593-5db4-4044-b53f-ed0b258b5cea")',
             moduleId: 'billboard',
