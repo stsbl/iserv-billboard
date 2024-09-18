@@ -60,28 +60,32 @@ msgstr ""
 msgid "Author"
 msgstr ""
 
-#: priv/billboard modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
-#: modules/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php
-#: modules/Stsbl/BillBoardBundle/EventListener/MenuListener.php
-#: modules/Stsbl/BillBoardBundle/Controller/CommentController.php
+#: priv/billboard modules/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php
 #: modules/Stsbl/BillBoardBundle/Controller/AdminController.php
+#: modules/Stsbl/BillBoardBundle/Controller/CommentController.php
+#: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
+#: modules/Stsbl/BillBoardBundle/EventListener/MenuListener.php
 #: modules/Stsbl/BillBoardBundle/Resources/translations/messages.php
 #: modules/Stsbl/BillBoardBundle/Resources/views/admin/index.html.twig.php
 msgid "Bill-Board"
+msgstr ""
+
+#: share/shared/administration/menu/stsbl-iserv-billboard.php
+msgid "Billboard"
 msgstr ""
 
 #: modules/Stsbl/BillBoardBundle/Controller/EntryController.php
 msgid "Cancel"
 msgstr ""
 
-#: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
 #: modules/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php
-#: modules/Stsbl/BillBoardBundle/EventListener/MenuListener.php
+#: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/admin/index.html.twig.php
 msgid "Categories"
 msgstr ""
 
-#: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
 #: modules/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php
+#: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
 #: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Category"
 msgstr ""
@@ -157,9 +161,9 @@ msgstr ""
 msgid "Delete image"
 msgstr ""
 
-#: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
 #: modules/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php
 #: modules/Stsbl/BillBoardBundle/Controller/EntryController.php
+#: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
 #: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_show.html.twig.php
 msgid "Description"
 msgstr ""
@@ -275,8 +279,8 @@ msgid "Lock"
 msgstr ""
 
 #: modules/Stsbl/BillBoardBundle/Controller/AdminController.php
-#: modules/Stsbl/BillBoardBundle/Resources/views/admin/index.html.twig.php
 #: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_index.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/admin/index.html.twig.php
 msgid "Manage"
 msgstr ""
 
@@ -330,8 +334,8 @@ msgstr ""
 msgid "Rules"
 msgstr ""
 
-#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_edit.html.twig.php
 #: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_add.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_edit.html.twig.php
 msgid "Rules for posting on the Bill-Board:"
 msgstr ""
 
@@ -365,8 +369,8 @@ msgstr ""
 msgid "The given file has a not supported format."
 msgstr ""
 
-#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_edit.html.twig.php
 #: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_add.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/Crud/entry_edit.html.twig.php
 msgid ""
 "There are no bill-board categories configured yet. Please contact your "
 "administrator."
@@ -392,9 +396,9 @@ msgctxt "billboard"
 msgid "This should never happen."
 msgstr ""
 
-#: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
 #: modules/Stsbl/BillBoardBundle/Admin/CategoryAdmin.php
 #: modules/Stsbl/BillBoardBundle/Controller/CommentFormTrait.php
+#: modules/Stsbl/BillBoardBundle/Crud/EntryCrud.php
 msgid "Title"
 msgstr ""
 
@@ -471,7 +475,7 @@ msgstr ""
 msgid "by"
 msgstr ""
 
-#: modules/Stsbl/BillBoardBundle/Resources/views/List/field_imagecollection.html.twig.php
 #: modules/Stsbl/BillBoardBundle/Resources/views/List/field_comments.html.twig.php
+#: modules/Stsbl/BillBoardBundle/Resources/views/List/field_imagecollection.html.twig.php
 msgid "none"
 msgstr ""

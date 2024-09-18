@@ -83,7 +83,7 @@ final class AdminController extends AbstractPageController
             $isAdmin = false;
         }
 
-        return $this->render('@StsblBillboard/admin/index.html.twig', ['rules_form' => $this->getRulesForm()->createView(),
+        return $this->render('@StsblBillBoard/admin/index.html.twig', ['rules_form' => $this->getRulesForm()->createView(),
             'bundle' => $bundle,
             'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard',
             'is_admin' => $isAdmin,
