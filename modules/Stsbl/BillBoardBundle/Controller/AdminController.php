@@ -15,6 +15,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 /*
  * The MIT License
@@ -48,6 +50,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @Route("/billboard/manage")
  */
+#[Route("/billboard/manage")]
 final class AdminController extends AbstractPageController
 {
     use LoggerTrait;
@@ -58,11 +61,9 @@ final class AdminController extends AbstractPageController
 
     /**
      * Rules configuration page
-     *
-     * @Route("", name="manage_billboard")
-     * @Template()
      */
-    public function indexAction(): array
+    #[Route('', name: 'manage_billboard')]
+    public function indexAction(): Response
     {
         $this->denyAccessUnlessMangePrivilegeIsGranted();
 
@@ -84,18 +85,17 @@ final class AdminController extends AbstractPageController
             $isAdmin = false;
         }
 
-        return ['rules_form' => $this->getRulesForm()->createView(),
+        return $this->render('@StsblBillboard/admin/index.html.twig', ['rules_form' => $this->getRulesForm()->createView(),
             'bundle' => $bundle,
             'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-billboard',
             'is_admin' => $isAdmin,
-        ];
+        ]);
     }
 
     /**
      * Write new rules text to file
-     *
-     * @Route("/update/rules", name="manage_billboard_update_rules")
      */
+     #[Route("/update/rules", name: 'manage_billboard_update_rules')]
     public function updateRulesAction(Request $request, FlashInterface $flash, LoggerInterface $logger): RedirectResponse
     {
         $this->denyAccessUnlessMangePrivilegeIsGranted();
